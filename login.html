@@ -3,10 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
+    <title>Login Presensi Mahasiswa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background: #4facfe;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .login-button:hover {
+            background: white;
+        }
+        .social-login {
+            margin-top: 15px;
+        }
+        .social-button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .google-button {
+            background: aqua;
+        }
+        .facebook-button {
+            background: #3b5998;
+        }
+        .social-button:hover {
+            opacity: 0.8;
+        }
+        .social-button img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
 </head>
 <body>
-<input type="text">
-    <input type="submit">
+    <div class="login-container">
+        <h2>Login Presensi</h2>
+        <input type="text" class="input-field" placeholder="Masukkan Email/Username" id="iemail">
+        <input type="password" class="input-field" placeholder="Masukkan Password" id="ipw">
+        <button class="login-button">Login</button>
+        <div class="social-login">
+            <button class="social-button google-button">
+                <img src="/7123025_logo_google_g_icon.png" alt="Google Logo">
+                Login dengan Google
+            </button>
+            <button class="social-button facebook-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+                Login dengan Facebook
+            </button>
+        </div>
+    </div>
 </body>
 </html>
