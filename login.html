@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Mahasiswa</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
     <style>
         body {
             background: url('/bg_login.png') no-repeat center center fixed;
@@ -24,7 +27,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 40%;
-            height: 30vh;
+            height: 55vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -73,6 +76,26 @@
         <div class="register-link">
             <p>Belum punya akun?<a href="register.html">Daftar</a></p>
         </div>
+        <div class="container">
+            <header>Captcha Generator</header>
+            <div class="input_field captch_box">
+              <input type="text" value="" disabled />
+              <button class="refresh_button">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+            <div class="input_field captch_input">
+              <input type="text" placeholder="Enter captcha" />
+            </div>
+            <div class="message">Entered captcha is correct</div>
+            <div class="input_field button disabled">
+              <button>Submit Captcha</button>
+            </div>
+          </div>
+          <script src="captcha.js"></script>
+          </div>
     </div>
+</div>
+</body>
 </body>
 </html>
