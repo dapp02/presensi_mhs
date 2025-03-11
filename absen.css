@@ -1,0 +1,53 @@
+.jadwal {
+    width: 400px;
+    height: 390px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 2px solid #000000;
+}
+
+.header h2 {
+    vertical-align: top;
+    margin: -5px;
+    margin-right: 35px;
+}
+
+.hari {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.hari span {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+}
+
+.hari .active {
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.jadwal-kosong {
+    margin-top: 50px;
+}
+
+.jadwal-kosong h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
