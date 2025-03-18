@@ -29,10 +29,10 @@ const submitBtnClick = () => {
     .join("");
   message.classList.add("active");
   if (captchaInputBox.value === captchaText) {
-    message.innerText = "Entered captcha is correct";
+    message.innerText = "Captcha yang di masukkan benar";
     message.style.color = "#826afb";
   } else {
-    message.innerText = "Entered captcha is not correct";
+    message.innerText = "Captcha yang dimasukkan salah!";
     message.style.color = "#FF2525";
   }
 };
