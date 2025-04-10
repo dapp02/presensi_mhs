@@ -13,7 +13,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Header */
 .header-container {
     width: 100%;
     height: 83px;
@@ -26,22 +25,20 @@ body {
     font-weight: bold;
 }
 
-/* Layout Utama */
 .content-container {
     display: flex;
     width: 90%;
-    gap: 155px; /*jarak antar div*/
+    gap: 155px;
     margin-top: 34px;
-    align-items: flex-start; /* Pastikan elemen tidak saling memengaruhi tinggi */
-    padding-left: 12px; /*geser*/
+    align-items: flex-start;
+    padding-left: 12px;
 }
 
-/* Bagian Kiri (Jadwal & Absen) */
 .left-container {
     display: flex;
     flex-direction: column;
     gap: 60px;
-    max-width: 540px; /*jarak*/
+    max-width: 540px;
     width: 100%;
 }
 
@@ -55,14 +52,13 @@ body {
 }
 
 .jadwal-container {
-    height: 350px; /* Tinggi tetap */
+    height: 350px;
 }
 
 .absen-container {
-    height: 400px; /* Tinggi tetap */
+    height: 400px;
 }
 
-/* Bagian Kanan (Kelas) */
 .kelas-container-main {
     margin-bottom: 50px;
     flex-grow: 1;
@@ -71,7 +67,7 @@ body {
     border-radius: 15px;
     padding: 20px;
     width: 100%;
-    min-height: 100px; /* Minimum height untuk tampilan awal */
+    min-height: 100px;
 }
 
 @media screen and (max-width: 768px) {
