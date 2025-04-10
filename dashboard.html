@@ -4,84 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presensi Mahasiswa</title>
-    <link rel="icon" type="png" href="knowledge.png">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="kelas.css">
+    <link rel="stylesheet" href="jadwal.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="absen.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <table width="100%">
-                <tr>
-                    <td width="80%" style="text-align: left; font-size: 35px;">
-                        <h2>Selamat Datang</h2>
-                    </td>
-                    <td>
-                        <h3 style="text-align: right;">Presensi</h3>
-                        <h3 style="text-align: right;">Mahasiswa</h3>
-                    </td>
-                    <td width="3%">
-                        <img src="knowledge.png" width="45px">
-                    </td>
-                </tr>
-            </table>
-        </header>
-
-        <div class="main-content">
-
-        <section class="content">
-
-        <table width="100%" height="700px";>
-        <tr height="15%" style="vertical-align: bottom; text-align: center;">
-            
-            <td colspan="3">
-                <h1 style="font-size: 70px; padding-top: 45px;">
-                    Mau Nyari Apa Hari Ini?
-                </h1>
-            </td>
-        </tr>
-
-        <tr height="70%" style="text-align: center; font-size: 15px; color: #3D8D7A;">
-            <td width="33%">
-                <div class="menu">
-                    <a href="absen.html">
-                        <img src="higher-education.png" width="100px" height="100px">
-                    </a>
-                    <p style="padding-top:3%; font-size: 20px;">Status Absensi</p>
-                </div>
-            </td>
-            <td width="33%">
-                <div class="menu">
-                <a href="jadwal.html">
-                    <img src="training.png" width="100px" height="100px">
-                </a>
-                <p  style="padding-top:3%; font-size: 20px;">Jadwal Perkuliahan</p>
-                </div>
-            </td>
-            <td width="33%">
-                <div class="menu">
-                <a href="kelas.html">
-                    <img src="education.png" width="100px" height="100px">
-                </a>
-                <p  style="padding-top:3%; font-size: 20px;">Informasi Kelas</p>
-                </div>
-            </td>
-        </tr>
-
-        <tr height="15%" style="text-align: center; vertical-align: bottom;">
-            <td colspan="3">
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-            </td>
-        </tr>
-        </table>
-        </section>
-        </div>
-
-        <footer>
-            <a href="#">
-                <img src="sign-out-alt.png" width="35px" height="35px">
-            </a>
-        </footer>
+    <div class="header-container">
+        <header class="header">
+            <div class="header-left">
+              <img src="knowledge.png" alt="Logo" class="logo">
+              Presensi Mahasiswa
+            </div>
+          
+            <div class="header-center">
+              <div class="menu-item">
+                <img src="home.png" alt="Beranda" class="menu-icon">
+                <span>Beranda</span>
+              </div>
+              <div class="menu-item">
+                <img src="logout.png" alt="Keluar" class="menu-icon">
+                <span>Keluar</span>
+              </div>
+            </div>
+          
+            <div class="header-right">
+              <span class="user-name">Nama Pengguna</span>
+              <img src="user.png" alt="Foto Profil" class="user-photo">
+            </div>
+          </header>
+          
     </div>
+    <div class="content-container">
+        <div class="left-container">
+            <div class="jadwal-container">
+                <div class="jadwal-header">
+                    <h2>Jadwal Minggu Ini</h2>
+                    <span class="tanggal-hari">DD - MM - YYYY</span>
+                  </div>
+                  <div class="hari-container">
+                    <div>
+                      <span class="hari">Sen</span>
+                      <div class="hari-text-line"></div>
+                      <span class="tanggal">01</span>
+                    </div>
+                    <div>
+                      <span class="hari">Sel</span>
+                      <span class="tanggal">02</span>
+                    </div>
+                    <div>
+                      <span class="hari">Rab</span>
+                      <span class="tanggal">03</span>
+                    </div>
+                    <div>
+                      <span class="hari">Kam</span>
+                      <span class="tanggal">04</span>
+                    </div>
+                    <div>
+                      <span class="hari">Jum</span>
+                      <span class="tanggal">05</span>
+                    </div>
+                    <div>
+                      <span class="hari">Sab</span>
+                      <span class="tanggal">06</span>
+                    </div>
+                    <div>
+                      <span class="hari">Min</span>
+                      <span class="tanggal">07</span>
+                    </div>
+                  </div>
+                  <hr>               
+                  <div class="info-kelas">
+                    <p class="info-title">Informasi Kelas Hari Ini :</p>
+                  
+                    <div class="info-grid">
+                      <div class="info-item">
+                        <img src="teachings.png" alt="icon" class="info-icon">
+                        <span>Praktik Pemrograman<br>berbasis web</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="clock.png" alt="icon" class="info-icon">
+                        <span>HH-MM - HH-MM</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="classroom.png " alt="icon" class="info-icon">
+                        <span>Laboraturium</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="conference.png" alt="icon" class="info-icon">
+                        <span>Gus Nanang Syafuddin,<br>S.Kom., M.Kom.</span>
+                      </div>
+                    </div>
+                  </div>                  
+                  
+            </div>
+            <div class="absen-container">
+                <div class="absen-header">
+                    <h2>Status Absensi</h2>
+                    <span class="absen-subtitle">Praktik Pemrograman berbasis web</span>
+                </div>
 
+                <div class="absen-status">
+                    <div class="absen-icon">
+                        <img src="presentation.png" alt="Status Icon">
+                    </div>
+                    <p class="absen-text">Kamu Belum Absen</p>
+                    <div class="absen-text-line"></div>
+                </div>
+
+                <div class="absen-action-label">Ajukan Absensi :</div>
+
+                <div class="absen-actions">
+                    <div class="absen-btn">
+                        <div class="absen-btn-icon">
+                            <i class="fas fa-check">
+                                <img class="image" src="absenteeism.png">
+                            </i>
+                        </div>
+                        <span>Absen</span>
+                    </div>
+                    
+                    <div class="absen-btn">
+                        <div class="absen-btn-icon">
+                            <i class="fas fa-info">
+                                <img class="image" src="absent.png">
+                            </i>
+                        </div>
+                        <span>Izin</span>
+                    </div>
+                    
+                    <div class="absen-btn">
+                        <div class="absen-btn-icon">
+                            <i class="fas fa-ban">
+                                <img class="image" src="patient.png" alt="sakit">
+                            </i>
+                        </div>
+                        <span>Sakit</span>
+                    </div>
+                </div>  
+            </div>
+        </div>  
+        <div class="kelas-container-main">
+            <div class="container-isi">
+                <h3>Informasi Kelas</h3>
+                <div class="divider"></div>
+                <span class="nama">Nama Kelas</span>
+                <br>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="Cari Berdasarkan nama kelas atau dosen">
+                    <img src="search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                </div>
+            </div>
+            <div class="kelas-container">
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 1</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 2</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 3</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 4</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 2 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 12%;"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 5</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 6</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 7</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 8</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 9</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+                <div class="kelas-card">
+                    <div class="kelas-header">Mata Kuliah 10</div>
+                    <div class="kelas-subheader">TRPL</div>
+                    <div class="kelas-divider"></div>
+                    <div class="kelas-info">
+                        <div class="kelas-waktu">
+                            <img src="clock.png" alt="Jam" class="kelas-icon">
+                            <span>DD,<br> HH:MM -<br> HH:MM</span>
+                        </div>
+                        <div class="kelas-dosen">
+                            <img src="conference.png" alt="Dosen" class="kelas-icon">
+                            <span>Nama Dosen</span>
+                        </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="40%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

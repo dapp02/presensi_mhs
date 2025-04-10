@@ -1,0 +1,134 @@
+.container-isi {
+    padding: 10px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h3 {
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 850px; /* Batasi ukuran agar tidak melebar */
+    width: 100%;
+    margin: 10px auto 20px auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+}
+
+.search-bar {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.kelas-container {
+    margin-top: 50px;
+    margin-left: 43px;
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: 40px;
+    justify-content: center; /* Pastikan sejajar di tengah */
+    max-width: 850px;
+}
+
+.kelas-card {
+    background: white;
+    border: 2px solid #000000;
+    border-radius: 25px;
+    padding: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.kelas-card:hover {
+    transform: scale(1.02);
+}
+
+.kelas-header {
+    padding: 5px;
+    font-weight: bold;
+}
+
+.kelas-subheader{
+    margin-left: 5px;
+    margin-bottom: 20px;
+    font-weight: lighter;
+}
+
+.kelas-divider{
+    width: 100%;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+}
+
+.kelas-info {
+    margin-bottom: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.kelas-icon {
+    display: flex;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+}
+
+
+.kelas-dosen {
+    gap:5px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kelas-waktu {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nama{
+    margin-left: 20px;
+    font-size: 12;
+    font-weight: 500;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress {
+    width: 0%;
+    height: 6px;
+    background: #218838;
+}
+.divider {
+    border-bottom: 1px solid black;
+    margin-bottom: 5%;
+}
+
+.kehadiran {
+    margin-bottom: 10px;
+}
