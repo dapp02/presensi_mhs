@@ -57,73 +57,57 @@ h3 {
 }
 
 .kelas-header {
-    padding: 5px;
     font-weight: bold;
+    padding: 5px;
+    font-size: 16px;
     margin-bottom: 2px;
 }
 
-.kelas-subheader{
+.kelas-subheader {
     margin-left: 5px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
     margin-bottom: 10px;
-    font-weight: lighter;
 }
 
-.kelas-divider{
+.kelas-divider {
     width: 100%;
     border-bottom: 2px solid black;
     margin-bottom: 25px;
 }
 
 .kelas-info {
-    margin-bottom: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 5px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 50px 90px;
     font-size: 14px;
 }
 
+.kelas-waktu,
+.kelas-dosen,
+.kelas-ruang {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .kelas-icon {
-    display: flex;
-    align-items: center;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
 }
 
-
-.kelas-dosen {
-    gap:5px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.kelas-waktu {
-    gap: 10px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.nama{
-    margin-left: 20px;
-    font-size: 12;
-    font-weight: 500;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 6px;
-    background: #ddd;
-    border-radius: 3px;
-    overflow: hidden;
-}
-.progress {
-    width: 0%;
-    height: 6px;
-    background: #218838;
+.kelas-container {
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 40px;
+    justify-content: center;
+    max-width: 850px;
 }
 
 .divider {
@@ -131,6 +115,8 @@ h3 {
     margin-bottom: 5%;
 }
 
-.kehadiran {
-    margin-bottom: 10px;
+.nama{
+    margin-left: 20px;
+    font-size: 12;
+    font-weight: 500;
 }

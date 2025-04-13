@@ -1,0 +1,137 @@
+.absen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.absen-header h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.absen-subtitle {
+    font-size: 14px;
+    color: #777;
+}
+
+.absen-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px 0;
+}
+
+.absen-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.absen-icon img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.absen-icon i {
+    font-size: 60px;
+    color: #218838;
+}
+
+.absen-text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.absen-text-line {
+    height: 1px;
+    background-color: #333;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px 0 50px 0;
+}
+
+.absen-action-label {
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.absen-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.absen-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.absen-btn:hover {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.absen-btn-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.image {
+    width: 20px;
+    height: 20px;
+}
+
+.absen-btn:first-child .absen-btn-icon i {
+    color: #218838;
+}
+
+.absen-btn:nth-child(2) .absen-btn-icon i {
+    color: #0077cc;
+}
+
+.absen-btn:last-child .absen-btn-icon i {
+    color: #e53935;
+}
+
+.absen-btn span {
+    font-size: 14px;
+    color: #555;
+}
+
+.absen-container {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+    .absen-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .absen-subtitle {
+        margin-top: 5px;
+    }
+    
+    .absen-actions {
+        gap: 5px;
+    }
+}
