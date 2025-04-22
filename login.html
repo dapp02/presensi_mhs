@@ -125,26 +125,26 @@
     <div class="login-container">
         <h2>Login Mahasiswa</h2>
         <form>
-            <input type="text" placeholder="Username" required>
+            <input type="text" placeholder="Email/Username" required>
             <input type="password" placeholder="Password" required>
           
         <div class="register-link">
         </div>
      <div class="container">
                 <header>Masukkan Captcha terlebih dahulu!</header>
-                <div class="input_field captch_box">
+                <div class="input_field captch_box input">
                     <input type="text" value="" disabled />
                     <button class="refresh_button">
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                 </div>
-            <div class="input_field captch_input">
-                <input type="text" placeholder="Masukkan Captcha" required/>
+            <div class="input_field captch_box input">
+                <input type="text"required/>
             </div>
             <div class="message">Masukkan Captcha</div>
             <div class="input_field button disabled">
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" formaction="dashboard_admin.html">Login</button>
             <p>Belum punya akun?<a href="register.html">Daftar</a></p>
         </form>
         <script src="captcha.js"></script>
