@@ -45,15 +45,27 @@ h3 {
 }
 
 .kelas-card {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     background: white;
     border: 2px solid #000000;
     border-radius: 25px;
     padding: 15px;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
     transition: transform 0.2s ease-in-out;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .kelas-card:hover {
     transform: scale(1.02);
+    border-color: #000000; /* Mempertahankan border */
+    box-shadow: none; /* Menghapus shadow yang tidak diperlukan */
 }
 
 .kelas-header {
@@ -75,12 +87,26 @@ h3 {
 }
 
 .kelas-info {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 5px;
+    gap: 20px;
     font-size: 14px;
+}
+
+.kelas-waktu {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 200px;
+}
+
+.kelas-dosen {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
 }
 
 .kelas-icon {
@@ -88,15 +114,28 @@ h3 {
     align-items: center;
     width: 18px;
     height: 18px;
+    margin-right: 5px;
 }
 
-
 .kelas-dosen {
-    gap:5px;
+    gap: 5px;
     display: flex;
     align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.kelas-dosen span {
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.kelas-waktu {
+    gap: 15px; /* Menambahkan jarak antara elemen */
+    margin-bottom: 10px;
 }
 
 .kelas-waktu {

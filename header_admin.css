@@ -54,6 +54,7 @@
 }
 
 .user-photo {
+  filter: invert();
     margin-right: 30px;
 }
 

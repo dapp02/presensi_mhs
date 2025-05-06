@@ -16,16 +16,16 @@
               Presensi Mahasiswa
             </div>
           
-            <div class="header-center">
-              <div class="menu-item">
-                <img src="home.png" alt="Beranda" class="menu-icon">
-                <a style="color: white;" href="dashboard_admin.html">
+            <div id="main-navigation" class="header-center">
+              <div id="home-menu-item" class="menu-item">
+                <img style="filter: invert();" src="home.png" alt="Beranda" class="menu-icon">
+                <a style="color: white; text-decoration: none;" href="dashboard_admin.html">
                 <span>Beranda</span>
                 </a>
               </div>
               <div class="menu-item">
-                <img src="logout.png" alt="Keluar" class="menu-icon">
-                <a style="color: white;" href="login.html">
+                <img style="filter: invert();" src="logout.png" alt="Keluar" class="menu-icon">
+                <a style="color: white; text-decoration: none; href="login.html">
                 <span>Keluar</span>
                 </a>
               </div>
@@ -41,9 +41,9 @@
             <h2 class="page-title">Informasi Absensi Mahasiswa</h2>
             <div class="horizontal-line"></div>
             
-            <div class="search-section">
-                <label for="search" class="search-label">Nama mahasiswa</label>
-                <div class="search-container">
+            <div id="student-search-section" class="search-section">
+                <label id="search-label" for="search" class="search-label">Nama mahasiswa</label>
+                <div id="search-container" class="search-container">
                     <input type="text" id="search" class="search-input" placeholder="Cari Berdasarkan nama atau NIM Mahasiswa">
                     <button class="search-button">
                         <img src="search-interface-symbol.png" alt="" class="image-button">
@@ -54,8 +54,8 @@
             <div class="attendance-container">
                 <h3 class="section-title">Nama Mata Kuliah</h3>
                 
-                <div class="course-info">
-                    <div class="info-row">
+                <div id="course-info-section" class="course-info">
+                    <div id="program-info" class="info-row">
                         <span class="info-label">Prodi</span>
                         <span class="info-value">: Program Studi</span>
                     </div>
@@ -109,11 +109,11 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
+                        <tr id="student-row-1">
+                            <td id="student-nim-1">000000</td>
+                            <td id="student-name-1">Nama Mahasiswa</td>
+                            <td id="absen-cell-1" class="action-cell">
+                                <button id="absen-btn-1" class="action-button absen-btn">
                                     <img src="absenteeism.png" alt="" class="image">
                                     <span class="deskripsi">Absen</span>
                                 </button>
@@ -137,341 +137,6 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000000</td>
-                            <td>Nama Mahasiswa</td>
-                            <td class="action-cell">
-                                <button class="action-button absen-btn">
-                                    <img src="absenteeism.png" alt="" class="image">
-                                    <span class="deskripsi">Absen</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button izin-btn">
-                                    <img src="absent.png" alt="" class="image">
-                                    <span class="deskripsi">Izin</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button sakit-btn">
-                                    <img src="patient.png" alt="" class="image">
-                                    <span class="deskripsi">Sakit</span>
-                                </button>
-                            </td>
-                            <td class="action-cell">
-                                <button class="action-button alpha-btn">
-                                    <img src="alpha.png" alt="" class="image">
-                                    <span class="deskripsi">Alpha</span>
-                                </button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
