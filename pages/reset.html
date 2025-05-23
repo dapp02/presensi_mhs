@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atur Ulang Kata Sandi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            min-height: 100vh;
+        }
+        .left-panel {
+            background-color: white;
+            width: 50%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+        }
+        .owl-container {
+            margin-top: 4rem;
+            text-align: center;
+        }
+        .owl-image {
+            width: 180px;
+            height: 180px;
+        }
+        .login-text {
+            margin-top: 1rem;
+            color: #359e7f;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .login-subtext {
+            color: #359e7f;
+            font-size: 1rem;
+        }
+        .right-panel {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #359e7f;
+        }
+        .password-input-container {
+            position: relative;
+        }
+        .password-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .email-icon, .key-icon {
+            margin-right: 5px;
+            width: 16px;
+        }
+        .password-input {
+            padding-left: 35px;
+        }
+        .button-container {
+            margin-top: 1.5rem;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #218838;
+        }
+        .login-link-container {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .login-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        .capslock-warning {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0.5rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-panel">
+        <div class="logo-container">
+            <img src="knowledge.png " alt="Logo" class="logo">
+        </div>
+        <div class="owl-container">
+            <img src="burung.png" alt="Owl Mascot" class="owl-image">
+            <h1 class="login-text">Presensi Mahasiswa</h1>
+            <p class="login-subtext">Silahkan login dulu ya!</p>
+        </div>
+        <div></div>
+    </div>
+    <div class="right-panel">
+        <div class="form-container">
+            <h2 class="form-title">Atur Ulang Kata Sandi</h2>
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Alamat Email</label>
+                    <div class="password-input-container">
+                        <span class="password-icon"><i class="fas fa-envelope"></i></span>
+                        <input type="email" class="form-input password-input" placeholder="contoh : email@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Masukkan Kode Verifikasi</label>
+                    <div class="password-input-container">
+                        <span class="password-icon"><i class="fas fa-key"></i></span>
+                        <input type="text" class="form-input password-input" placeholder="Kode Verifikasi">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kata Sandi</label>
+                    <div class="password-input-container">
+                        <span class="password-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-input password-input" placeholder="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi kata sandi</label>
+                    <div class="password-input-container">
+                        <span class="password-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-input password-input" placeholder="password">
+                    </div>
+                </div>
+                <div class="capslock-warning">
+                    <span>B P q W e</span>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="submit-button">Simpan</button>
+                </div>
+                <div class="login-link-container">
+                    <span>Sudah punya akun? </span>
+                    <a href="login.html" class="login-link">Klik disini untuk Masuk</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
