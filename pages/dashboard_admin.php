@@ -25,7 +25,7 @@
             </div>
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-              <a style="color: white;" href="login.html">
+              <a style="color: white;" href="login.php">
               <span style="text-decoration: none;">Keluar</span>
               </a>
             </div>
@@ -109,7 +109,7 @@
 
                 <div class="absen-status">
                     <div class="absen-icon">
-                        <a href="absensi_admin.html">
+                        <a href="absensi_admin.php">
                         <img src="../assets/images/lesson.png" alt="Status Icon">
                         </a>
                     </div>
@@ -126,7 +126,7 @@
 
                 <div class="absen-status">
                     <div class="absen-icon">
-                        <a href="crud_admin.html">
+                        <a href="crud_admin.php">
                         <img src="../assets/images/academic.png" alt="CRUD Icon">
                         </a>
                     </div>

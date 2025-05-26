@@ -105,12 +105,15 @@ function initJadwalListeners() {
     // Event listener untuk tombol tambah
     document.getElementById('add-jadwal').addEventListener('click', () => showModalJadwal('add'));
     
-    // Event delegation untuk tombol edit
+    // Event delegation untuk tombol edit dan hapus
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('edit') && e.target.closest('#jadwal-crud')) {
             const row = e.target.closest('tr');
             const matkul = row.cells[0].textContent;
             showModalJadwal('edit', matkul);
+        } else if (e.target.classList.contains('delete') && e.target.closest('#jadwal-crud')) {
+            const row = e.target.closest('tr');
+            deleteJadwal(row);
         }
     });
     

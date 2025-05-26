@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/header_admin.css">
     <link rel="stylesheet" href="../assets/css/absensi_admin.css">
+    <link rel="stylesheet" href="../assets/css/absensi_admin.css">
 </head>
 <body>
     <div class="header-container">
@@ -19,13 +20,13 @@
             <div id="main-navigation" class="header-center">
               <div id="home-menu-item" class="menu-item">
                 <img style="filter: invert();" src="../assets/images/home.png" alt="Beranda" class="menu-icon">
-                <a style="color: white; text-decoration: none;" href="dashboard_admin.html">
+                <a style="color: white; text-decoration: none;" href="dashboard_admin.php">
                 <span>Beranda</span>
                 </a>
               </div>
               <div class="menu-item">
                 <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-                <a style="color: white; text-decoration: none;" href="login.html">
+                <a style="color: white; text-decoration: none;" href="login.php">
                 <span>Keluar</span>
                 </a>
               </div>
@@ -148,5 +149,6 @@
             </div>
         </div>
     </main>
+<script src="../assets/js/absen_functions.js"></script>
 </body>
 </html>

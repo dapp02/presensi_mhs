@@ -107,12 +107,15 @@ function fillFormWithData(id) {
 
 // Inisialisasi event listener untuk mahasiswa
 function initMahasiswaListeners() {
-    // Event delegation untuk tombol edit
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('edit')) {
+    // Event delegation untuk tombol edit dan hapus
+     document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('edit') && e.target.closest('#mahasiswa-crud')) {
             const row = e.target.closest('tr');
             const nim = row.cells[0].textContent;
             showModalMahasiswa('edit', nim);
+        } else if (e.target.classList.contains('delete') && e.target.closest('#mahasiswa-crud')) {
+            const row = e.target.closest('tr');
+            deleteMahasiswa(row);
         }
     });
 
@@ -156,6 +159,29 @@ function initMahasiswaListeners() {
         
         hideModalMahasiswa();
     });
+}
+
+// Fungsi untuk mengedit data mahasiswa
+function editMahasiswa(nim, nama, prodi, kelas, email) {
+    const rows = document.querySelectorAll('#mahasiswa-crud .crud-table tbody tr');
+    for (let row of rows) {
+        if (row.cells[0].textContent === currentId) {
+            row.cells[0].textContent = nim;
+            row.cells[1].textContent = nama;
+            row.cells[2].textContent = prodi === 'TI' ? 'Teknik Informatika' : (prodi === 'SI' ? 'Sistem Informasi' : 'Teknologi Rekayasa Perangkat Lunak');
+            row.cells[3].textContent = kelas;
+            break;
+        }
+    }
+    alert('Data mahasiswa berhasil diperbarui!');
+}
+
+// Fungsi untuk menghapus data mahasiswa
+function deleteMahasiswa(row) {
+    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+        row.remove();
+        alert('Data mahasiswa berhasil dihapus!');
+    }
 }
 
 // Fungsi untuk mengedit data mahasiswa

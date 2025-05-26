@@ -183,6 +183,15 @@ body {
     color: white;
 }
 
+
+.action-button.selected {
+    background-color: #4CAF50;
+    color: white; 
+}
+.action-button.selected img {
+    filter: brightness(0) invert(1);
+}
+
 @media (max-width: 768px) {
     .header {
         flex-direction: column;

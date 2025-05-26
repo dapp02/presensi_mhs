@@ -19,13 +19,13 @@
           <div class="header-center">
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/home.png" alt="Beranda" class="menu-icon">
-              <a style="color: white; text-decoration: none;" href="dashboard_admin.html">
+              <a style="color: white; text-decoration: none;" href="dashboard_admin.php">
                 <span>Beranda</span>
               </a>
             </div>
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-              <a style="color: white; text-decoration: none;" href="login.html">
+              <a style="color: white; text-decoration: none;" href="login.php">
                 <span>Keluar</span>
               </a>
             </div>

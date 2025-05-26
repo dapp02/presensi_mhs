@@ -21,13 +21,13 @@
             <div id="main-menu" class="header-center">
                 <div id="home-menu" class="menu-item">
                     <img style="filter: invert();" src="../assets/images/home.png" alt="Beranda" class="menu-icon">
-                    <a style="color: white; text-decoration: none;" href="dashboard_user.html">
+                    <a style="color: white; text-decoration: none;" href="dashboard_user.php">
                     <span>Beranda</span>
                     </a>
                 </div>
                 <div id="logout-menu" class="menu-item">
                     <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-                    <a style="color: white; text-decoration: none;" href="login.html">
+                    <a style="color: white; text-decoration: none;" href="login.php">
                     <span style="text-decoration: none;">Keluar</span>
                     </a>
                 </div>
@@ -46,58 +46,44 @@
                     <span class="tanggal-hari">01, Februari 1990</span>
                   </div>
                   <div class="hari-container">
-                    <div>
+                    <div id="day-sen" class="day-item">
                       <span class="hari">Sen</span>
                       <div class="hari-text-line"></div>
                       <span class="tanggal">01</span>
                     </div>
-                    <div>
+                    <div id="day-sel" class="day-item">
                       <span class="hari">Sel</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">02</span>
                     </div>
-                    <div>
+                    <div id="day-rab" class="day-item">
                       <span class="hari">Rab</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">03</span>
                     </div>
-                    <div>
+                    <div id="day-kam" class="day-item">
                       <span class="hari">Kam</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">04</span>
                     </div>
-                    <div>
+                    <div id="day-jum" class="day-item">
                       <span class="hari">Jum</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">05</span>
                     </div>
-                    <div>
+                    <div id="day-sab" class="day-item">
                       <span class="hari">Sab</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">06</span>
                     </div>
-                    <div>
+                    <div id="day-min" class="day-item">
                       <span class="hari">Min</span>
+                      <div class="hari-text-line"></div>
                       <span class="tanggal">07</span>
                     </div>
                   </div>
-                  <hr>               
-                  <div class="info-kelas">
-                    <p class="info-title">Informasi Kelas Hari Ini :</p>
-                  
-                    <div class="info-grid">
-                      <div class="info-item">
-                        <img src="../assets/images/teachings.png" alt="icon" class="info-icon">
-                        <span>Praktik Pemrograman<br>berbasis web</span>
-                      </div>
-                      <div class="info-item">
-                        <img src="../assets/images/clock.png" alt="icon" class="info-icon">
-                        <span>08-00 - 12-00</span>
-                      </div>
-                      <div class="info-item">
-                        <img src="../assets/images/classroom.png" alt="icon" class="info-icon">
-                        <span>Laboraturium</span>
-                      </div>
-                      <div class="info-item">
-                        <img src="../assets/images/conference.png" alt="icon" class="info-icon">
-                        <span>Gus Nanang Syafuddin,<br>S.Kom., M.Kom.</span>
-                      </div>
-                    </div>
+                  <hr>
+                  <div class="info-kelas" id="info-kelas-container">
                   </div>                  
                   
             </div>
@@ -147,7 +133,7 @@
                         <div class="kehadiran-stats">
                             <div class="kehadiran-item">
                                 <div class="kehadiran-icon">
-                                    <img class="image" src="absenteeism.png" alt="Absen">
+                                    <img class="image" src="../assets/images/absenteeism.png" alt="Absen">
                                 </div>
                                 <span class="kehadiran-label">Absen</span>
                                 <span class="kehadiran-value" id="absenCount">0</span>
@@ -387,39 +373,6 @@
         </div>
     </div>
     <script src="../assets/js/absen_functions.js"></script>
+    <script src="../assets/js/hari_user.js"></script>
 </body>
 </html>
-<div id="absensi-section">
-    <div id="absensi-status">
-        <div class="absen-icon">
-            <img src="../assets/images/presentation.png" alt="Status Icon" id="statusIcon">
-        </div>
-        <p class="absen-text" id="statusText">Kamu Belum Absen</p>
-        <div class="absen-text-line"></div>
-    </div>
-    <div id="absensi-actions">
-        <div class="absen-action-label">Ajukan Absensi :</div>
-        <div class="absen-actions">
-            <div class="absen-btn" onclick="markAttendance('absen')">
-                <div class="absen-btn-icon">
-                    <img class="image" src="../assets/images/absenteeism.png" alt="Absen">
-                </div>
-                <span>Absen</span>
-            </div>
-            
-            <div class="absen-btn" onclick="markAttendance('izin')">
-                <div class="absen-btn-icon">
-                    <img class="image" src="../assets/images/absent.png" alt="Izin">
-                </div>
-                <span>Izin</span>
-            </div>
-            
-            <div class="absen-btn" onclick="markAttendance('sakit')">
-                <div class="absen-btn-icon">
-                    <img class="image" src="../assets/images/patient.png" alt="Sakit">
-                </div>
-                <span>Sakit</span>
-            </div>
-        </div>
-    </div>
-</div>
