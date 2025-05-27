@@ -16,32 +16,32 @@ const sampleClasses = [
     {
         subject: 'Praktik Pemrograman Web',
         time: '08:00 - 10:00',
-        room: 'Lab RPL',
-        lecturer: 'Dr. Web Dev'
+        room: 'Ruang 217',
+        lecturer: 'Nama Dosen'
     },
     {
-        subject: 'Basis Data Lanjut',
+        subject: 'PBO',
         time: '10:00 - 12:00',
-        room: 'Ruang Teori 1',
-        lecturer: 'Prof. SQL'
+        room: 'Ruang 315',
+        lecturer: 'Nama Dosen'
     },
     {
-        subject: 'Kecerdasan Buatan',
+        subject: 'MMPPL',
         time: '13:00 - 15:00',
-        room: 'Lab AI',
-        lecturer: 'Dr. Neural Net'
+        room: 'Ruang 315',
+        lecturer: 'Nama Dosen'
     },
     {
-        subject: 'Jaringan Komputer',
+        subject: 'Praktik PBO',
         time: '09:00 - 11:00',
-        room: 'Lab Jaringan',
-        lecturer: 'Msc. Router'
+        room: 'Ruang 218',
+        lecturer: 'Nama Dosen'
     },
     {
         subject: 'Struktur Data',
         time: '14:00 - 16:00',
-        room: 'Ruang Teori 2',
-        lecturer: 'Prof. Algorithm'
+        room: 'Ruang 217',
+        lecturer: 'Nama Dosen'
     }
 ];
 

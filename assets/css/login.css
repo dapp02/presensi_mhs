@@ -1,5 +1,5 @@
 body {
-    background: url('../assets/images/bg_login.png') no-repeat center center fixed;
+    background: url('../images/bg_login.png') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     height: 300px;
