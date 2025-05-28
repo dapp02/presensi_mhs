@@ -11,34 +11,37 @@
 <body>
     <div class="login-container">
         <h2>Login Mahasiswa</h2>
-        <form>
+        <form id="loginForm">
             <input type="text" placeholder="Email/Username" required>
             <input type="password" placeholder="Password" required>
-          
-        <div class="register-link">
-        </div>
-     <div class="container">
-                <header>Masukkan Captcha terlebih dahulu!</header>
-                <div class="input_field captch_box input">
-                    <input type="text" value="" disabled />
-                    <button class="refresh_button">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </div>
-            <div class="input_field captch_box input">
-                <input type="text"required/>
+            <div class="forgot-password">
+                <a href="reset.php">Lupa kata sandi?</a>
             </div>
-            <div class="message">Masukkan Captcha</div>
-            <div class="input_field button disabled">
-            </div>
-            <button type="submit" formaction="dashboard_admin.php">Login</button>
+            <button type="submit">Login</button>
             <p>Belum punya akun?<a href="register.php">Daftar</a></p>
         </form>
-        <script src="captcha.js"></script>
-          </div>
-     </div>
-</div>
+        <div class="message" style="display:none; color: red; text-align: center; margin-top: 10px;"></div>
+    </div>
 
-</body>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const messageElement = document.querySelector(".message");
+            const emailInput = document.querySelector('input[type="text"]');
+            const passwordInput = document.querySelector('input[type="password"]');
+
+            // Simpan data login di session storage untuk digunakan di halaman captcha
+            const loginData = {
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+            sessionStorage.setItem('loginData', JSON.stringify(loginData));
+
+            // Redirect ke halaman captcha
+            window.location.href = 'captcha.php';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    </script>
 </body>
 </html>

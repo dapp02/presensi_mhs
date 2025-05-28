@@ -1,5 +1,5 @@
 body {
-    background: url('../assets/images/bg_login.png') no-repeat center center fixed;
+    background: url('../images/bg_login.png') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     height: 300px;
@@ -16,13 +16,12 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 50%;
-    height: 55vh;
+    width: 40%;
+    height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: cente
-    
+    align-items: center;
 }
 input[type="text"], input[type="password"] {
     width: 80%;
@@ -45,6 +44,8 @@ button:hover {
 }
 .register-link {
     margin-top: 10px;
+    width: 80%;
+    text-align: center;
 }
 .register-link a {
     color: #007bff;
@@ -53,57 +54,33 @@ button:hover {
 .register-link a:hover {
     text-decoration: underline;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+.forgot-password {
+    width: 80%;
+    text-align: right;
+    margin: -5px 0 10px;
+    padding-right: 0;
 }
 
-.captch_box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 180px;
-    height: 30px;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 5px;
-    background: #fff;
-    margin: 5px auto;
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 0;
 }
 
-.captch_box input {
-    width: 120px;
-    height: 50px;
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+header {
+    width: 80%;
     text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    outline: none;
-    background: transparent;
+    margin-bottom: 10px;
 }
 
-.refresh_button {
-    width: 30px;
-    height: 30px;
-    background: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px;
-}
-
-.refresh_button:hover {
-    background: #218838;
-}
-
-.captch_input {
+.message {
+    width: 80%;
     text-align: center;
-    margin-top: 10px;
+    margin: 10px 0;
+    font-size: 14px;
 }
