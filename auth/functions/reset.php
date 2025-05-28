@@ -1,8 +1,9 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/../config/database.php';
 
 function resetPassword($username, $email, $new_password) {
-    global $conn;
+    $database = new Database();
+    $conn = $database->connect();
     
     try {
         // Validasi input
@@ -18,7 +19,7 @@ function resetPassword($username, $email, $new_password) {
         // Cek username dan email cocok dengan data di database
         $stmt = $conn->prepare("SELECT id FROM pengguna WHERE username = ? AND email = ?");
         $stmt->execute([$username, $email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch();
         
         if (!$user) {
             throw new Exception('Username atau email tidak ditemukan');
@@ -37,15 +38,3 @@ function resetPassword($username, $email, $new_password) {
         return ['success' => false, 'message' => $e->getMessage()];
     }
 }
-
-// Handle reset password request
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $new_password = filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING);
-    
-    $result = resetPassword($username, $email, $new_password);
-    echo json_encode($result);
-    exit();
-}
-?>

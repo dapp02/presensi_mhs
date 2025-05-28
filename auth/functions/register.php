@@ -1,8 +1,9 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/../config/database.php';
 
 function registerUser($nama_lengkap, $username, $email, $password, $role) {
-    global $conn;
+    $database = new Database();
+    $conn = $database->connect();
     
     try {
         // Validasi input
@@ -41,17 +42,3 @@ function registerUser($nama_lengkap, $username, $email, $password, $role) {
         return ['success' => false, 'message' => $e->getMessage()];
     }
 }
-
-// Handle register request
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nama_lengkap = filter_input(INPUT_POST, 'nama_lengkap', FILTER_SANITIZE_STRING);
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
-    $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
-    
-    $result = registerUser($nama_lengkap, $username, $email, $password, $role);
-    echo json_encode($result);
-    exit();
-}
-?>

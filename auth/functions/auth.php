@@ -1,27 +1,29 @@
 <?php
-require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/session.php';
 
 class Auth {
     private $db;
     private $table = 'pengguna';
     
     public function __construct() {
-        global $conn;
-        $this->db = $conn;
+        $database = new Database();
+        $this->db = $database->connect();
+        Session::start();
     }
 
     public function getCurrentUser() {
-        if (!isset($_SESSION['user_id'])) {
+        if (!Session::isLoggedIn()) {
             return null;
         }
 
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = ?");
-        $stmt->execute([$_SESSION['user_id']]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute([Session::get('user_id')]);
+        return $stmt->fetch();
     }
 
     public function isLoggedIn() {
-        return isset($_SESSION['user_id']);
+        return Session::isLoggedIn();
     }
 
     public function hasRole($role) {
@@ -50,35 +52,31 @@ class Auth {
     public function login($username, $password) {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE username = ?");
         $stmt->execute([$username]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch();
 
         if (!$user || !password_verify($password, $user['password'])) {
             return ['success' => false, 'message' => 'Username atau password salah'];
         }
 
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $user['role'];
+        Session::set('user_id', $user['id']);
+        Session::set('role', $user['role']);
 
         return ['success' => true, 'user' => $user];
     }
 
     public function register($data) {
-        // Validasi input
         if (empty($data['username']) || empty($data['password']) || empty($data['role'])) {
             return ['success' => false, 'message' => 'Semua field harus diisi'];
         }
 
-        // Cek username sudah ada
         $stmt = $this->db->prepare("SELECT id FROM {$this->table} WHERE username = ?");
         $stmt->execute([$data['username']]);
         if ($stmt->fetch()) {
             return ['success' => false, 'message' => 'Username sudah digunakan'];
         }
 
-        // Hash password
         $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        // Insert user baru
         $stmt = $this->db->prepare("INSERT INTO {$this->table} (username, password, role) VALUES (?, ?, ?)");
         $success = $stmt->execute([
             $data['username'],
@@ -94,17 +92,21 @@ class Auth {
     }
 
     public function resetPassword($username, $newPassword) {
-        // Validasi input
         if (empty($username) || empty($newPassword)) {
             return ['success' => false, 'message' => 'Username dan password baru harus diisi'];
         }
 
-        // Hash password baru
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("SELECT id FROM {$this->table} WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
 
-        // Update password
-        $stmt = $this->db->prepare("UPDATE {$this->table} SET password = ? WHERE username = ?");
-        $success = $stmt->execute([$hashedPassword, $username]);
+        if (!$user) {
+            return ['success' => false, 'message' => 'Username tidak ditemukan'];
+        }
+
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("UPDATE {$this->table} SET password = ? WHERE id = ?");
+        $success = $stmt->execute([$hashedPassword, $user['id']]);
 
         if (!$success) {
             return ['success' => false, 'message' => 'Gagal mereset password'];
@@ -114,8 +116,7 @@ class Auth {
     }
 
     public function logout() {
-        session_unset();
-        session_destroy();
+        Session::destroy();
         header('Location: /pages/login.php');
         exit();
     }
