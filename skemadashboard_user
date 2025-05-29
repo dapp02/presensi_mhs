@@ -1,0 +1,85 @@
+api/
+├── config/
+│   └── database.php     # Konfigurasi database (sudah ada)
+├── models/
+│   ├── Mahasiswa.php    # Model untuk data mahasiswa
+│   ├── Jadwal.php       # Model untuk jadwal kuliah
+│   └── Absensi.php      # Model untuk absensi
+├── controllers/
+│   ├── DashboardController.php  # Logika dashboard
+│   └── AbsensiController.php    # Logika absensi
+└── utils/
+    ├── Session.php      # Manajemen sesi (sudah ada)
+    └── Response.php     # Format response (sudah ada)
+
+endpoint :
+GET /api/dashboard/profile
+- Mengambil profil mahasiswa
+- Response: nama_lengkap, nim, kelas, prodi
+
+GET /api/dashboard/jadwal
+- Mengambil jadwal kuliah
+- Query: hari (opsional)
+- Response: daftar jadwal dengan detail mata kuliah
+
+GET /api/dashboard/absensi/status
+- Mengambil status absensi hari ini
+- Response: status_kehadiran, waktu_absen
+
+GET /api/dashboard/absensi/rekap
+- Mengambil rekap absensi per mata kuliah
+- Query: id_matkul (opsional)
+- Response: jumlah hadir, izin, sakit, alpha
+
+POST /api/dashboard/absensi
+- Mencatat absensi
+- Body: id_jadwal, status_kehadiran, keterangan
+
+query sql :
+-- Profil Mahasiswa
+SELECT m.nim, p.nama_lengkap, k.nama_kelas, ps.nama_prodi
+FROM mahasiswa m
+JOIN pengguna p ON m.id_pengguna = p.id_pengguna
+JOIN mahasiswa_kelas mk ON m.nim = mk.nim_mahasiswa
+JOIN kelas k ON mk.id_kelas = k.id_kelas
+JOIN program_studi ps ON k.id_prodi = ps.id_prodi
+WHERE m.nim = ?
+
+-- Jadwal Kuliah
+SELECT 
+    jk.id_jadwal,
+    mk.nama_matkul,
+    mk.sks,
+    jk.hari,
+    jk.jam_mulai,
+    jk.jam_selesai,
+    jk.ruangan,
+    p.nama_lengkap as nama_dosen
+FROM jadwal_kuliah jk
+JOIN dosen_mengajar dm ON jk.id_dosen_mengajar = dm.id_dosen_mengajar
+JOIN mata_kuliah mk ON dm.id_matkul = mk.id_matkul
+JOIN dosen d ON dm.nidn_dosen = d.nidn
+JOIN pengguna p ON d.id_pengguna = p.id_pengguna
+JOIN kelas k ON dm.id_kelas = k.id_kelas
+JOIN mahasiswa_kelas mk ON k.id_kelas = mk.id_kelas
+WHERE mk.nim_mahasiswa = ?
+AND jk.hari = ? -- Opsional
+
+-- Status Absensi Hari Ini
+SELECT status_kehadiran, created_at
+FROM absensi
+WHERE nim_mahasiswa = ?
+AND id_jadwal = ?
+AND tanggal_absensi = CURRENT_DATE
+
+-- Rekap Absensi
+SELECT 
+    COUNT(CASE WHEN status_kehadiran = 'Hadir' THEN 1 END) as total_hadir,
+    COUNT(CASE WHEN status_kehadiran = 'Izin' THEN 1 END) as total_izin,
+    COUNT(CASE WHEN status_kehadiran = 'Sakit' THEN 1 END) as total_sakit,
+    COUNT(CASE WHEN status_kehadiran = 'Alpha' THEN 1 END) as total_alpha
+FROM absensi a
+JOIN jadwal_kuliah jk ON a.id_jadwal = jk.id_jadwal
+JOIN dosen_mengajar dm ON jk.id_dosen_mengajar = dm.id_dosen_mengajar
+WHERE a.nim_mahasiswa = ?
+AND dm.id_matkul = ? -- Opsional

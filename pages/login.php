@@ -1,34 +1,12 @@
 <?php
-require_once '../assets/auth/functions/auth.php';
-session_start();
+require_once __DIR__ . '/../auth/functions/auth.php';
+require_once __DIR__ . '/../auth/middleware/auth.php';
+require_once __DIR__ . '/../auth/utils/security.php';
 
-$auth = new Auth();
+AuthMiddleware::requireGuest();
+
 $error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $captcha = $_POST['captcha'] ?? '';
-    $userCaptcha = $_POST['user_captcha'] ?? '';
-
-    if ($captcha !== $userCaptcha) {
-        $error = 'Captcha tidak sesuai';
-    } else {
-        $result = $auth->login($username, $password);
-
-        if ($result['success']) {
-            $user = $auth->getCurrentUser();
-            if ($user && $user['role'] === 'admin') {
-                header('Location: dashboard_admin.php');
-            } else {
-                header('Location: dashboard_user.php');
-            }
-            exit();
-        } else {
-            $error = $result['message'];
-        }
-    }
-}
+$csrf_token = Security::generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -43,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container">
         <h2>Login Presensi Mahasiswa</h2>
         <form id="loginForm">
-            <input type="text" placeholder="Email/Username" required>
-            <input type="password" placeholder="Password" required>
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
             <div class="forgot-password">
                 <a href="reset.php">Lupa kata sandi?</a>
             </div>
@@ -57,14 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         function handleLogin(event) {
             event.preventDefault();
-            const messageElement = document.querySelector(".message");
-            const emailInput = document.querySelector('input[type="text"]');
-            const passwordInput = document.querySelector('input[type="password"]');
+            const form = event.target;
+            const formData = new FormData(form);
 
             // Simpan data login di session storage untuk digunakan di halaman captcha
             const loginData = {
-                email: emailInput.value,
-                password: passwordInput.value
+                username: formData.get('username'),
+                password: formData.get('password'),
+                csrf_token: formData.get('csrf_token')
             };
             sessionStorage.setItem('loginData', JSON.stringify(loginData));
 
@@ -73,5 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    </script>
 </body>
 </html>

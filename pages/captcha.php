@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__ . '/../auth/middleware/auth.php';
+require_once __DIR__ . '/../auth/utils/security.php';
+
+AuthMiddleware::requireGuest();
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,69 +11,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Captcha</title>
     <link rel="stylesheet" href="../assets/css/login.css">
-    <style>
-        .captcha-container {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 40%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .captcha-box {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 24px;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 5px;
-            margin: 20px 0;
-            user-select: none;
-        }
-        .captcha-input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .refresh-button {
-    background: white;
-    border: none;
-    color: #28a745;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 10px 0;
-    padding: 5px 10px;
-    transition: none;
-    }
-
-    .refresh-button:hover {
-    background: white; /* Tetap putih saat hover */
-    color: blue;
-    }
-
-    </style>
+    <link rel="stylesheet" href="../assets/css/captcha.css">
 </head>
 <body>
     <div class="captcha-container">
         <h2>Verifikasi Captcha</h2>
         <div id="captchaBox" class="captcha-box"></div>
-        <button class="refresh-button" onclick="refreshCaptcha()">↻ Refresh Captcha</button>
+        <button class="refresh-button" onclick="refreshCaptcha()">
+            <i class="fa-solid fa-rotate-right"></i> Refresh Captcha
+        </button>
         <input type="text" id="captchaInput" class="captcha-input" placeholder="Masukkan Captcha" required>
         <button type="button" onclick="validateCaptcha()">Verifikasi</button>
         <div class="message" style="display:none;"></div>
     </div>
 
-    <script src="../assets/js/captcha.js"></script>
     <script>
         let currentCaptcha = '';
+        const action = new URLSearchParams(window.location.search).get('action') || 'login';
 
         function refreshCaptcha() {
             currentCaptcha = generateCaptchaForPrompt();
@@ -81,38 +41,69 @@
             const messageElement = document.querySelector('.message');
             
             if (userInput.toLowerCase() === currentCaptcha.toLowerCase()) {
-                // Ambil data login dari session storage
-                const loginData = JSON.parse(sessionStorage.getItem('loginData'));
-                
-                // Kirim data login ke server menggunakan fetch
-                fetch('process_login.php', {
+                let data;
+                let endpoint;
+
+                switch(action) {
+                    case 'register':
+                        data = JSON.parse(sessionStorage.getItem('registerData'));
+                        endpoint = '../auth/handlers/register.php';
+                        break;
+                    case 'reset':
+                        data = JSON.parse(sessionStorage.getItem('resetData'));
+                        endpoint = '../auth/handlers/reset.php';
+                        break;
+                    default: // login
+                        data = JSON.parse(sessionStorage.getItem('loginData'));
+                        endpoint = '../auth/handlers/login.php';
+                        break;
+                }
+
+                if (!data) {
+                    messageElement.textContent = 'Data tidak valid';
+                    messageElement.style.display = 'block';
+                    messageElement.style.color = 'red';
+                    return;
+                }
+
+                // Kirim data ke server
+                fetch(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `email=${encodeURIComponent(loginData.email)}&password=${encodeURIComponent(loginData.password)}`
+                    body: Object.entries(data)
+                        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+                        .join('&')
                 })
                 .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Hapus data login dari session storage
+                .then(result => {
+                    if (result.success) {
+                        // Hapus data dari session storage
                         sessionStorage.removeItem('loginData');
-                        // Redirect ke dashboard
-                        window.location.href = 'dashboard_admin.php';
+                        sessionStorage.removeItem('registerData');
+                        sessionStorage.removeItem('resetData');
+
+                        // Redirect berdasarkan role atau ke halaman login
+                        if (action === 'login' && result.user && result.user.role) {
+                            window.location.href = result.user.role === 'admin' 
+                                ? 'dashboard_admin.php' 
+                                : 'dashboard_user.php';
+                        } else {
+                            window.location.href = 'login.php';
+                        }
                     } else {
-                        messageElement.textContent = data.message;
+                        messageElement.textContent = result.message;
                         messageElement.style.display = 'block';
                         messageElement.style.color = 'red';
-                        // Redirect kembali ke halaman login
-                        setTimeout(() => {
-                            window.location.href = 'login.php';
-                        }, 2000);
+                        refreshCaptcha();
                     }
                 })
                 .catch(error => {
-                    messageElement.textContent = 'Terjadi kesalahan saat memproses login';
+                    messageElement.textContent = 'Terjadi kesalahan saat memproses permintaan';
                     messageElement.style.display = 'block';
                     messageElement.style.color = 'red';
+                    refreshCaptcha();
                 });
             } else {
                 messageElement.textContent = 'Captcha salah! Silakan coba lagi.';
@@ -125,5 +116,6 @@
         // Generate captcha saat halaman dimuat
         window.onload = refreshCaptcha;
     </script>
+    <script src="../assets/js/captcha.js"></script>
 </body>
 </html>

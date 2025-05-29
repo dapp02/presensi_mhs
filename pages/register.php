@@ -1,36 +1,14 @@
 <?php
-require_once '../assets/auth/functions/auth.php';
-session_start();
+require_once __DIR__ . '/../auth/functions/auth.php';
+require_once __DIR__ . '/../auth/middleware/auth.php';
+require_once __DIR__ . '/../auth/utils/security.php';
+require_once __DIR__ . '/../auth/utils/validation.php';
 
-$auth = new Auth();
+AuthMiddleware::requireGuest();
+
 $error = '';
 $success = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $role = 'mahasiswa'; // Default role untuk registrasi
-    $captcha = $_POST['captcha'] ?? '';
-    $userCaptcha = $_POST['user_captcha'] ?? '';
-
-    if ($captcha !== $userCaptcha) {
-        $error = 'Captcha tidak sesuai';
-    } else {
-        $result = $auth->register([
-            'username' => $username,
-            'password' => $password,
-            'role' => $role
-        ]);
-
-        if ($result['success']) {
-            $success = $result['message'];
-            header('Location: login.php');
-            exit();
-        } else {
-            $error = $result['message'];
-        }
-    }
-}
+$csrf_token = Security::generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -50,9 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($success): ?>
             <div class="success-message"><?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
-        <form method="POST" action="">
+        <form id="registerForm">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+            <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required>
             <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
+            <input type="hidden" name="role" value="mahasiswa">
             
             <div class="container">
                 <header>Masukkan Captcha terlebih dahulu!</header>
@@ -66,12 +48,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="user_captcha" required/>
                 </div>
                 <div class="message">Masukkan Captcha</div>
-                <div class="input_field button disabled"></div>
                 <button type="submit">Daftar</button>
                 <p>Sudah punya akun? <a href="login.php">Login</a></p>
             </div>
         </form>
-        <script src="../assets/js/captcha.js"></script>
     </div>
+
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const captcha = formData.get('captcha');
+            const userCaptcha = formData.get('user_captcha');
+
+            if (captcha !== userCaptcha) {
+                alert('Captcha tidak sesuai');
+                return;
+            }
+
+            // Simpan data registrasi di session storage
+            const registerData = {
+                nama_lengkap: formData.get('nama_lengkap'),
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: formData.get('role'),
+                csrf_token: formData.get('csrf_token')
+            };
+            sessionStorage.setItem('registerData', JSON.stringify(registerData));
+
+            // Redirect ke halaman captcha untuk verifikasi final
+            window.location.href = 'captcha.php?action=register';
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', handleRegister);
+    </script>
+    <script src="../assets/js/captcha.js"></script>
 </body>
 </html>

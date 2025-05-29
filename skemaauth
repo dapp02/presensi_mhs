@@ -1,22 +1,22 @@
 assets/auth/
 ├── config/
-│   ├── database.php     # Konfigurasi database
-│   └── session.php      # Konfigurasi session
+│   ├── database.php #done     # Konfigurasi database
+│   └── session.php #done      # Konfigurasi session
 ├── functions/
-│   ├── auth.php (done)        # Fungsi umum auth (isLoggedIn, logout)
-│   ├── login.php (done)       # Fungsi login
-│   ├── register.php (done)     # Fungsi register
-│   └── reset.php (done)        # Fungsi reset password
+│   ├── auth.php #done        # Fungsi umum auth (isLoggedIn, logout)
+│   ├── login.php #done       # Fungsi login
+│   ├── register.php #done     # Fungsi register
+│   └── reset.php #done        # Fungsi reset password
 ├── handlers/
-│   ├── login.php        # Handler POST login
-│   ├── logout.php       # Handler logout
-│   ├── register.php     # Handler POST register
-│   └── reset.php        # Handler POST reset
+│   ├── login.php #done        # Handler POST login
+│   ├── logout.php #done       # Handler logout
+│   ├── register.php #done     # Handler POST register
+│   └── reset.php #done       # Handler POST reset
 ├── middleware/
-│   ├── auth.php         # Middleware cek auth
-│   └── role.php         # Middleware cek role
+│   ├── auth.php #done        # Middleware cek auth
+│   └── role.php #done        # Middleware cek role
 ├── utils/
-│   ├── validation.php   # Validasi input
-│   ├── security.php     # Fungsi keamanan
-│   └── response.php     # Format JSON response
+│   ├── validation.php #done  # Validasi input
+│   ├── security.php #done    # Fungsi keamanan
+│   └── response.php #done     # Format JSON response
 └── db.php              # Koneksi database

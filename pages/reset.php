@@ -1,30 +1,14 @@
 <?php
-require_once '../assets/auth/functions/reset.php';
-session_start();
+require_once __DIR__ . '/../auth/functions/auth.php';
+require_once __DIR__ . '/../auth/middleware/auth.php';
+require_once __DIR__ . '/../auth/utils/security.php';
+require_once __DIR__ . '/../auth/utils/validation.php';
+
+AuthMiddleware::requireGuest();
 
 $error = '';
 $success = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
-    $username = $_POST['username'] ?? '';
-    $new_password = $_POST['new_password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
-    
-    if ($new_password !== $confirm_password) {
-        $error = 'Konfirmasi password tidak sesuai';
-    } else {
-        $result = resetPassword($username, $email, $new_password);
-        
-        if ($result['success']) {
-            $success = $result['message'];
-            header('Location: login.php');
-            exit();
-        } else {
-            $error = $result['message'];
-        }
-    }
-}
+$csrf_token = Security::generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -45,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="login-text">Presensi Mahasiswa</h1>
             <p class="login-subtext">Silahkan login dulu ya!</p>
         </div>
-        <div></div>
     </div>
     <div class="right-panel">
         <div class="form-container">
@@ -56,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <div class="success-message"><?php echo htmlspecialchars($success); ?></div>
             <?php endif; ?>
-            <form method="POST" action="">
+            <form id="resetForm">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                 <div class="form-group">
                     <label class="form-label">Username</label>
                     <div class="password-input-container">
@@ -95,5 +79,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <script>
+        function handleReset(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            if (formData.get('new_password') !== formData.get('confirm_password')) {
+                alert('Konfirmasi password tidak sesuai');
+                return;
+            }
+
+            // Simpan data reset password di session storage
+            const resetData = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                new_password: formData.get('new_password'),
+                csrf_token: formData.get('csrf_token')
+            };
+            sessionStorage.setItem('resetData', JSON.stringify(resetData));
+
+            // Redirect ke halaman captcha untuk verifikasi
+            window.location.href = 'captcha.php?action=reset';
+        }
+
+        document.getElementById('resetForm').addEventListener('submit', handleReset);
+    </script>
 </body>
 </html>
