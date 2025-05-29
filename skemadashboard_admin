@@ -1,0 +1,46 @@
+api/
+├── config/
+│   ├── database.php
+│   └── session.php
+├── models/
+│   ├── User.php
+│   ├── Dosen.php
+│   ├── Kelas.php
+│   ├── MataKuliah.php
+│   ├── Jadwal.php
+│   └── Absensi.php
+├── controllers/
+│   ├── DashboardController.php
+│   ├── KelasController.php
+│   ├── JadwalController.php
+│   └── AbsensiController.php
+└── utils/
+    ├── Response.php
+    └── Validation.php
+
+2. API Endpoints yang Diperlukan:
+Dashboard Data:
+
+- GET /api/dashboard/profile - Data profil admin
+- GET /api/dashboard/weekly-schedule - Jadwal minggu ini
+- GET /api/dashboard/today-classes - Kelas hari ini
+- GET /api/dashboard/class-list - Daftar semua kelas
+Manajemen Kelas:
+
+- GET /api/classes - Daftar kelas
+- POST /api/classes - Tambah kelas baru
+- PUT /api/classes/{id} - Update kelas
+- DELETE /api/classes/{id} - Hapus kelas
+- GET /api/classes/{id}/students - Daftar mahasiswa di kelas
+Manajemen Jadwal:
+
+- GET /api/schedules - Daftar jadwal
+- POST /api/schedules - Tambah jadwal
+- PUT /api/schedules/{id} - Update jadwal
+- DELETE /api/schedules/{id} - Hapus jadwal
+Manajemen Absensi:
+
+- GET /api/attendance/class/{id} - Data absensi per kelas
+- GET /api/attendance/student/{nim} - Data absensi per mahasiswa
+- POST /api/attendance/record - Rekam absensi
+- PUT /api/attendance/{id} - Update status absensi
