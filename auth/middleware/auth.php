@@ -21,6 +21,8 @@ class AuthMiddleware {
                     header('Location: /pages/dashboard_admin.php');
                     break;
                 case 'dosen':
+                    header('Location: /pages/dashboard_admin.php');
+                    break;
                 case 'mahasiswa':
                     header('Location: /pages/dashboard_user.php');
                     break;
