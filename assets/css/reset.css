@@ -6,23 +6,23 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    padding-left: 600px;
+    padding-left: 900px;
     font-family: Arial, sans-serif;
 }
 
 .form-container {
     background: rgba(255, 255, 255, 0.8);
-    padding: 40px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: right;
     width: 100%;
     max-width: 500px;
     height: auto;
     min-height: 55vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: right;
 }
 
 .form-title {

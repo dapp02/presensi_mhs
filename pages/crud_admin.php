@@ -92,54 +92,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2021001</td>
-                            <td>Nama Mahasiswa 1</td>
-                            <td>Teknik Informatika</td>
-                            <td>2A</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2021002</td>
-                            <td>Nama Mahasiswa 2</td>
-                            <td>Teknik Informatika</td>
-                            <td>2A</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2021003</td>
-                            <td>Nama Mahasiswa 3</td>
-                            <td>Teknik Informatika</td>
-                            <td>2B</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2021004</td>
-                            <td>Nama Mahasiswa 4</td>
-                            <td>Teknik Informatika</td>
-                            <td>2B</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>2021005</td>
-                            <td>Nama Mahasiswa 5</td>
-                            <td>Teknik Informatika</td>
-                            <td>2B</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
+                        <!-- Data akan diisi oleh JavaScript -->
                     </tbody>
                 </table>
                 
@@ -194,7 +147,6 @@
             </div>
             
             <!-- CRUD Kelas -->
-            <!-- Move modal kelas inside the kelas-crud div -->
             <div class="crud-content" id="kelas-crud">
                 <div class="crud-header">
                     <div class="crud-title">Data Kelas</div>
@@ -219,54 +171,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>TI-2A</td>
-                            <td>Kelas 2A</td>
-                            <td>Teknik Informatika</td>
-                            <td>30</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>TRPL-2B</td>
-                            <td>Kelas 2B</td>
-                            <td>Teknik Rekayasa Perangkat Lunak</td>
-                            <td>30</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>SI-2A</td>
-                            <td>Kelas 2A</td>
-                            <td>Sistem Informasi</td>
-                            <td>30</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>SI-2B</td>
-                            <td>Kelas 2B</td>
-                            <td>Sistem Informasi</td>
-                            <td>30</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>TI-2B</td>
-                            <td>Kelas 2B</td>
-                            <td>Teknik Informatika</td>
-                            <td>30</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
+                        <!-- Data akan diisi oleh JavaScript -->
                     </tbody>
                 </table>
+                
+                <!-- Modal untuk Kelas -->
+                <div class="modal-overlay" id="kelas-modal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="modal-title" id="modal-title-kelas">Tambah Kelas Baru</div>
+                            <button class="modal-close" id="close-modal-kelas">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="kelas-form">
+                                <div class="form-group">
+                                    <label for="kode-kelas">Kode Kelas</label>
+                                    <input type="text" id="kode-kelas" class="form-control" placeholder="Masukkan kode kelas">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama-kelas">Nama Kelas</label>
+                                    <input type="text" id="nama-kelas" class="form-control" placeholder="Masukkan nama kelas">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodi-kelas">Program Studi</label>
+                                    <select id="prodi-kelas" class="form-control">
+                                        <option value="">Pilih Program Studi</option>
+                                        <option value="Teknik Informatika">Teknik Informatika</option>
+                                        <option value="Sistem Informasi">Sistem Informasi</option>
+                                        <option value="Teknik Komputer">Teknik Komputer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jumlah-mahasiswa">Jumlah Mahasiswa</label>
+                                    <input type="number" id="jumlah-mahasiswa" class="form-control" placeholder="Masukkan jumlah mahasiswa">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="crud-button" id="cancel-kelas">Batal</button>
+                            <button class="crud-button add" id="save-kelas">Simpan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- CRUD Mata Kuliah -->
@@ -294,263 +240,51 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>TI101</td>
-                            <td>Pemrograman Web</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>SI101</td>
-                            <td>Pemrograman Berorientasi Objek</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>SI102</td>
-                            <td>Jaringan Komputer</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>  
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>SI103</td>
-                            <td>Keamanan Sistem Informasi</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>SI104</td>
-                            <td>Manajemen Basis Data</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
+                        <!-- Data akan diisi oleh JavaScript -->
                     </tbody>
                 </table>
-            </div>
-
-            <!-- Modal untuk Kelas -->
-            <div class="modal-overlay" id="kelas-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <div class="modal-title" id="modal-title-kelas">Tambah Kelas Baru</div>
-                        <button class="modal-close" id="close-modal-kelas">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="kelas-form">
-                            <div class="form-group">
-                                <label for="kode-kelas">Kode Kelas</label>
-                                <input type="text" id="kode-kelas" class="form-control" placeholder="Masukkan kode kelas">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama-kelas">Nama Kelas</label>
-                                <input type="text" id="nama-kelas" class="form-control" placeholder="Masukkan nama kelas">
-                            </div>
-                            <div class="form-group">
-                                <label for="prodi-kelas">Program Studi</label>
-                                <input type="text" id="prodi-kelas" class="form-control" placeholder="Masukkan program studi">
-                            </div>
-                            <div class="form-group">
-                                <label for="jumlah-mahasiswa">Jumlah Mahasiswa</label>
-                                <input type="number" id="jumlah-mahasiswa" class="form-control" placeholder="Masukkan jumlah mahasiswa">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="crud-button" id="cancel-kelas">Batal</button>
-                        <button class="crud-button add" id="save-kelas">Simpan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal untuk Jadwal -->
-            <div class="modal-overlay" id="jadwal-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <div class="modal-title" id="modal-title-jadwal">Tambah Jadwal Baru</div>
-                        <button class="modal-close" id="close-modal-jadwal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="jadwal-form">
-                            <div class="form-group">
-                                <label for="matkul-jadwal">Mata Kuliah</label>
-                                <input type="text" id="matkul-jadwal" class="form-control" placeholder="Masukkan nama mata kuliah">
-                            </div>
-                            <div class="form-group">
-                                <label for="kelas-jadwal">Kelas</label>
-                                <input type="text" id="kelas-jadwal" class="form-control" placeholder="Masukkan kelas">
-                            </div>
-                            <div class="form-group">
-                                <label for="hari">Hari</label>
-                                <select id="hari" class="form-control">
-                                    <option value="">Pilih Hari</option>
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
-                                    <option value="Sabtu">Sabtu</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="jam">Jam</label>
-                                <input type="text" id="jam" class="form-control" placeholder="Contoh: 08:00 - 10:30">
-                            </div>
-                            <div class="form-group">
-                                <label for="ruangan">Ruangan</label>
-                                <input type="text" id="ruangan" class="form-control" placeholder="Masukkan ruangan">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="crud-button" id="cancel-jadwal">Batal</button>
-                        <button class="crud-button add" id="save-jadwal">Simpan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal untuk Mata Kuliah -->
-            <div class="modal-overlay" id="matakuliah-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <h3 id="modal-matakuliah-title">Tambah Mata Kuliah</h3>
-                        <button class="close-modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="form-matakuliah">
-                            <div class="form-group">
-                                <label for="kode-mk">Kode MK</label>
-                                <input type="text" id="kode-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="nama-mk">Nama Mata Kuliah</label>
-                                <input type="text" id="nama-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sks-mk">SKS</label>
-                                <input type="number" id="sks-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="semester-mk">Semester</label>
-                                <input type="number" id="semester-mk" required>
-                            </div>
-                            <button type="submit" class="crud-button save">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal untuk Mata Kuliah -->
-            <div class="modal-overlay" id="matkul-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <div class="modal-title" id="modal-title-matkul">Tambah Mata Kuliah Baru</div>
-                        <button class="modal-close" id="close-modal-matkul">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="matkul-form">
-                            <div class="form-group">
-                                <label for="kode-matkul">Kode MK</label>
-                                <input type="text" id="kode-matkul" class="form-control" placeholder="Masukkan kode mata kuliah">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama-matkul">Nama Mata Kuliah</label>
-                                <input type="text" id="nama-matkul" class="form-control" placeholder="Masukkan nama mata kuliah">
-                            </div>
-                            <div class="form-group">
-                                <label for="sks">SKS</label>
-                                <input type="number" id="sks" class="form-control" placeholder="Masukkan jumlah SKS">
-                            </div>
-                            <div class="form-group">
-                                <label for="semester">Semester</label>
-                                <input type="number" id="semester" class="form-control" placeholder="Masukkan semester">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="crud-button" id="cancel-matkul">Batal</button>
-                        <button class="crud-button add" id="save-matkul">Simpan</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Hapus modal yang tidak digunakan -->
-            <!--
-            <div class="modal-overlay" id="matakuliah-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <h3 id="modal-matakuliah-title">Tambah Mata Kuliah</h3>
-                        <button class="close-modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="form-matakuliah">
-                            <div class="form-group">
-                                <label for="kode-mk">Kode MK</label>
-                                <input type="text" id="kode-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="nama-mk">Nama Mata Kuliah</label>
-                                <input type="text" id="nama-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sks-mk">SKS</label>
-                                <input type="number" id="sks-mk" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="semester-mk">Semester</label>
-                                <input type="number" id="semester-mk" required>
-                            </div>
-                            <button type="submit" class="crud-button save">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            -->
-            <!-- Modal untuk Mata Kuliah -->
-            <div class="modal-overlay" id="matkul-modal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <div class="modal-title" id="modal-title-matkul">Tambah Mata Kuliah Baru</div>
-                        <button class="modal-close" id="close-modal-matkul">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="matkul-form">
-                            <div class="form-group">
-                                <label for="kode-matkul">Kode MK</label>
-                                <input type="text" id="kode-matkul" class="form-control" placeholder="Masukkan kode mata kuliah">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama-matkul">Nama Mata Kuliah</label>
-                                <input type="text" id="nama-matkul" class="form-control" placeholder="Masukkan nama mata kuliah">
-                            </div>
-                            <div class="form-group">
-                                <label for="sks">SKS</label>
-                                <input type="number" id="sks" class="form-control" placeholder="Masukkan jumlah SKS">
-                            </div>
-                            <div class="form-group">
-                                <label for="semester">Semester</label>
-                                <input type="number" id="semester" class="form-control" placeholder="Masukkan semester">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="crud-button" id="cancel-matkul">Batal</button>
-                        <button class="crud-button add" id="save-matkul">Simpan</button>
+                
+                <!-- Modal untuk Mata Kuliah -->
+                <div class="modal-overlay" id="matkul-modal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="modal-title" id="modal-title-matkul">Tambah Mata Kuliah Baru</div>
+                            <button class="modal-close" id="close-modal-matkul">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="matkul-form">
+                                <div class="form-group">
+                                    <label for="kode-matkul">Kode MK</label>
+                                    <input type="text" id="kode-matkul" class="form-control" placeholder="Masukkan kode mata kuliah">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama-matkul">Nama Mata Kuliah</label>
+                                    <input type="text" id="nama-matkul" class="form-control" placeholder="Masukkan nama mata kuliah">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sks">SKS</label>
+                                    <input type="number" id="sks" class="form-control" placeholder="Masukkan jumlah SKS">
+                                </div>
+                                <div class="form-group">
+                                    <label for="semester">Semester</label>
+                                    <select id="semester" class="form-control">
+                                        <option value="">Pilih Semester</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="crud-button" id="cancel-matkul">Batal</button>
+                            <button class="crud-button add" id="save-matkul">Simpan</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -581,68 +315,69 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Pemrograman Web</td>
-                            <td>TI-2A</td>
-                            <td>Senin</td>
-                            <td>08:00 - 10:30</td>
-                            <td>Lab 1</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pemrograman Berorientasi Objek</td>
-                            <td>SI-2A</td>
-                            <td>Selasa</td>
-                            <td>13:00 - 15:30</td>
-                            <td>Lab 2</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>Jaringan Komputer</td>
-                            <td>SI-2B</td>
-                            <td>Rabu</td>
-                            <td>09:00 - 11:30</td>
-                            <td>Lab 3</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>  
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>Keamanan Sistem Informasi</td>
-                            <td>SI-2C</td>
-                            <td>Kamis</td>
-                            <td>14:00 - 16:30</td>
-                            <td>Lab 4</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
-                        <tr>
-                            <td>Manajemen Basis Data</td>
-                            <td>SI-2D</td>
-                            <td>Jumat</td>
-                            <td>10:00 - 12:30</td>
-                            <td>Lab 5</td>
-                            <td>
-                                <button class="crud-button edit">Edit</button>
-                                <button class="crud-button delete">Hapus</button>
-                        </tr>
+                        <!-- Data akan diisi oleh JavaScript -->
                     </tbody>
                 </table>
+                
+                <!-- Modal untuk Jadwal -->
+                <div class="modal-overlay" id="jadwal-modal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="modal-title" id="modal-title-jadwal">Tambah Jadwal Baru</div>
+                            <button class="modal-close" id="close-modal-jadwal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="jadwal-form">
+                                <div class="form-group">
+                                    <label for="matkul-jadwal">Mata Kuliah</label>
+                                    <select id="matkul-jadwal" class="form-control">
+                                        <option value="">Pilih Mata Kuliah</option>
+                                        <!-- Opsi akan diisi secara dinamis oleh JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kelas-jadwal">Kelas</label>
+                                    <select id="kelas-jadwal" class="form-control">
+                                        <option value="">Pilih Kelas</option>
+                                        <!-- Opsi akan diisi secara dinamis oleh JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hari">Hari</label>
+                                    <select id="hari" class="form-control">
+                                        <option value="">Pilih Hari</option>
+                                        <option value="Senin">Senin</option>
+                                        <option value="Selasa">Selasa</option>
+                                        <option value="Rabu">Rabu</option>
+                                        <option value="Kamis">Kamis</option>
+                                        <option value="Jumat">Jumat</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jam">Jam</label>
+                                    <input type="text" id="jam" class="form-control" placeholder="Contoh: 08:00 - 10:30">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ruangan">Ruangan</label>
+                                    <input type="text" id="ruangan" class="form-control" placeholder="Masukkan ruangan">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="crud-button" id="cancel-jadwal">Batal</button>
+                            <button class="crud-button add" id="save-jadwal">Simpan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</body>
-<!-- Pindahkan semua script ke bagian paling bawah -->
-<script src="../assets/js/crud_functions.js"></script>
-<script src="../assets/js/mahasiswa_functions.js"></script>
-<script src="../assets/js/kelas_functions.js"></script>
-<script src="../assets/js/matkul_functions.js"></script>
-<script src="../assets/js/jadwal_functions.js"></script>
+
+    <!-- Pindahkan semua script ke bagian paling bawah -->
+    <script src="../assets/js/crud_functions.js"></script>
+    <script src="../assets/js/mahasiswa_functions.js"></script>
+    <script src="../assets/js/kelas_functions.js"></script>
+    <script src="../assets/js/matkul_functions.js"></script>
+    <script src="../assets/js/jadwal_functions.js"></script>
 </body>
 </html>

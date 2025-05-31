@@ -1,6 +1,6 @@
 // Variabel untuk menyimpan mode (tambah/edit) dan ID yang sedang diedit
-let currentMode = 'add';
-let currentId = null;
+let currentModeCRUD = 'add';
+let currentIdCRUD = null;
 
 // Fungsi untuk mengubah menu aktif
 function changeActiveMenu(menuId) {
@@ -64,7 +64,6 @@ function initCRUD() {
 
 document.addEventListener('DOMContentLoaded', initCRUD);
 
-
 // Fungsi untuk menampilkan modal
 function showModal(mode, id = null) {
     const modal = document.getElementById('mahasiswa-modal');
@@ -72,8 +71,8 @@ function showModal(mode, id = null) {
     
     document.getElementById('mahasiswa-form').reset();
     
-    currentMode = mode;
-    currentId = id;
+    currentModeCRUD = mode;
+    currentIdCRUD = id;
     
     if (mode === 'add') {
         modalTitle.textContent = 'Tambah Mahasiswa Baru';
@@ -82,13 +81,17 @@ function showModal(mode, id = null) {
         fillFormWithData(id);
     }
     
-    modal.classList.add('active');
-    document.querySelector('#mahasiswa-modal .modal').classList.add('active');
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+        document.querySelector('#mahasiswa-modal .modal').classList.add('active');
+    }, 10);
 }
 
 // Fungsi untuk menyembunyikan modal
 function hideModal() {
     const modal = document.getElementById('mahasiswa-modal');
+    modal.style.display = 'none';
     modal.classList.remove('active');
     document.querySelector('#mahasiswa-modal .modal').classList.remove('active');
 }
@@ -102,17 +105,8 @@ function fillFormWithData(id) {
         kelas: '',
         email: ''
     };
-
-    const rows = document.querySelectorAll('.crud-table tbody tr');
-    for (let row of rows) {
-        if (row.cells[0].textContent === id) {
-            mahasiswa.nama = row.cells[1].textContent;
-            mahasiswa.prodi = row.cells[2].textContent;
-            mahasiswa.kelas = row.cells[3].textContent;
-            break;
-        }
-    }
-
+    
+    // Isi form dengan data mahasiswa
     document.getElementById('nim').value = mahasiswa.nim;
     document.getElementById('nama').value = mahasiswa.nama;
     document.getElementById('prodi').value = mahasiswa.prodi;

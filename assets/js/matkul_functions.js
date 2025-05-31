@@ -2,8 +2,24 @@
 let currentModeMatkul = 'add';
 let currentIdMatkul = null;
 
-// Fungsi untuk menambahkan mata kuliah baru
-function addMatkul(kode, nama, sks, semester) {
+// Fungsi untuk memuat data mata kuliah dari database
+function loadMatkulData() {
+    fetch('../assets/js/matkul_api.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                displayMatkulData(data.data);
+            } else {
+                console.error('Error loading data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+// Fungsi untuk menampilkan data mata kuliah di tabel
+function displayMatkulData(matkulList) {
     // Ubah selector dari #matkul-crud menjadi #matakuliah-crud
     let table = document.querySelector('#matakuliah-crud table');
     
@@ -39,42 +55,119 @@ function addMatkul(kode, nama, sks, semester) {
         table.appendChild(tbody);
     }
     
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-        <td>${kode}</td>
-        <td>${nama}</td>
-        <td>${sks}</td>
-        <td>${semester}</td>
-        <td>
-            <button class="crud-button edit">Edit</button>
-            <button class="crud-button delete">Hapus</button>
-        </td>
-    `;
+    // Clear existing rows
+    tbody.innerHTML = '';
     
-    tbody.appendChild(newRow);
-    alert('Data mata kuliah berhasil ditambahkan!');
+    // Add new rows from data
+    matkulList.forEach(matkul => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${matkul.kode_matkul}</td>
+            <td>${matkul.nama_matkul}</td>
+            <td>${matkul.sks}</td>
+            <td>${matkul.id_prodi}</td>
+            <td>
+                <button class="crud-button edit">Edit</button>
+                <button class="crud-button delete">Hapus</button>
+            </td>
+        `;
+        
+        tbody.appendChild(newRow);
+    });
+}
+
+// Fungsi untuk menambahkan mata kuliah baru
+function addMatkul(kode, nama, sks, semester) {
+    const data = {
+        action: 'add',
+        kode: kode,
+        nama: nama,
+        sks: sks,
+        semester: semester
+    };
+    
+    fetch('../assets/js/matkul_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data mata kuliah berhasil ditambahkan!');
+            loadMatkulData(); // Reload data setelah menambahkan
+        } else {
+            alert('Gagal menambahkan data: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menambahkan data');
+    });
 }
 
 // Fungsi untuk mengedit mata kuliah
 function editMatkul(kode, nama, sks, semester) {
-    const rows = document.querySelectorAll('#matakuliah-crud table tbody tr');
-    for (let row of rows) {
-        if (row.cells[0].textContent === currentIdMatkul) {
-            row.cells[0].textContent = kode;
-            row.cells[1].textContent = nama;
-            row.cells[2].textContent = sks;
-            row.cells[3].textContent = semester;
-            break;
+    const data = {
+        action: 'update',
+        kode: kode,
+        nama: nama,
+        sks: sks,
+        semester: semester
+    };
+    
+    fetch('../assets/js/matkul_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data mata kuliah berhasil diperbarui!');
+            loadMatkulData(); // Reload data setelah mengedit
+        } else {
+            alert('Gagal memperbarui data: ' + result.message);
         }
-    }
-    alert('Data mata kuliah berhasil diperbarui!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memperbarui data');
+    });
 }
 
 // Fungsi untuk menghapus mata kuliah
-function deleteMatkul(row) {
+function deleteMatkul(kode) {
     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-        row.remove();
-        alert('Data mata kuliah berhasil dihapus!');
+        const data = {
+            action: 'delete',
+            kode: kode
+        };
+        
+        fetch('../assets/js/matkul_api.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === 'success') {
+                alert('Data mata kuliah berhasil dihapus!');
+                loadMatkulData(); // Reload data setelah menghapus
+            } else {
+                alert('Gagal menghapus data: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus data');
+        });
     }
 }
 
@@ -142,7 +235,8 @@ function initMatkulListeners() {
         
         if (e.target.classList.contains('delete') && e.target.closest('#matakuliah-crud')) { // Ubah selector ke #matakuliah-crud
             const row = e.target.closest('tr');
-            deleteMatkul(row);
+            const kode = row.cells[0].textContent;
+            deleteMatkul(kode);
         }
     });
     
@@ -195,8 +289,8 @@ document.querySelector('[data-target="matakuliah"]').addEventListener('click', f
     this.classList.add('active');
 });
 
-// Tangani tombol tambah mata kuliah
-
+// Inisialisasi saat halaman dimuat
 document.addEventListener('DOMContentLoaded', function() {
     initMatkulListeners();
+    loadMatkulData(); // Load data saat halaman dimuat
 });

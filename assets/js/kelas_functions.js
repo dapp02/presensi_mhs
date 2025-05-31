@@ -1,47 +1,139 @@
+// Variabel global untuk menyimpan mode dan ID saat ini
+let currentModeKelas = null;
+let currentIdKelas = null;
+
+// Fungsi untuk memuat data kelas dari database
+function loadKelasData() {
+    fetch('../assets/js/kelas_api.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                displayKelasData(data.data);
+            } else {
+                console.error('Error loading data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+// Fungsi untuk menampilkan data kelas di tabel
+function displayKelasData(kelasList) {
+    const tbody = document.querySelector('#kelas-crud .crud-table tbody');
+    tbody.innerHTML = '';
+    
+    kelasList.forEach(kelas => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${kelas.nama_kelas}</td>
+            <td>${kelas.nama_kelas}</td>
+            <td>${kelas.nama_prodi}</td>
+            <td>${kelas.jumlah_mahasiswa}</td>
+            <td>
+                <button class="crud-button edit">Edit</button>
+                <button class="crud-button delete">Hapus</button>
+            </td>
+        `;
+        
+        tbody.appendChild(newRow);
+    });
+}
+
 // Fungsi untuk menambahkan kelas baru
 function addKelas(kode, nama, prodi, jumlah) {
-    const tbody = document.querySelector('#kelas-crud .crud-table tbody');
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-        <td>${kode}</td>
-        <td>${nama}</td>
-        <td>${prodi}</td>
-        <td>${jumlah}</td>
-        <td>
-            <button class="crud-button edit">Edit</button>
-            <button class="crud-button delete">Hapus</button>
-        </td>
-    `;
+    const data = {
+        action: 'add',
+        kode: kode,
+        nama: nama,
+        prodi: prodi,
+        jumlah: jumlah
+    };
     
-    tbody.appendChild(newRow);
-    alert('Data kelas berhasil ditambahkan!');
+    fetch('../assets/js/kelas_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data kelas berhasil ditambahkan!');
+            loadKelasData(); // Reload data setelah menambahkan
+        } else {
+            alert('Gagal menambahkan data: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menambahkan data');
+    });
 }
 
 // Fungsi untuk mengedit kelas
 function editKelas(kode, nama, prodi, jumlah) {
-    const rows = document.querySelectorAll('#kelas-crud .crud-table tbody tr');
-    for (let row of rows) {
-        if (row.cells[0].textContent === currentIdKelas) {
-            row.cells[0].textContent = kode;
-            row.cells[1].textContent = nama;
-            row.cells[2].textContent = prodi;
-            row.cells[3].textContent = jumlah;
-            break;
+    const data = {
+        action: 'update',
+        kode: kode,
+        nama: nama,
+        prodi: prodi,
+        jumlah: jumlah
+    };
+    
+    fetch('../assets/js/kelas_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data kelas berhasil diperbarui!');
+            loadKelasData(); // Reload data setelah mengedit
+        } else {
+            alert('Gagal memperbarui data: ' + result.message);
         }
-    }
-    alert('Data kelas berhasil diperbarui!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memperbarui data');
+    });
 }
 
 // Fungsi untuk menghapus kelas
-function deleteKelas(row) {
+function deleteKelas(kode) {
     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-        row.remove();
-        alert('Data kelas berhasil dihapus!');
+        const data = {
+            action: 'delete',
+            kode: kode
+        };
+        
+        fetch('../assets/js/kelas_api.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === 'success') {
+                alert('Data kelas berhasil dihapus!');
+                loadKelasData(); // Reload data setelah menghapus
+            } else {
+                alert('Gagal menghapus data: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus data');
+        });
     }
 }
-
-let currentModeKelas = null;
-let currentIdKelas = null;
 
 // Fungsi untuk menampilkan modal kelas
 function showModalKelas(mode, id = null) {
@@ -108,7 +200,8 @@ function initKelasListeners() {
         // Event delegation untuk tombol Hapus
         if (e.target.classList.contains('delete') && e.target.closest('#kelas-crud')) {
             const row = e.target.closest('tr');
-            deleteKelas(row);
+            const kode = row.cells[0].textContent;
+            deleteKelas(kode);
         }
     });
     
@@ -146,4 +239,7 @@ function initKelasListeners() {
 }
 
 // Inisialisasi saat halaman dimuat
-document.addEventListener('DOMContentLoaded', initKelasListeners);
+document.addEventListener('DOMContentLoaded', function() {
+    initKelasListeners();
+    loadKelasData(); // Load data saat halaman dimuat
+});

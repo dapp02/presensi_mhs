@@ -1,49 +1,234 @@
-// Fungsi untuk menambahkan jadwal baru
-function addJadwal(matkul, kelas, hari, jam, ruang) {
-    const tbody = document.querySelector('#jadwal-crud .crud-table tbody');
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-        <td>${matkul}</td>
-        <td>${kelas}</td>
-        <td>${hari}</td>
-        <td>${jam}</td>
-        <td>${ruang}</td>
-        <td>
-            <button class="crud-button edit">Edit</button>
-            <button class="crud-button delete">Hapus</button>
-        </td>
-    `;
-    
-    tbody.appendChild(newRow);
-    alert('Data jadwal berhasil ditambahkan!');
+// Variabel untuk menyimpan mode dan ID
+let currentModeJadwal = 'add';
+let currentIdJadwal = null;
+
+// Fungsi untuk memuat data jadwal dari database
+function loadJadwalData() {
+    fetch('../assets/js/jadwal_api.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                displayJadwalData(data.data);
+            } else {
+                console.error('Error loading data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 }
 
-// Fungsi untuk mengedit jadwal
-function editJadwal(row, matkul, kelas, hari, jam, ruang) {
-    if (!row) {
-        console.error('Row element tidak ditemukan');
+// Fungsi untuk menampilkan data jadwal di tabel
+function displayJadwalData(jadwalList) {
+    const tbody = document.querySelector('#jadwal-crud .crud-table tbody');
+    if (!tbody) {
+        console.error('Tabel jadwal tidak ditemukan');
         return;
     }
     
-    const cells = row.querySelectorAll('td');
-    cells[0].textContent = matkul;
-    cells[1].textContent = kelas;
-    cells[2].textContent = hari;
-    cells[3].textContent = jam;
-    cells[4].textContent = ruang;
-    alert('Data jadwal berhasil diubah!');
+    // Clear existing rows
+    tbody.innerHTML = '';
+    
+    // Add new rows from data
+    jadwalList.forEach(jadwal => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${jadwal.kode_matkul}</td>
+            <td>${jadwal.id_kelas}</td>
+            <td>${jadwal.hari}</td>
+            <td>${jadwal.jam}</td>
+            <td>${jadwal.ruangan}</td>
+            <td>
+                <button class="crud-button edit">Edit</button>
+                <button class="crud-button delete">Hapus</button>
+            </td>
+        `;
+        
+        tbody.appendChild(newRow);
+    });
+}
+
+// Fungsi untuk menambahkan jadwal baru
+function addJadwal(matkul, kelas, hari, jam, ruang) {
+    const data = {
+        action: 'add',
+        matkul: matkul,
+        kelas: kelas,
+        hari: hari,
+        jam: jam,
+        ruang: ruang
+    };
+    
+    fetch('../assets/js/jadwal_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data jadwal berhasil ditambahkan!');
+            loadJadwalData(); // Reload data setelah menambahkan
+        } else {
+            alert('Gagal menambahkan data: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menambahkan data');
+    });
+}
+
+// Fungsi untuk mengedit jadwal
+function editJadwal(id, matkul, kelas, hari, jam, ruang) {
+    const data = {
+        action: 'update',
+        id: id,
+        matkul: matkul,
+        kelas: kelas,
+        hari: hari,
+        jam: jam,
+        ruang: ruang
+    };
+    
+    fetch('../assets/js/jadwal_api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Data jadwal berhasil diubah!');
+            loadJadwalData(); // Reload data setelah mengedit
+        } else {
+            alert('Gagal memperbarui data: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memperbarui data');
+    });
 }
 
 // Fungsi untuk menghapus jadwal
-function deleteJadwal(row) {
+function deleteJadwal(id) {
     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-        row.remove();
-        alert('Data jadwal berhasil dihapus!');
+        const data = {
+            action: 'delete',
+            id: id
+        };
+        
+        fetch('../assets/js/jadwal_api.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === 'success') {
+                alert('Data jadwal berhasil dihapus!');
+                loadJadwalData(); // Reload data setelah menghapus
+            } else {
+                alert('Gagal menghapus data: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus data');
+        });
     }
 }
 
-let currentModeJadwal = null;
-let currentIdJadwal = null;
+// Fungsi untuk memuat data mata kuliah untuk dropdown
+function loadMatkulDropdown() {
+    fetch('../assets/js/jadwal_api.php?type=matkul')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                populateMatkulDropdown(data.data);
+            } else {
+                console.error('Error loading matkul data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching matkul data:', error);
+        });
+}
+
+// Fungsi untuk memuat data kelas untuk dropdown
+function loadKelasDropdown() {
+    fetch('../assets/js/jadwal_api.php?type=kelas')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                populateKelasDropdown(data.data);
+            } else {
+                console.error('Error loading kelas data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching kelas data:', error);
+        });
+}
+
+// Fungsi untuk mengisi dropdown mata kuliah
+function populateMatkulDropdown(matkulList) {
+    const dropdown = document.getElementById('matkul-jadwal');
+    if (!dropdown) {
+        console.error('Dropdown mata kuliah tidak ditemukan');
+        return;
+    }
+    
+    // Simpan opsi default
+    const defaultOption = dropdown.options[0];
+    
+    // Kosongkan dropdown
+    dropdown.innerHTML = '';
+    
+    // Tambahkan kembali opsi default
+    dropdown.appendChild(defaultOption);
+    
+    // Tambahkan opsi dari data
+    matkulList.forEach(matkul => {
+        const option = document.createElement('option');
+        option.value = matkul.kode_matkul;
+        option.textContent = matkul.nama_matkul;
+        dropdown.appendChild(option);
+    });
+}
+
+// Fungsi untuk mengisi dropdown kelas
+function populateKelasDropdown(kelasList) {
+    const dropdown = document.getElementById('kelas-jadwal');
+    if (!dropdown) {
+        console.error('Dropdown kelas tidak ditemukan');
+        return;
+    }
+    
+    // Simpan opsi default
+    const defaultOption = dropdown.options[0];
+    
+    // Kosongkan dropdown
+    dropdown.innerHTML = '';
+    
+    // Tambahkan kembali opsi default
+    dropdown.appendChild(defaultOption);
+    
+    // Tambahkan opsi dari data
+    kelasList.forEach(kelas => {
+        const option = document.createElement('option');
+        option.value = kelas.id_kelas;
+        option.textContent = `${kelas.nama_kelas} (${kelas.nama_prodi})`;
+        dropdown.appendChild(option);
+    });
+}
 
 function showModalJadwal(mode, id = null) {
     const modal = document.getElementById('jadwal-modal');
@@ -59,6 +244,10 @@ function showModalJadwal(mode, id = null) {
     }
     
     document.getElementById('jadwal-form').reset();
+    
+    // Load dropdown data
+    loadMatkulDropdown();
+    loadKelasDropdown();
     
     currentModeJadwal = mode;
     currentIdJadwal = id;
@@ -109,11 +298,12 @@ function initJadwalListeners() {
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('edit') && e.target.closest('#jadwal-crud')) {
             const row = e.target.closest('tr');
-            const matkul = row.cells[0].textContent;
-            showModalJadwal('edit', matkul);
+            const id = row.cells[0].textContent;
+            showModalJadwal('edit', id);
         } else if (e.target.classList.contains('delete') && e.target.closest('#jadwal-crud')) {
             const row = e.target.closest('tr');
-            deleteJadwal(row);
+            const id = row.cells[0].textContent;
+            deleteJadwal(id);
         }
     });
     
@@ -144,26 +334,14 @@ function initJadwalListeners() {
         if (currentModeJadwal === 'add') {
             addJadwal(matkul, kelas, hari, jam, ruangan);
         } else if (currentModeJadwal === 'edit') {
-            // Perbaikan selector untuk mencari row yang akan diedit
-            const rows = document.querySelectorAll('#jadwal-crud tr');
-            let targetRow = null;
-            
-            for (const row of rows) {
-                if (row.cells[0].textContent === currentIdJadwal) {
-                    targetRow = row;
-                    break;
-                }
-            }
-            
-            if (targetRow) {
-                editJadwal(targetRow, matkul, kelas, hari, jam, ruangan);
-            } else {
-                alert('Data tidak ditemukan untuk diedit');
-            }
+            editJadwal(currentIdJadwal, matkul, kelas, hari, jam, ruangan);
         }
         
         hideModalJadwal();
     });
 }
 
-document.addEventListener('DOMContentLoaded', initJadwalListeners);
+document.addEventListener('DOMContentLoaded', function() {
+    initJadwalListeners();
+    loadJadwalData(); // Load data saat halaman dimuat
+});
