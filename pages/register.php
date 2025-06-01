@@ -34,7 +34,10 @@ $csrf_token = Security::generateCSRFToken();
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <input type="hidden" name="role" value="mahasiswa">
+            <select name="role" required>
+                <option value="mahasiswa">Mahasiswa</option>
+                <option value="dosen">Dosen</option>
+            </select>
                 <button type="submit">Daftar</button>
                 <p>Sudah punya akun? <a href="login.php">Login</a></p>
         </form>
@@ -47,13 +50,14 @@ $csrf_token = Security::generateCSRFToken();
                 event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
-            const captcha = formData.get('captcha');
-            const userCaptcha = formData.get('user_captcha');
+            // Remove captcha related lines as captcha is handled in captcha.php
+            // const captcha = formData.get('captcha');
+            // const userCaptcha = formData.get('user_captcha');
 
-            if (captcha !== userCaptcha) {
-                alert('Captcha tidak sesuai');
-                return;
-            }
+            // if (captcha !== userCaptcha) {
+            //     alert('Captcha tidak sesuai');
+            //     return;
+            // }
 
                  // Simpan data registrasi di sessionStorage
                  const registerData = {};
