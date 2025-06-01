@@ -53,6 +53,7 @@ AuthMiddleware::requireGuest();
 
              // Validasi CAPTCHA sisi klien
              if (userInput.toLowerCase() !== currentCaptcha.toLowerCase()) {
+                 alert('Captcha salah! Coba lagi.'); // Use alert for client-side captcha error
                  messageElement.textContent = 'Captcha salah! Coba lagi.';
                  messageElement.style.display = 'block';
                  messageElement.style.color = 'red';
@@ -148,19 +149,19 @@ AuthMiddleware::requireGuest();
                              window.location.href = 'login.php';
                          }
                      } else { // result.success adalah false (kegagalan dari server)
-                         messageElement.textContent = result.message || 'Operasi gagal. Silakan coba lagi.';
+                         alert(result.message || 'Operasi gagal. Silakan coba lagi.'); // Use alert for notification
                          console.warn('DEBUG: Operasi GAGAL menurut server:', result.message);
                          refreshCaptcha(); // Refresh CAPTCHA pada kegagalan
                      }
                  } else { // Struktur JSON dari server tidak seperti yang diharapkan
-                     messageElement.textContent = 'Format respons dari server tidak valid.';
+                     alert('Format respons dari server tidak valid.'); // Use alert for notification
                      console.error('DEBUG: Struktur JSON dari server tidak valid:', result);
                      refreshCaptcha();
                  }
              })
              .catch(error => { // Menangani error jaringan atau error dari !response.ok atau error parsing JSON
                  console.error('DEBUG: Error pada Fetch atau Parsing JSON:', error);
-                 messageElement.textContent = 'Terjadi kesalahan komunikasi: ' + error.message + '. Periksa konsol.';
+                 alert('Terjadi kesalahan komunikasi: ' + error.message + '. Periksa konsol.'); // Use alert for notification
                  refreshCaptcha(); // Refresh CAPTCHA pada error
              });
          }
