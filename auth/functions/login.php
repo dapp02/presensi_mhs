@@ -31,13 +31,6 @@ function loginUser($username, $password) {
             error_log("LOGIN VERIFY: password_verify() result: " . ($isPasswordCorrect ? 'TRUE (MATCH)' : 'FALSE (NO MATCH)'));
 
             if ($isPasswordCorrect) {
-            // Set session variables
-            Session::set('user_id', $user['id_pengguna']);
-            Session::set('username', $user['username']);
-            Session::set('nama_lengkap', $user['nama_lengkap']);
-            Session::set('role', $user['role']);
-            Session::set('logged_in', true);
-            
                 error_log("LOGIN SUCCESS: Password MATCH for user: " . $username);
                 Session::set('user_id', $user['id_pengguna']);
                 Session::set('username', $user['username']);
@@ -48,15 +41,15 @@ function loginUser($username, $password) {
                 error_log("--- LOGIN ATTEMPT END (SUCCESS) ---");
                 return ['success' => true, 'user' => ['role' => $user['role']]];
             } else {
-            error_log("LOGIN DEBUG: Password verification FAILED for username: " . $username);
-            error_log("LOGIN FAIL: Password NO MATCH for user: " . $username);
+                error_log("LOGIN DEBUG: Password verification FAILED for username: " . $username);
+                error_log("LOGIN FAIL: Password NO MATCH for user: " . $username);
                 error_log("--- LOGIN ATTEMPT END (FAIL - Incorrect Password) ---");
-                throw new Exception('Username atau password salah. (LUP2)');
+                return ['success' => false, 'message' => 'Username atau password salah. (LUP2)'];
             }
         } else {
             error_log("LOGIN FAIL: User NOT FOUND in DB for username: '" . $username . "'");
             error_log("--- LOGIN ATTEMPT END (FAIL - User Not Found) ---");
-            throw new Exception('Username atau password salah. (LUF2)'); // Atau pesan 'Username tidak ditemukan'
+            return ['success' => false, 'message' => 'Username atau password salah. (LUF2)']; // Atau pesan 'Username tidak ditemukan'
         }
     } catch (Exception $e) {
         error_log("LOGIN EXCEPTION: " . $e->getMessage());
