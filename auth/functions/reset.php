@@ -17,7 +17,7 @@ function resetPassword($username, $email, $new_password) {
         }
         
         // Cek username dan email cocok dengan data di database
-        $stmt = $conn->prepare("SELECT id FROM pengguna WHERE username = ? AND email = ?");
+        $stmt = $conn->prepare("SELECT id_pengguna FROM pengguna WHERE username = ? AND email = ?");
         $stmt->execute([$username, $email]);
         $user = $stmt->fetch();
         
@@ -29,8 +29,8 @@ function resetPassword($username, $email, $new_password) {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         
         // Update password di database
-        $stmt = $conn->prepare("UPDATE pengguna SET password = ? WHERE id = ?");
-        $stmt->execute([$hashed_password, $user['id']]);
+        $stmt = $conn->prepare("UPDATE pengguna SET password = ? WHERE id_pengguna = ?");
+        $stmt->execute([$hashed_password, $user['id_pengguna']]);
         
         return ['success' => true, 'message' => 'Password berhasil direset'];
         

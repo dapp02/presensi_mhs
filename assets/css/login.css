@@ -2,34 +2,39 @@ body {
     background: url('../images/bg_login.png') no-repeat center center fixed;
     background-size: cover;
     display: flex;
-    height: 300px;
+    height: 100vh;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    padding-left: 600px;
+    padding-left: 0;
     font-family: Arial, sans-serif;
 }
+
 .login-container {
     background: rgba(255, 255, 255, 0.8);
     padding: 30px;
+    margin-left: 800px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 40%;
-    height: 40vh;
+    width: 350px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-input[type="text"], input[type="password"] {
+
+input[type="text"], input[type="password"], input[type="email"] {
     width: 80%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
+
 button {
     background: #28a745;
     color: white;
@@ -39,14 +44,24 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
+
 button:hover {
     background: #218838;
 }
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .register-link {
     margin-top: 10px;
     width: 80%;
     text-align: center;
 }
+
 .register-link a {
     color: #007bff;
     text-decoration: none;
@@ -54,6 +69,7 @@ button:hover {
 .register-link a:hover {
     text-decoration: underline;
 }
+
 .forgot-password {
     width: 80%;
     text-align: right;

@@ -16,12 +16,12 @@ $csrf_token = Security::generateCSRFToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atur Ulang Kata Sandi</title>
-    <link rel="stylesheet" href="../assets/css/reset.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
 <body>
-    <div class="form-container">
-        <h2 class="form-title">Atur Ulang Kata Sandi</h2>
+    <div class="login-container">
+        <h2>Atur Ulang Kata Sandi</h2>
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
@@ -30,41 +30,12 @@ $csrf_token = Security::generateCSRFToken();
         <?php endif; ?>
         <form id="resetForm">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <div class="password-input-container">
-                    <span class="password-icon"><i class="fas fa-user"></i></span>
-                    <input type="text" name="username" class="form-input password-input" placeholder="Masukkan username" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Alamat Email</label>
-                <div class="password-input-container">
-                    <span class="password-icon"><i class="fas fa-envelope"></i></span>
-                    <input type="email" name="email" class="form-input password-input" placeholder="contoh : email@example.com" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Kata Sandi Baru</label>
-                <div class="password-input-container">
-                    <span class="password-icon"><i class="fas fa-lock"></i></span>
-                    <input type="password" name="new_password" class="form-input password-input" placeholder="Masukkan kata sandi baru" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Konfirmasi Kata Sandi</label>
-                <div class="password-input-container">
-                    <span class="password-icon"><i class="fas fa-lock"></i></span>
-                    <input type="password" name="confirm_password" class="form-input password-input" placeholder="Konfirmasi kata sandi baru" required>
-                </div>
-            </div>
-            <div class="button-container">
-                <button type="submit" class="submit-button">Reset Password</button>
-            </div>
-            <div class="login-link-container">
-                <span>Sudah punya akun? </span>
-                <a href="login.php" class="login-link">Klik disini untuk Masuk</a>
-            </div>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="new_password" placeholder="Kata Sandi Baru" required>
+            <input type="password" name="confirm_password" placeholder="Konfirmasi Kata Sandi" required>
+            <button type="submit">Reset Password</button>
+            <p>Sudah ingat password? <a href="login.php">Masuk</a></p>
         </form>
     </div>
 

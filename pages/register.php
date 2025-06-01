@@ -16,11 +16,11 @@ $csrf_token = Security::generateCSRFToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi Mahasiswa</title>
-    <link rel="stylesheet" href="../assets/css/register.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 </head>
 <body>
-    <div class="register-container">
+    <div class="login-container">
         <h2>Registrasi Mahasiswa</h2>
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
@@ -35,28 +35,16 @@ $csrf_token = Security::generateCSRFToken();
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="hidden" name="role" value="mahasiswa">
-            
-            <div class="container">
-                <header>Masukkan Captcha terlebih dahulu!</header>
-                <div class="input_field captch_box input">
-                    <input type="text" name="captcha" value="" disabled />
-                    <button type="button" class="refresh_button">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </div>
-                <div class="input_field captch_box input">
-                    <input type="text" name="user_captcha" required/>
-                </div>
-                <div class="message">Masukkan Captcha</div>
                 <button type="submit">Daftar</button>
                 <p>Sudah punya akun? <a href="login.php">Login</a></p>
-            </div>
         </form>
     </div>
 
+
     <script>
-        function handleRegister(event) {
-            event.preventDefault();
+            // Fungsi untuk menangani pendaftaran
+            function handleRegister(event) {
+                event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
             const captcha = formData.get('captcha');
@@ -67,23 +55,18 @@ $csrf_token = Security::generateCSRFToken();
                 return;
             }
 
-            // Simpan data registrasi di session storage
-            const registerData = {
-                nama_lengkap: formData.get('nama_lengkap'),
-                username: formData.get('username'),
-                email: formData.get('email'),
-                password: formData.get('password'),
-                role: formData.get('role'),
-                csrf_token: formData.get('csrf_token')
-            };
-            sessionStorage.setItem('registerData', JSON.stringify(registerData));
+                 // Simpan data registrasi di sessionStorage
+                 const registerData = {};
+                 for (let [key, value] of formData.entries()) {
+                     registerData[key] = value;
+                 }
+                 sessionStorage.setItem('registerData', JSON.stringify(registerData));
 
-            // Redirect ke halaman captcha untuk verifikasi final
-            window.location.href = 'captcha.php?action=register';
+                 // Redirect ke halaman captcha untuk verifikasi
+                 window.location.href = 'captcha.php?action=register';
         }
 
         document.getElementById('registerForm').addEventListener('submit', handleRegister);
     </script>
-    <script src="../assets/js/captcha.js"></script>
 </body>
 </html>
