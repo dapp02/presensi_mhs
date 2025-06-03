@@ -25,7 +25,7 @@
             </div>
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-              <a style="color: white; text-decoration: none;" href="login.php">
+              <a style="color: white; text-decoration: none;" href="../auth/handlers/logout.php">
                 <span>Keluar</span>
               </a>
             </div>

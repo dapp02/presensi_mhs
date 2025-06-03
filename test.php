@@ -1,56 +1,54 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-$custom_log_file_dashboard = __DIR__ . '/../logs/app_debug.log';
-function custom_error_log_dashboard($message, $log_file) {
-    $timestamp = date("Y-m-d H:i:s");
-    error_log("[" . $timestamp . "] DASHBOARD_ADMIN: " . $message . PHP_EOL, 3, $log_file);
-}
+// 1. Sertakan file-file yang diperlukan (Pastikan path relatif ini benar dari direktori 'pages/')
 require_once __DIR__ . '/../auth/config/session.php';
-require_once __DIR__ . '/../auth/config/database.php';
+require_once __DIR__ . '/../auth/config/database.php'; // Untuk koneksi PDO
 require_once __DIR__ . '/../auth/middleware/auth.php';
 require_once __DIR__ . '/../auth/middleware/role.php';
+// Path ke AdminDashboardService.php yang akan dibuat/digunakan di sesi berikutnya
 require_once __DIR__ . '/../app/Services/AdminDashboardService.php';
 
+// 2. Mulai Sesi
 Session::start();
-AuthMiddleware::requireLogin();
-RoleMiddleware::requireRole(['dosen', 'admin']);
 
+// 3. Terapkan Middleware Autentikasi dan Otorisasi Peran
+AuthMiddleware::requireLogin(); // Memastikan pengguna sudah login
+// Mengizinkan peran 'dosen' atau 'admin' untuk mengakses dasbor ini
+RoleMiddleware::requireRole(['dosen']);
+
+// 4. Ambil Informasi Pengguna (Dosen/Admin) dari Sesi
+// NIDN HARUS sudah disimpan ke sesi saat proses login dosen/admin (telah dikerjakan di Sesi 3.1)
 $nidn_login = Session::get('nidn');
 $nama_lengkap_login = Session::get('nama_lengkap');
-$role_login = Session::get('role');
-$user_id_session = Session::get('user_id');
+$role_login = Session::get('role'); // Ambil juga peran untuk referensi atau logika tambahan jika perlu
 
-if (empty($nidn_login) && $role_login === 'dosen') {
-    error_log("FATAL: NIDN Dosen WAJIB tidak ditemukan. User ID: " . ($user_id_session ?? 'N/A'));
-    die("Error Kritis: NIDN Dosen tidak ada di sesi. Cek log server.");
+// 5. Validasi Kritis: Pastikan NIDN ada di sesi untuk dosen/admin
+// Jika NIDN kosong dan peran adalah dosen/admin, ini adalah kondisi error.
+if (empty($nidn_login) && ($role_login === 'dosen')) {
+    error_log("KESALAHAN KRITIS di dashboard_admin.php: NIDN tidak ditemukan di sesi untuk pengguna dengan peran '" . htmlspecialchars($role_login) . "'. User ID: " . htmlspecialchars(Session::get('user_id')));
+    // Arahkan ke logout untuk membersihkan sesi dan paksa login ulang,
+    // ini mengindikasikan masalah pada Sesi 3.1 (penyimpanan NIDN saat login) atau data pengguna.
+    header('Location: ../auth/handlers/logout.php?error=nidn_tidak_tersedia_disesi');
+    exit();
 }
 
+// 6. Inisialisasi Koneksi Database
 $db_instance = new Database();
 $pdo_connection = $db_instance->connect();
 
 if (!$pdo_connection) {
+    // Jika koneksi gagal, tampilkan pesan error yang layak atau log dan hentikan.
     error_log("ERROR FATAL di dashboard_admin.php: Gagal melakukan koneksi ke database.");
+    // Sebaiknya tampilkan halaman error yang lebih ramah pengguna di produksi.
+    // Untuk pengembangan, die() bisa digunakan, tapi pertimbangkan untuk production.
     die("Tidak dapat terhubung ke database. Silakan hubungi administrator sistem atau coba lagi nanti.");
 }
 
-$adminService = new \App\Services\AdminDashboardService($pdo_connection);
-$dashboardData = $adminService->prepareDashboardData($nidn_login, $role_login);
+// Variabel $pdo_connection sekarang siap digunakan oleh AdminDashboardService di sesi berikutnya.
+// Variabel $nidn_login dan $nama_lengkap_login juga siap.
 
-$nama_dosen_header = $dashboardData['nama_dosen_header'] ?? 'Nama Dosen';
-$tanggal_hari_ini_display = $dashboardData['tanggal_hari_ini_display'] ?? date('d F Y');
-$jadwal_dosen_hari_ini = $dashboardData['jadwal_dosen_hari_ini'] ?? [];
-
-// Optional: Jika Anda perlu mapping hari dalam bahasa Indonesia
-$hari_map_indo = [
-    'Monday'    => 'Senin',
-    'Tuesday'   => 'Selasa',
-    'Wednesday' => 'Rabu',
-    'Thursday'  => 'Kamis',
-    'Friday'    => 'Jumat',
-    'Saturday'  => 'Sabtu',
-    'Sunday'    => 'Minggu'
-];
+// Logging sementara untuk verifikasi (bisa dihapus setelah diverifikasi)
+error_log("dashboard_admin.php: Inisialisasi berhasil. NIDN: " . ($nidn_login ?? 'KOSONG') . ", Nama: " . ($nama_lengkap_login ?? 'KOSONG') . ", Role: " . ($role_login ?? 'KOSONG'));
+$custom_log_file = __DIR__ . '/../../logs/app_debug.log';
 
 ?>
 <!DOCTYPE html>
@@ -80,7 +78,7 @@ $hari_map_indo = [
             </div>
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/logout.png" alt="Keluar" class="menu-icon">
-              <a style="color: white;" href="../auth/handlers/logout.php">
+              <a style="color: white;" href="login.php">
               <span style="text-decoration: none;">Keluar</span>
               </a>
             </div>
@@ -132,46 +130,32 @@ $hari_map_indo = [
                   </div>
                   <hr>               
                   <div class="info-kelas">
-                                <p class="info-title">Informasi Kelas Hari Ini :</p>
-                                 <?php if (!empty($jadwal_dosen_hari_ini)):
-                                     foreach ($jadwal_dosen_hari_ini as $jadwal):
-                                 ?>
-                                     <div class="info-grid">
-                                         <div class="info-item">
-                                             <img src="../assets/images/teachings.png" alt="icon" class="info-icon">
-                                             <span><?= htmlspecialchars($jadwal['nama_matkul']) ?></span>
-                                         </div>
-                                         <div class="info-item">
-                                             <img src="../assets/images/clock.png" alt="icon" class="info-icon">
-                                             <span><?= htmlspecialchars(substr($jadwal['jam_mulai'], 0, 5)) ?> - <?= htmlspecialchars(substr($jadwal['jam_selesai'], 0, 5)) ?></span>
-                                         </div>
-                                         <div class="info-item">
-                                             <img src="../assets/images/classroom.png" alt="icon" class="info-icon">
-                                             <span><?= htmlspecialchars($jadwal['ruangan']) ?></span>
-                                         </div>
-                                         <div class="info-item">
-                                             <img src="../assets/images/conference.png" alt="icon" class="info-icon">
-                                             <span><?= htmlspecialchars($jadwal['nama_kelas']) ?></span>
-                                         </div>
-                                     </div>
-                                 <?php
-                                     endforeach;
-                                 else:
-                                 ?>
-                                     <p>Tidak ada kelas hari ini.</p>
-                                 <?php endif; ?>
-                            </div>                                    
+                    <p class="info-title">Informasi Kelas Hari Ini :</p>
+                  
+                    <div class="info-grid">
+                      <div class="info-item">
+                        <img src="../assets/images/teachings.png" alt="icon" class="info-icon">
+                        <span>Praktik Pemrograman<br>berbasis web</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="../assets/images/clock.png" alt="icon" class="info-icon">
+                        <span>HH-MM - HH-MM</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="../assets/images/classroom.png" alt="icon" class="info-icon">
+                        <span>Laboraturium</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="../assets/images/conference.png" alt="icon" class="info-icon">
+                        <span>GKelas 2B</span>
+                      </div>
+                    </div>
+                  </div>                                    
             </div>
             <div class="absen-container">
                 <div class="absen-header">
                     <h2>Absen Mahasiswa</h2>
-                    <span class="absen-subtitle">
-                                <?php if (!empty($jadwal_dosen_hari_ini)):
-                                    echo htmlspecialchars($jadwal_dosen_hari_ini[0]['nama_matkul']);
-                                else:
-                                    echo 'Tidak ada kelas';
-                                endif; ?>
-                            </span>
+                    <span class="absen-subtitle">Praktik Pemrograman berbasis web</span>
                 </div>
                 <div class="absen-text-line"></div>
 
