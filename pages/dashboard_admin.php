@@ -97,8 +97,7 @@
                         <span>GKelas 2B</span>
                       </div>
                     </div>
-                  </div>                  
-                  
+                  </div>                                    
             </div>
             <div class="absen-container">
                 <div class="absen-header">
@@ -111,23 +110,6 @@
                     <div class="absen-icon">
                         <a href="absensi_admin.php">
                         <img src="../assets/images/lesson.png" alt="Status Icon">
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tambahkan container untuk CRUD -->
-            <div class="absen-container">
-                <div class="absen-header">
-                    <h2>Kelola Data</h2>
-                    <span class="absen-subtitle">Mahasiswa & Informasi Kelas</span>
-                </div>
-                <div class="absen-text-line"></div>
-
-                <div class="absen-status">
-                    <div class="absen-icon">
-                        <a href="crud_admin.php">
-                        <img src="../assets/images/academic.png" alt="CRUD Icon">
                         </a>
                     </div>
                 </div>

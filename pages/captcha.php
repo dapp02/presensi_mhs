@@ -121,13 +121,17 @@ AuthMiddleware::requireGuest();
                          if (action === 'login') {
                              if (result.user && result.user.role) {
                                  console.log('DEBUG: Login SUKSES. Peran Pengguna:', result.user.role);
-                                 if (result.user.role === 'dosen' || result.user.role === 'admin') {
+                                 if (result.user.role === 'dosen') {
                                      console.log('DEBUG: Mengarahkan ke dashboard_admin.php untuk peran:', result.user.role);
                                      window.location.href = 'dashboard_admin.php';
                                  } else if (result.user.role === 'mahasiswa') {
                                      console.log('DEBUG: Mengarahkan ke dashboard_user.php');
                                      window.location.href = 'dashboard_user.php';
-                                 } else { // Peran tidak dikenal dari server
+                                 } else if (result.user.role === 'admin') {
+                                     console.log('DEBUG: Mengarahkan ke dashboard_user.php');
+                                     window.location.href = 'crud_admin.php';
+                                 }
+                                  else { // Peran tidak dikenal dari server
                                      messageElement.textContent = 'Error: Peran pengguna (' + result.user.role + ') tidak dikenal.';
                                      console.error('DEBUG: Peran tidak dikenal diterima dari server:', result.user.role);
                                      setTimeout(() => { window.location.href = 'login.php'; }, 4000);
