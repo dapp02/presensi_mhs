@@ -23,6 +23,7 @@ class JadwalModel
      */
     public function getJadwalDosenHariIni(string $nidn_dosen, string $nama_hari_english): array
     {
+        error_log("JADWAL_MODEL: getJadwalDosenHariIni dipanggil dengan NIDN: " . $nidn_dosen . ", Hari: " . $nama_hari_english, 3, __DIR__ . '/../../logs/app_debug.log');
         try {
             $sql = "SELECT 
                         mk.nama_matkul,

@@ -35,11 +35,17 @@ if (!$pdo_connection) {
 }
 
 $adminService = new \App\Services\AdminDashboardService($pdo_connection);
-$dashboardData = $adminService->prepareDashboardData($nidn_login, $role_login);
+$dashboardData = $adminService->prepareDashboardData($nidn_login, $nama_lengkap_login);
 
 $nama_dosen_header = $dashboardData['nama_dosen_header'] ?? 'Nama Dosen';
 $tanggal_hari_ini_display = $dashboardData['tanggal_hari_ini_display'] ?? date('d F Y');
 $jadwal_dosen_hari_ini = $dashboardData['jadwal_dosen_hari_ini'] ?? [];
+custom_error_log_dashboard("Jadwal Dosen Hari Ini (Final di dashboard_admin.php): " . json_encode($jadwal_dosen_hari_ini), $custom_log_file_dashboard);
+
+$kalender_mingguan = $dashboardData['kalender_mingguan'] ?? [];
+
+
+
 
 // Optional: Jika Anda perlu mapping hari dalam bahasa Indonesia
 $hari_map_indo = [
@@ -65,7 +71,7 @@ $hari_map_indo = [
     <link rel="stylesheet" href="../assets/css/header_admin.css">
     <link rel="stylesheet" href="../assets/css/absen_admin.css">
 </head>
-<body>
+<body data-nidn-dosen="<?php echo htmlspecialchars($nidn_login ?? ''); ?>">
     <div class="header-container">
       <header class="header">
           <div class="header-left">
@@ -85,10 +91,8 @@ $hari_map_indo = [
               </a>
             </div>
           </div>
-        
-          <div class="header-right">
-            <span class="user-name">Nama Dosen</span>
-            <img style="filter: invert();" src="../assets/images/user.png" alt="Foto Profil" class="user-photo">
+          <div class="header-right"> 
+            <span class="user-name"><?php echo htmlspecialchars($nama_dosen_header); ?></span> <img style="filter: invert();" src="../assets/images/user.png" alt="Foto Profil" class="user-photo"> 
           </div>
         </header>   
     </div>
@@ -100,35 +104,15 @@ $hari_map_indo = [
                     <span class="tanggal-hari">DD - MM - YYYY</span>
                   </div>
                   <div class="hari-container">
-                    <div>
-                      <span class="hari">Sen</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">01</span>
-                    </div>
-                    <div>
-                      <span class="hari">Sel</span>
-                      <span class="tanggal">02</span>
-                    </div>
-                    <div>
-                      <span class="hari">Rab</span>
-                      <span class="tanggal">03</span>
-                    </div>
-                    <div>
-                      <span class="hari">Kam</span>
-                      <span class="tanggal">04</span>
-                    </div>
-                    <div>
-                      <span class="hari">Jum</span>
-                      <span class="tanggal">05</span>
-                    </div>
-                    <div>
-                      <span class="hari">Sab</span>
-                      <span class="tanggal">06</span>
-                    </div>
-                    <div>
-                      <span class="hari">Min</span>
-                      <span class="tanggal">07</span>
-                    </div>
+                    <?php foreach ($kalender_mingguan as $hari_item): ?>
+                        <div id="day-<?php echo strtolower(htmlspecialchars($hari_item['nama_pendek'])); ?>" class="day-item <?php echo $hari_item['is_hari_ini'] ? 'active-day' : ''; ?>" data-hari="<?php echo htmlspecialchars($hari_item['nama_panjang_indo']); ?>" data-tanggal-iso="<?php echo htmlspecialchars($hari_item['full_date_iso']); ?>">
+                            <span class="hari"><?php echo htmlspecialchars($hari_item['nama_pendek']); ?></span>
+
+                            <div class="hari-text-line" style="<?php echo ($hari_item['is_hari_ini']) ? 'display: block;' : 'display: none;'; ?>"></div>
+
+                            <span class="tanggal"><?php echo htmlspecialchars($hari_item['tanggal_angka']); ?></span>
+                        </div>
+                    <?php endforeach; ?>
                   </div>
                   <hr>               
                   <div class="info-kelas">
@@ -174,7 +158,6 @@ $hari_map_indo = [
                             </span>
                 </div>
                 <div class="absen-text-line"></div>
-
                 <div class="absen-status">
                     <div class="absen-icon">
                         <a href="absensi_admin.php">
@@ -191,203 +174,78 @@ $hari_map_indo = [
                 <span class="nama">Nama Kelas</span>
                 <br>
                 <div class="search-container">
-                    <input type="text" class="search-bar" placeholder="Cari Berdasarkan nama kelas atau dosen">
+                    <input type="text" class="search-bar" placeholder="Cari berdasarkan nama mata kuliah">
                     <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
                 </div>
             </div>
             <div class="kelas-container">
-                <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 1</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 2</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div> 
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 3</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div> 
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 4</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 5</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 6</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 7</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 8</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 9</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="kelas-card">
-                    <div class="kelas-header">Mata Kuliah 10</div>
-                    <div class="kelas-subheader">Prodi Mahasiswa</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                      <div class="kelas-waktu">
-                        <img src="../assets/images/clock.png" class="kelas-icon" />
-                        <span>DD, HH:MM - HH:MM</span>
-                      </div>
-                      <div class="kelas-dosen">
-                        <img src="../assets/images/conference.png" class="kelas-icon" />
-                        <span>Kelas 2B</span>
-                      </div>
-                      <div class="kelas-ruang">
-                        <img src="../assets/images/classroom.png" class="kelas-icon" />
-                        <span>Ruang Kelas</span>
-                      </div>
-                    </div>
-                  </div>                   
+                <?php if (!empty($dashboardData['semua_jadwal_dosen'])): ?> 
+                     <?php foreach ($dashboardData['semua_jadwal_dosen'] as $jadwal_item): ?> 
+                         <div class="kelas-card"> 
+                             <div class="kelas-header"><?php echo htmlspecialchars($jadwal_item['nama_matkul']); ?></div> 
+                             <div class="kelas-subheader"><?php echo htmlspecialchars($jadwal_item['nama_prodi']); ?></div> 
+                             <div class="kelas-divider"></div> 
+                             <div class="kelas-info"> 
+                                 <div class="kelas-waktu"> 
+                                     <img src="../assets/images/clock.png" class="kelas-icon" /> 
+                                     <span> 
+                                         <?php 
+                                         // Asumsi $jadwal_item['hari'] sudah dalam Bahasa Indonesia dari JadwalModel::getAllJadwalDosen 
+                                         echo htmlspecialchars($jadwal_item['hari']); 
+                                         ?>, 
+                                         <?php echo htmlspecialchars(substr($jadwal_item['jam_mulai'], 0, 5)); ?> - <?php echo htmlspecialchars(substr($jadwal_item['jam_selesai'], 0, 5)); ?> 
+                                     </span> 
+                                 </div> 
+                                 <div class="kelas-dosen"> <img src="../assets/images/conference.png" class="kelas-icon" /> 
+                                     <span><?php echo htmlspecialchars($jadwal_item['nama_kelas']); ?></span> 
+                                 </div> 
+                                 <div class="kelas-ruang"> 
+                                     <img src="../assets/images/classroom.png" class="kelas-icon" /> 
+                                     <span><?php echo htmlspecialchars($jadwal_item['ruangan']); ?></span> 
+                                 </div> 
+                             </div> 
+                         </div> 
+                     <?php endforeach; ?> 
+                 <?php else: ?> 
+                     <p style="text-align: center; grid-column: 1 / -1;">Tidak ada data jadwal mengajar yang ditemukan untuk dosen ini.</p> 
+                 <?php endif; ?>
+                 <p id="search-no-results" class="search-no-results-message" style="text-align: center; grid-column: 1 / -1; padding-top:20px; display: none;">
+                     Tidak ada jadwal yang cocok dengan pencarian Anda.
+                 </p>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBar = document.querySelector('.search-bar');
+            const kelasCards = document.querySelectorAll('.kelas-card');
+            const noResultsMessage = document.getElementById('search-no-results');
+
+            searchBar.addEventListener('keyup', function() {
+                const searchTerm = searchBar.value.toLowerCase();
+                let visibleCardsCount = 0;
+
+                kelasCards.forEach(card => {
+                    const namaMatkul = card.querySelector('.kelas-header').textContent.toLowerCase();
+                    const namaKelas = card.querySelector('.kelas-dosen span').textContent.toLowerCase();
+                    const ruangan = card.querySelector('.kelas-ruang span').textContent.toLowerCase();
+
+                    if (namaMatkul.includes(searchTerm) || namaKelas.includes(searchTerm) || ruangan.includes(searchTerm)) {
+                        card.style.display = 'block'; // Show the card
+                        visibleCardsCount++;
+                    } else {
+                        card.style.display = 'none'; // Hide the card
+                    }
+                });
+
+                if (visibleCardsCount === 0 && searchTerm !== '') {
+                    noResultsMessage.style.display = 'block';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/dashboard_admin_calendar.js"></script>
 </body>
 </html>
