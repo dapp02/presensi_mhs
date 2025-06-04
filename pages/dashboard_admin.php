@@ -44,9 +44,6 @@ custom_error_log_dashboard("Jadwal Dosen Hari Ini (Final di dashboard_admin.php)
 
 $kalender_mingguan = $dashboardData['kalender_mingguan'] ?? [];
 
-
-
-
 // Optional: Jika Anda perlu mapping hari dalam bahasa Indonesia
 $hari_map_indo = [
     'Monday'    => 'Senin',
