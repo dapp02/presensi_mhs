@@ -26,6 +26,7 @@ class JadwalModel
         error_log("JADWAL_MODEL: getJadwalDosenHariIni dipanggil dengan NIDN: " . $nidn_dosen . ", Hari: " . $nama_hari_english, 3, __DIR__ . '/../../logs/app_debug.log');
         try {
             $sql = "SELECT 
+                        jk.id_jadwal,
                         mk.nama_matkul,
                         jk.jam_mulai,
                         jk.jam_selesai,

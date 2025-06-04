@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Menggunakan struktur info-grid per jadwal
                         jadwalHtml += `
-                            <div class="info-grid">
+                            <div class="info-grid" data-nama-matkul="${jadwal.nama_matkul || ''}" data-id-jadwal="${jadwal.id_jadwal || ''}">
                                 <div class="info-item">
                                     <img src="../assets/images/teachings.png" alt="Mata Kuliah" class="info-icon">
                                     <span>${jadwal.nama_matkul || 'N/A'}</span>
@@ -105,6 +105,24 @@ document.addEventListener('DOMContentLoaded', function() {
             updateVisualAktifHari(this);
             fetchJadwalUntukHari(nidnDosen, namaHari, tanggalIso);
         });
+    });
+
+    // Add event listener for .info-grid clicks using event delegation
+    infoKelasContainer.addEventListener('click', function(event) {
+        const clickedJadwalElement = event.target.closest('.info-grid');
+
+        if (clickedJadwalElement && absenSubtitle) {
+            const namaMatkulDipilih = clickedJadwalElement.dataset.namaMatkul;
+            const idJadwalDipilih = clickedJadwalElement.dataset.idJadwal; // If you added this
+
+            if (namaMatkulDipilih) {
+                absenSubtitle.textContent = namaMatkulDipilih;
+                console.log(`JS LOG: Jadwal diklik. Matkul untuk absen: ${namaMatkulDipilih}`);
+                // If storing idJadwal:
+                console.log(`JS LOG: ID Jadwal yang dipilih untuk absen: ${idJadwalDipilih}`);
+                // Save idJadwalDipilih to a global variable or data attribute on the absen button if needed
+            }
+        }
     });
 
     // Initial load for the active day (today)
