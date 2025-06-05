@@ -87,3 +87,27 @@
     height: auto; /* Adjusts to content */
     overflow-y: auto; /* Scroll for overflow */
 }
+
+.day-item {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+.day-item:hover {
+    background-color: #f0f0f0;
+}
+.day-item.active-day {
+    background-color: #e0e0e0; /* Warna untuk hari aktif */
+    font-weight: bold;
+}
+.day-item.active-day .hari-text-line {
+    display: block;
+    height: 2px;
+    background-color: blue; /* Or your preferred color */
+    margin-top: 2px;
+}
+.hari-container .day-item:not(.active-day) .hari-text-line {
+    display: none;
+}

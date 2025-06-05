@@ -81,7 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     absenSubtitle.textContent = data.data[0].nama_matkul || 'Pilih Mata Kuliah';
                 } else {
                     // API sukses, tapi tidak ada data jadwal (result.data kosong)
-                    infoKelasContainer.innerHTML = `<p class="info-title">Informasi Kelas Hari Ini :</p><p style="text-align:center; margin-top:20px;">${data.message || 'Tidak ada jadwal untuk hari ini.'}</p>`;
+                    infoKelasContainer.innerHTML = `
+                        <img src="../assets/images/browser.png" alt="Tidak ada kelas" style="width:100px; margin:20px auto; display:block;">
+                        <p style="text-align:center; font-size:1.2em; margin-top:10px;">${data.message || 'Tidak ada kelas hari ini.'}</p>
+                    `;
                     absenSubtitle.textContent = 'Tidak ada jadwal';
                 }
             } else {
@@ -105,32 +108,37 @@ document.addEventListener('DOMContentLoaded', function() {
             updateVisualAktifHari(this);
             fetchJadwalUntukHari(nidnDosen, namaHari, tanggalIso);
         });
-    });
+        });
 
-    // Add event listener for .info-grid clicks using event delegation
-    infoKelasContainer.addEventListener('click', function(event) {
-        const clickedJadwalElement = event.target.closest('.info-grid');
+        // Add event listener for .info-grid clicks using event delegation
+        infoKelasContainer.addEventListener('click', function(event) {
+            const clickedJadwalElement = event.target.closest('.info-grid');
 
-        if (clickedJadwalElement && absenSubtitle) {
-            const namaMatkulDipilih = clickedJadwalElement.dataset.namaMatkul;
-            const idJadwalDipilih = clickedJadwalElement.dataset.idJadwal; // If you added this
+            if (clickedJadwalElement && absenSubtitle) {
+                const namaMatkulDipilih = clickedJadwalElement.dataset.namaMatkul;
+                const idJadwalDipilih = clickedJadwalElement.dataset.idJadwal; // If you added this
 
-            if (namaMatkulDipilih) {
-                absenSubtitle.textContent = namaMatkulDipilih;
-                console.log(`JS LOG: Jadwal diklik. Matkul untuk absen: ${namaMatkulDipilih}`);
-                // If storing idJadwal:
-                console.log(`JS LOG: ID Jadwal yang dipilih untuk absen: ${idJadwalDipilih}`);
-                // Save idJadwalDipilih to a global variable or data attribute on the absen button if needed
+                if (namaMatkulDipilih) {
+                    absenSubtitle.textContent = namaMatkulDipilih;
+                    console.log(`JS LOG: Jadwal diklik. Matkul untuk absen: ${namaMatkulDipilih}`);
+                    // If storing idJadwal:
+                    console.log(`JS LOG: ID Jadwal yang dipilih untuk absen: ${idJadwalDipilih}`);
+                    // Save idJadwalDipilih to a global variable or data attribute on the absen button if needed
+                }
+            }
+        });
+
+        // Initial load: set active day based on current date
+        const today = new Date();
+        const todayIso = today.toISOString().split('T')[0];
+        const activeDayInitially = document.querySelector(`.day-item[data-tanggal-iso="${todayIso}"]`);
+        if (activeDayInitially) {
+            activeDayInitially.click();
+        } else {
+            // Fallback to the first day if today's date is not found (e.g., weekend or no data)
+            const firstDay = document.querySelector('.day-item');
+            if (firstDay) {
+                firstDay.click();
             }
         }
     });
-
-    // Initial load for the active day (today)
-    // The .hari-text-line is now managed by PHP and updateVisualAktifHari
-    const activeDayInitially = document.querySelector('.day-item.active-day');
-    if (activeDayInitially) {
-        const namaHari = activeDayInitially.dataset.hari;
-        const tanggalIso = activeDayInitially.dataset.tanggalIso;
-        fetchJadwalUntukHari(nidnDosen, namaHari, tanggalIso);
-    }
-});
