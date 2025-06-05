@@ -41,7 +41,7 @@ function loginUser($username, $password) {
                 Session::set('logged_in', true); // Pastikan ini di-set
                 error_log("[" . date("Y-m-d H:i:s") . "] LOGIN SUCCESS: Session variables SET for user: " . $username . PHP_EOL, 3, $custom_log_file);
 
-                if ($user['role'] === 'dosen' || $user['role'] === 'admin') {
+                if ($user['role'] === 'dosen' || ['role'] === 'admin') {
                     // Ambil NIDN dari tabel dosen
                     $stmt_dosen = $conn->prepare("SELECT nidn FROM dosen WHERE id_pengguna = ?");
                     $stmt_dosen->execute([$user['id_pengguna']]);
@@ -50,11 +50,20 @@ function loginUser($username, $password) {
                     if ($dosen_data && !empty($dosen_data['nidn'])) {
                         Session::set('nidn', $dosen_data['nidn']);
                         error_log("[" . date("Y-m-d H:i:s") . "] LOGIN SUCCESS: NIDN '" . $dosen_data['nidn'] . "' SET to session for user: " . $username . PHP_EOL, 3, $custom_log_file);
+                    }
+                } else if ($user['role'] === 'mahasiswa') {
+                    // Ambil NIM dari tabel mahasiswa
+                    $stmt_mahasiswa = $conn->prepare("SELECT nim FROM mahasiswa WHERE id_pengguna = ?");
+                    $stmt_mahasiswa->execute([$user['id_pengguna']]);
+                    $mahasiswa_data = $stmt_mahasiswa->fetch();
+
+                    if ($mahasiswa_data && !empty($mahasiswa_data['nim'])) {
+                        Session::set('nim', $mahasiswa_data['nim']);
+                        error_log("[" . date("Y-m-d H:i:s") . "] LOGIN SUCCESS: NIM '" . $mahasiswa_data['nim'] . "' SET to session for user: " . $username . PHP_EOL, 3, $custom_log_file);
                     } else {
-                        // NIDN tidak ditemukan untuk dosen/admin ini. Ini mungkin masalah data atau konfigurasi.
-                        // Dasbor admin akan memerlukan NIDN.
-                        Session::set('nidn', null); // Set null atau jangan set sama sekali dan tangani di dasbor
-                        error_log("[" . date("Y-m-d H:i:s") . "] LOGIN WARNING: NIDN not found for user_id: " . $user['id_pengguna'] . " (username: " . $username . ") with role: " . $user['role'] . PHP_EOL, 3, $custom_log_file);
+                        // NIM tidak ditemukan untuk mahasiswa ini.
+                        Session::set('nim', null); // Set null atau jangan set sama sekali dan tangani di dasbor
+                        error_log("[" . date("Y-m-d H:i:s") . "] LOGIN WARNING: NIM not found for user_id: " . $user['id_pengguna'] . " (username: " . $username . ") with role: " . $user['role'] . PHP_EOL, 3, $custom_log_file);
                     }
                 }
                 error_log("[" . date("Y-m-d H:i:s") . "] --- LOGIN ATTEMPT END (SUCCESS) ---" . PHP_EOL, 3, $custom_log_file);

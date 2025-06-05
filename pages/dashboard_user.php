@@ -1,3 +1,107 @@
+<?php 
+error_reporting(E_ALL); 
+ini_set('display_errors', 0); // Jangan tampilkan error PHP langsung di HTML production, tapi OK untuk debug jika perlu 
+ini_set('log_errors', 1);    // Pastikan error dicatat 
+
+// Definisikan path ke file log kustom 
+$custom_log_file_user_dash = __DIR__ . '/../logs/app_debug.log'; 
+
+// Fungsi helper untuk logging kustom 
+function custom_log_user_dashboard($message, $log_file) { 
+    $timestamp = date("Y-m-d H:i:s"); 
+    error_log("[" . $timestamp . "] USER_DASHBOARD_PAGE: " . $message . PHP_EOL, 3, $log_file); 
+} 
+
+custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Dimulai ---", $custom_log_file_user_dash); 
+
+// 1. Sertakan file-file yang diperlukan 
+custom_log_user_dashboard("Tahap 1: Melakukan require_once...", $custom_log_file_user_dash); 
+require_once __DIR__ . '/../auth/config/session.php'; 
+require_once __DIR__ . '/../auth/config/database.php'; 
+require_once __DIR__ . '/../auth/middleware/auth.php'; 
+require_once __DIR__ . '/../auth/middleware/role.php'; 
+require_once __DIR__ . '/../App/Services/UserDashboardService.php'; // Service baru 
+// JadwalModel.php akan di-require_once di dalam UserDashboardService.php 
+custom_log_user_dashboard("Semua require_once awal berhasil.", $custom_log_file_user_dash); 
+
+// 2. Mulai Sesi & Terapkan Middleware 
+custom_log_user_dashboard("Tahap 2: Memulai Sesi & Middleware...", $custom_log_file_user_dash); 
+Session::start(); 
+AuthMiddleware::requireLogin(); 
+RoleMiddleware::requireRole('mahasiswa'); // Pastikan hanya mahasiswa 
+custom_log_user_dashboard("Sesi dimulai dan Middleware lolos.", $custom_log_file_user_dash); 
+
+// 3. Ambil Informasi Pengguna (Mahasiswa) dari Sesi 
+custom_log_user_dashboard("Tahap 3: Mengambil data sesi mahasiswa...", $custom_log_file_user_dash); 
+$nim_login = Session::get('nim'); 
+$nama_lengkap_login = Session::get('nama_lengkap'); 
+$user_id_session = Session::get('user_id'); // Untuk logging tambahan jika perlu 
+
+if (empty($nim_login)) { 
+    $log_msg = "FATAL: NIM Mahasiswa tidak ditemukan di sesi. User ID: " . ($user_id_session ?? 'N/A') . ". Mengarahkan ke logout."; 
+    custom_log_user_dashboard($log_msg, $custom_log_file_user_dash); 
+    // Redirect atau tampilkan error jika NIM krusial dan tidak ada 
+    header('Location: ../auth/handlers/logout.php?error=nim_missing_for_mahasiswa_dashboard'); 
+    exit(); 
+} 
+custom_log_user_dashboard("Data Sesi Berhasil Diambil: NIM='{$nim_login}', Nama='{$nama_lengkap_login}'", $custom_log_file_user_dash); 
+
+// 4. Inisialisasi Koneksi Database 
+custom_log_user_dashboard("Tahap 4: Inisialisasi Koneksi Database...", $custom_log_file_user_dash); 
+$db_instance = new Database(); 
+$pdo_connection = $db_instance->connect(); 
+
+if (!$pdo_connection) { 
+    custom_log_user_dashboard("FATAL: Gagal koneksi ke database.", $custom_log_file_user_dash); 
+    // die() akan menghentikan eksekusi dan mungkin tidak ideal jika file ini di-include. 
+    // Pertimbangkan mekanisme error handling yang lebih baik untuk produksi. 
+    // Untuk sekarang, ini akan mencatat error dan menghentikan. 
+    throw new \RuntimeException("Koneksi ke database gagal untuk dashboard pengguna."); 
+} 
+custom_log_user_dashboard("Koneksi DB berhasil.", $custom_log_file_user_dash); 
+
+// 5. Inisialisasi Service dan Panggil Metode untuk Mendapatkan Data Dasbor 
+$dashboardData = []; // Inisialisasi default 
+try { 
+    custom_log_user_dashboard("Tahap 5: Inisialisasi UserDashboardService...", $custom_log_file_user_dash); 
+    $userDashboardService = new \App\Services\UserDashboardService($pdo_connection); 
+    custom_log_user_dashboard("UserDashboardService diinstansiasi. Memanggil prepareUserDashboardData...", $custom_log_file_user_dash); 
+    
+    $dashboardData = $userDashboardService->prepareUserDashboardData($nim_login, $nama_lengkap_login); 
+    custom_log_user_dashboard("prepareUserDashboardData() berhasil dipanggil.", $custom_log_file_user_dash); 
+
+} catch (Throwable $e) { // Throwable menangkap Error dan Exception 
+    custom_log_user_dashboard("PHP Throwable saat inisialisasi/penggunaan UserDashboardService (DU-2.2a): " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\nTrace: " . $e->getTraceAsString(), $custom_log_file_user_dash); 
+    // Untuk debugging, tampilkan error jika display_errors On, jika tidak, catat dan berikan pesan umum 
+    if (ini_get('display_errors')) { 
+        echo "Error saat memuat data dasbor: " . htmlspecialchars($e->getMessage()); 
+    } else { 
+        echo "Terjadi kesalahan pada server. Silakan coba lagi nanti."; 
+    } 
+    // Kita tetap ingin menginisialisasi variabel agar HTML di bawah tidak error 
+    // dan mungkin bisa keluar dengan die() setelah ini jika error dianggap fatal untuk tampilan. 
+} 
+
+// 6. Ekstrak Variabel untuk View (dengan fallback jika $dashboardData tidak terisi karena error) 
+custom_log_user_dashboard("Tahap 6: Mengekstrak variabel untuk view...", $custom_log_file_user_dash); 
+$nama_mahasiswa_header = htmlspecialchars($dashboardData['nama_mahasiswa_header'] ?? ($nama_lengkap_login ?: 'Mahasiswa')); 
+$tanggal_hari_ini_display = htmlspecialchars($dashboardData['tanggal_hari_ini_display'] ?? date('d F Y')); 
+$kalender_mingguan = $dashboardData['kalender_mingguan'] ?? []; 
+$jadwal_mahasiswa_hari_ini = $dashboardData['jadwal_mahasiswa_hari_ini'] ?? []; 
+$semua_jadwal_mahasiswa = $dashboardData['semua_jadwal_mahasiswa'] ?? []; 
+
+// Logging nilai akhir variabel yang akan digunakan oleh view 
+custom_log_user_dashboard("Nama Header Final: '{$nama_mahasiswa_header}'", $custom_log_file_user_dash); 
+custom_log_user_dashboard("Tanggal Display Final: '{$tanggal_hari_ini_display}'", $custom_log_file_user_dash); 
+custom_log_user_dashboard("Data Kalender Mingguan Final (jumlah item): " . count($kalender_mingguan), $custom_log_file_user_dash); 
+if (!empty($kalender_mingguan)) { 
+    custom_log_user_dashboard("Detail Kalender Mingguan (sampel item pertama): " . json_encode($kalender_mingguan[0]), $custom_log_file_user_dash); 
+} 
+custom_log_user_dashboard("Jadwal Hari Ini Final (jumlah item): " . count($jadwal_mahasiswa_hari_ini), $custom_log_file_user_dash); 
+custom_log_user_dashboard("Semua Jadwal Mahasiswa Final (jumlah item): " . count($semua_jadwal_mahasiswa), $custom_log_file_user_dash); 
+
+custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesai ---", $custom_log_file_user_dash); 
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -193,6 +297,10 @@
                             <span>Nama Dosen</span>
                         </div>
                     </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="0%"></div>
+                    </div>
                 </div>
                 <div id="matkul-2" class="kelas-card">
                     <div id="matkul-2-header" class="kelas-header">Mata Kuliah 2</div>
@@ -207,6 +315,10 @@
                             <img src="../assets/images/conference.png" alt="Dosen" class="kelas-icon">
                             <span>Nama Dosen 2</span>
                         </div>
+                    </div>
+                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
+                    <div class="progress-bar">
+                        <div class="progress" width="0%"></div>
                     </div>
                 </div>
             </div>
