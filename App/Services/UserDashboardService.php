@@ -37,14 +37,17 @@
          $this->custom_service_log("Mempersiapkan data untuk NIM: " . $nim_mahasiswa); 
          $data_untuk_view = []; 
  
+         // Set locale untuk nama bulan dalam Bahasa Indonesia 
+         setlocale(LC_TIME, 'id_ID.utf8', 'id_ID', 'id'); 
+ 
          // 1. Data Header 
          $data_untuk_view['nama_mahasiswa_header'] = $nama_lengkap_mahasiswa; 
          $this->custom_service_log("Nama Header: " . $nama_lengkap_mahasiswa); 
  
          // 2. Data Tanggal dan Kalender Mingguan (mirip AdminDashboardService) 
          $today = new \DateTime(); 
-         $data_untuk_view['tanggal_hari_ini_display'] = $today->format('d F Y'); // 'F' untuk nama bulan (tergantung locale server) 
-                                                                             // Pertimbangkan strftime dengan setlocale('id_ID') untuk nama bulan Indonesia 
+         // Menggunakan strftime untuk format tanggal dengan nama bulan Indonesia 
+         $data_untuk_view['tanggal_hari_ini_display'] = strftime('%d %B %Y', $today->getTimestamp()); 
          $this->custom_service_log("Tanggal Display: " . $data_untuk_view['tanggal_hari_ini_display']); 
  
          $nama_hari_english_server = $today->format('l'); 

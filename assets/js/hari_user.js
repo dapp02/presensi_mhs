@@ -126,6 +126,7 @@ function displayClassInfo(dayAbbr) {
     }
 }
 
+/*
 days.forEach(day => {
     const dayElement = document.getElementById(day.id);
     if (dayElement) {
@@ -146,6 +147,7 @@ if (defaultDayElement) {
         defaultDayElement.classList.add('active-day');
 }
 displayClassInfo('Sen');
+*/
 
 function updateAttendanceStatusForClass(className) {
     const absenSubtitle = document.querySelector('.absen-subtitle');

@@ -114,7 +114,7 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
     <link rel="stylesheet" href="../assets/css/header_admin.css">
     <link rel="stylesheet" href="../assets/css/absen.css">
 </head>
-<body>
+<body data-nim-mahasiswa="<?php echo htmlspecialchars($nim_login ?? ''); ?>">
     <div class="header-container">
         <header id="main-header" class="header">
             <div id="header-left" class="header-left">
@@ -137,7 +137,7 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                 </div>
             </div>
             <div class="header-right">
-              <span class="user-name">Nama Mahasiswa</span>
+              <span class="user-name"><?php echo htmlspecialchars($nama_mahasiswa_header); ?></span>
               <img style="filter: invert();" src="../assets/images/user.png" alt="Foto Profil" class="user-photo">
             </div>
           </header>   
@@ -147,55 +147,64 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
             <div class="jadwal-container">
                 <div class="jadwal-header">
                     <h2>Jadwal Minggu Ini</h2>
-                    <span class="tanggal-hari">01, Februari 1990</span>
-                  </div>
-                  <div class="hari-container">
-                    <div id="day-sen" class="day-item">
-                      <span class="hari">Sen</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">01</span>
+                    <span class="tanggal-hari"><?php echo htmlspecialchars($tanggal_hari_ini_display); ?></span>
+                </div>
+                    <div class="hari-container">
+                        <?php if (!empty($kalender_mingguan)): ?>
+                            <?php foreach ($kalender_mingguan as $hari_item): ?>
+                                <div id="day-<?php echo strtolower($hari_item['nama_pendek']); ?>" class="day-item <?php echo $hari_item['is_hari_ini'] ? 'active-day' : ''; ?>" data-tanggal="<?php echo $hari_item['full_date_iso']; ?>" data-hari="<?php echo htmlspecialchars($hari_item['nama_panjang_indo']); ?>">
+                                    <span class="hari"><?php echo htmlspecialchars($hari_item['nama_pendek']); ?></span>
+                                    <div class="hari-text-line"></div>
+                                    <span class="tanggal"><?php echo htmlspecialchars($hari_item['tanggal_angka']); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p style="text-align: center; padding-top: 20px;">Tidak ada data kalender mingguan.</p>
+                        <?php endif; ?>
                     </div>
-                    <div id="day-sel" class="day-item">
-                      <span class="hari">Sel</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">02</span>
-                    </div>
-                    <div id="day-rab" class="day-item">
-                      <span class="hari">Rab</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">03</span>
-                    </div>
-                    <div id="day-kam" class="day-item">
-                      <span class="hari">Kam</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">04</span>
-                    </div>
-                    <div id="day-jum" class="day-item">
-                      <span class="hari">Jum</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">05</span>
-                    </div>
-                    <div id="day-sab" class="day-item">
-                      <span class="hari">Sab</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">06</span>
-                    </div>
-                    <div id="day-min" class="day-item">
-                      <span class="hari">Min</span>
-                      <div class="hari-text-line"></div>
-                      <span class="tanggal">07</span>
-                    </div>
-                  </div>
                   <hr>
                   <div class="info-kelas" id="info-kelas-container">
-                  </div>                  
-                  
+                        <?php if (!empty($jadwal_mahasiswa_hari_ini)): ?>
+                            <p class="info-title">Informasi Kelas Hari Ini :</p>
+                            <?php foreach ($jadwal_mahasiswa_hari_ini as $index => $jadwal_item): ?>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <img src="../assets/images/academic.png" alt="Mata Kuliah" class="info-icon">
+                                        <span><?php echo htmlspecialchars($jadwal_item['nama_matkul']); ?></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <img src="../assets/images/clock.png" alt="Jam" class="info-icon">
+                                        <span><?php echo htmlspecialchars(substr($jadwal_item['jam_mulai'], 0, 5)); ?> - <?php echo htmlspecialchars(substr($jadwal_item['jam_selesai'], 0, 5)); ?></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <img src="../assets/images/classroom.png" alt="Ruangan" class="info-icon">
+                                        <span><?php echo htmlspecialchars($jadwal_item['ruangan']); ?></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <img src="../assets/images/conference.png" alt="Dosen" class="info-icon">
+                                        <span><?php echo htmlspecialchars($jadwal_item['nama_dosen']); ?></span>
+                                    </div>
+                                </div>
+                                <?php if ($index < count($jadwal_mahasiswa_hari_ini) - 1): ?><hr><?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p style="text-align: center; margin-top: 20px;">Tidak ada jadwal kuliah hari ini.</p>
+                        <?php endif; ?>
+                    </div>
             </div>
             <div class="container">
                 <div class="absen-container">
                     <div class="absen-header">
                         <h2>Status Absensi</h2>
-                        <span class="absen-subtitle">Mata Kuliah</span>
+                        <span class="absen-subtitle">
+                            <?php
+                            if (!empty($jadwal_mahasiswa_hari_ini) && isset($jadwal_mahasiswa_hari_ini[0]['nama_matkul'])) {
+                                echo htmlspecialchars($jadwal_mahasiswa_hari_ini[0]['nama_matkul']);
+                            } else {
+                                echo 'Pilih Mata Kuliah';
+                            }
+                            ?>
+                        </span>
                     </div>
                     
                     <div class="absen-status">
@@ -278,53 +287,42 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                 <span class="nama">Nama Kelas</span>
                 <br>
                 <div class="search-container">
-                    <input type="text" class="search-bar" placeholder="Cari Berdasarkan nama kelas atau dosen">
+                    <input type="text" class="search-bar" placeholder="Cari berdasarkan nama mata kuliah atau dosen">
                     <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
                 </div>
             </div>
             <div class="kelas-container">
-                <div id="matkul-1" class="kelas-card">
-                    <div id="matkul-1-header" class="kelas-header">Mata Kuliah 1</div>
-                    <div id="matkul-1-subheader" class="kelas-subheader">TRPL</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                        <div class="kelas-waktu">
-                            <img src="../assets/images/clock.png" alt="Jam" class="kelas-icon">
-                            <span>Jumat,<br> 09:00 -<br> 10:00</span>
+                <?php if (!empty($semua_jadwal_mahasiswa)): ?>
+                    <?php foreach ($semua_jadwal_mahasiswa as $jadwal_item_mhs): ?>
+                        <div class="kelas-card">
+                            <div class="kelas-header"><?php echo htmlspecialchars($jadwal_item_mhs['nama_matkul']); ?></div>
+                            <div class="kelas-subheader"><?php echo htmlspecialchars($jadwal_item_mhs['nama_prodi']); // Asumsi nama_prodi ada ?></div>
+                            <div class="kelas-divider"></div>
+                            <div class="kelas-info">
+                                <div class="kelas-waktu">
+                                    <img src="../assets/images/clock.png" alt="Jam" class="kelas-icon">
+                                    <span>
+                                        <?php echo htmlspecialchars($jadwal_item_mhs['hari']); ?>,
+                                        <?php echo htmlspecialchars(substr($jadwal_item_mhs['jam_mulai'], 0, 5)); ?> - <?php echo htmlspecialchars(substr($jadwal_item_mhs['jam_selesai'], 0, 5)); ?>
+                                    </span>
+                                </div>
+                                <div class="kelas-dosen">
+                                    <img src="../assets/images/conference.png" alt="Dosen" class="kelas-icon">
+                                    <span><?php echo htmlspecialchars($jadwal_item_mhs['nama_dosen']); ?></span>
+                                </div>
+                            </div>
+                            <div class="kehadiran">Kehadiran: (Data Menyusul)</div>
+                            <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
                         </div>
-                        <div class="kelas-dosen">
-                            <img src="../assets/images/conference.png" alt="Dosen" class="kelas-icon">
-                            <span>Nama Dosen</span>
-                        </div>
-                    </div>
-                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
-                    <div class="progress-bar">
-                        <div class="progress" width="0%"></div>
-                    </div>
-                </div>
-                <div id="matkul-2" class="kelas-card">
-                    <div id="matkul-2-header" class="kelas-header">Mata Kuliah 2</div>
-                    <div id="matkul-2-subheader" class="kelas-subheader">TRPL</div>
-                    <div class="kelas-divider"></div>
-                    <div class="kelas-info">
-                        <div class="kelas-waktu">
-                            <img src="../assets/images/clock.png" alt="Jam" class="kelas-icon">
-                            <span>Jumat,<br> 09:00 -<br> 10:00</span>
-                        </div>
-                        <div class="kelas-dosen">
-                            <img src="../assets/images/conference.png" alt="Dosen" class="kelas-icon">
-                            <span>Nama Dosen 2</span>
-                        </div>
-                    </div>
-                    <div class="kehadiran">Kehadiran: 0 dari 16 sesi</div>
-                    <div class="progress-bar">
-                        <div class="progress" width="0%"></div>
-                    </div>
-                </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p style="text-align: center; grid-column: 1 / -1; padding-top:20px;">Anda belum terdaftar pada jadwal mata kuliah apapun.</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-    <script src="../assets/js/absen_functions.js"></script>
-    <script src="../assets/js/hari_user.js"></script>
-</body>
+    <!-- <script src="../assets/js/absen_functions.js"></script>
+    <script src="../assets/js/hari_user.js"></script> -->
+    <script src="../assets/js/dashboard_user_calendar.js"></script>
+    </body>
 </html>
