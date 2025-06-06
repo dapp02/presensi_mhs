@@ -152,7 +152,7 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                     <div class="hari-container">
                         <?php if (!empty($kalender_mingguan)): ?>
                             <?php foreach ($kalender_mingguan as $hari_item): ?>
-                                <div id="day-<?php echo strtolower($hari_item['nama_pendek']); ?>" class="day-item <?php echo $hari_item['is_hari_ini'] ? 'active-day' : ''; ?>" data-tanggal="<?php echo $hari_item['full_date_iso']; ?>" data-hari="<?php echo htmlspecialchars($hari_item['nama_panjang_indo']); ?>">
+                                <div id="day-<?php echo strtolower($hari_item['nama_pendek']); ?>" class="day-item <?php echo $hari_item['is_hari_ini'] ? 'active-day' : ''; ?>" data-tanggal-iso="<?php echo $hari_item['full_date_iso']; ?>" data-hari="<?php echo htmlspecialchars($hari_item['nama_panjang_indo']); ?>">
                                     <span class="hari"><?php echo htmlspecialchars($hari_item['nama_pendek']); ?></span>
                                     <div class="hari-text-line"></div>
                                     <span class="tanggal"><?php echo htmlspecialchars($hari_item['tanggal_angka']); ?></span>
@@ -217,9 +217,9 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                     <div id="beforeAttendance">
                         <div class="absen-action-label">Ajukan Absensi :</div>
                         <div class="absen-button-container">
-                            <button class="absen-button absen" onclick="submitUserAbsensi('Hadir')">Absen</button>
-                            <button class="absen-button izin" onclick="submitUserAbsensi('Izin')">Izin</button>
-                            <button class="absen-button sakit" onclick="submitUserAbsensi('Sakit')">Sakit</button>
+                            <button id="btn-absen-hadir" class="absen-button absen">Absen</button>
+                            <button id="btn-absen-izin" class="absen-button izin">Izin</button>
+                            <button id="btn-absen-sakit" class="absen-button sakit">Sakit</button>
                         </div>
                     </div>
                     
@@ -270,11 +270,11 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                 <span class="nama">Nama Kelas</span>
                 <br>
                 <div class="search-container">
-                    <input type="text" class="search-bar" placeholder="Cari berdasarkan nama mata kuliah atau dosen">
+                    <input type="text" id="matkul-search-input" class="search-bar" placeholder="Cari berdasarkan nama mata kuliah atau dosen">
                     <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
                 </div>
             </div>
-            <div class="kelas-container">
+            <div class="kelas-container" id="kelas-list-container">
                 <?php if (!empty($semua_jadwal_mahasiswa)): ?>
                     <?php foreach ($semua_jadwal_mahasiswa as $jadwal_item_mhs): ?>
                         <div class="kelas-card">
@@ -301,6 +301,10 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                 <?php else: ?>
                     <p style="text-align: center; grid-column: 1 / -1; padding-top:20px;">Anda belum terdaftar pada jadwal mata kuliah apapun.</p>
                 <?php endif; ?>
+
+                <p id="search-no-results-user" style="display: none; text-align: center; grid-column: 1 / -1; padding-top:20px;">
+                    Tidak ada jadwal yang cocok dengan pencarian Anda.
+                </p>
             </div>
         </div>
     </div>
