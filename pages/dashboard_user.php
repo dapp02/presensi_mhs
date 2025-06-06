@@ -167,7 +167,7 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                         <?php if (!empty($jadwal_mahasiswa_hari_ini)): ?>
                             <p class="info-title">Informasi Kelas Hari Ini :</p>
                             <?php foreach ($jadwal_mahasiswa_hari_ini as $index => $jadwal_item): ?>
-                                <div class="info-grid">
+                                <div class="info-grid" data-id-jadwal="<?php echo htmlspecialchars($jadwal_item['id_jadwal']); ?>">
                                     <div class="info-item">
                                         <img src="../assets/images/academic.png" alt="Mata Kuliah" class="info-icon">
                                         <span><?php echo htmlspecialchars($jadwal_item['nama_matkul']); ?></span>
@@ -198,11 +198,11 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                         <h2>Status Absensi</h2>
                         <span class="absen-subtitle">
                             <?php
-                            if (!empty($jadwal_mahasiswa_hari_ini) && isset($jadwal_mahasiswa_hari_ini[0]['nama_matkul'])) {
-                                echo htmlspecialchars($jadwal_mahasiswa_hari_ini[0]['nama_matkul']);
-                            } else {
-                                echo 'Pilih Mata Kuliah';
-                            }
+                                if (!empty($jadwal_mahasiswa_hari_ini)) {
+                                    echo htmlspecialchars($jadwal_mahasiswa_hari_ini[0]['nama_matkul']);
+                                } else {
+                                    echo "Pilih jadwal untuk melihat status absensi";
+                                }
                             ?>
                         </span>
                     </div>
@@ -216,27 +216,10 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                     </div>
                     <div id="beforeAttendance">
                         <div class="absen-action-label">Ajukan Absensi :</div>
-                        <div class="absen-actions">
-                            <div class="absen-btn" onclick="markAttendance('absen')">
-                                <div class="absen-btn-icon">
-                                    <img class="image" src="../assets/images/absenteeism.png" alt="Absen">
-                                </div>
-                                <span>Absen</span>
-                            </div>
-                            
-                            <div class="absen-btn" onclick="markAttendance('izin')">
-                                <div class="absen-btn-icon">
-                                    <img class="image" src="../assets/images/absent.png" alt="Izin">
-                                </div>
-                                <span>Izin</span>
-                            </div>
-                            
-                            <div class="absen-btn" onclick="markAttendance('sakit')">
-                                <div class="absen-btn-icon">
-                                    <img class="image" src="../assets/images/patient.png" alt="Sakit">
-                                </div>
-                                <span>Sakit</span>
-                            </div>
+                        <div class="absen-button-container">
+                            <button class="absen-button absen" onclick="submitUserAbsensi('Hadir')">Absen</button>
+                            <button class="absen-button izin" onclick="submitUserAbsensi('Izin')">Izin</button>
+                            <button class="absen-button sakit" onclick="submitUserAbsensi('Sakit')">Sakit</button>
                         </div>
                     </div>
                     
@@ -321,8 +304,6 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
             </div>
         </div>
     </div>
-    <!-- <script src="../assets/js/absen_functions.js"></script>
-    <script src="../assets/js/hari_user.js"></script> -->
     <script src="../assets/js/dashboard_user_calendar.js"></script>
     </body>
 </html>
