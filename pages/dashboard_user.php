@@ -294,8 +294,20 @@ custom_log_user_dashboard("--- (Sesi DU-2.2a) Eksekusi dashboard_user.php Selesa
                                     <span><?php echo htmlspecialchars($jadwal_item_mhs['nama_dosen']); ?></span>
                                 </div>
                             </div>
-                            <div class="kehadiran">Kehadiran: (Data Menyusul)</div>
-                            <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+                            <?php
+                                // Definisikan total sesi statis
+                                $total_sesi = 16;
+                                // Ambil jumlah hadir dari data
+                                $jumlah_hadir = (int)($jadwal_item_mhs['jumlah_hadir'] ?? 0);
+                                // Hitung persentase, hindari pembagian dengan nol
+                                $persentase_hadir = ($total_sesi > 0) ? ($jumlah_hadir / $total_sesi) * 100 : 0;
+                            ?>
+                            <div class="kehadiran">
+                                Kehadiran: <?php echo $jumlah_hadir; ?> dari <?php echo $total_sesi; ?> sesi
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: <?php echo $persentase_hadir; ?>%;"></div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>

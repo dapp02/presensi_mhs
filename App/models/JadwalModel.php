@@ -102,7 +102,7 @@ class JadwalModel
         }
     }
 
-    public function getJadwalMahasiswaHariIni(string $nim_mahasiswa, string $nama_hari_indonesia): array
+    public function getJadwalMahasiswaHariIni(string $nim_mahasiswa, string $nama_hari_indonesia, string $tanggal): array
     {
         $custom_log_file = __DIR__ . '/../../logs/app_debug.log';
         try {
@@ -133,7 +133,7 @@ class JadwalModel
                 LEFT JOIN
                     absensi a ON jk.id_jadwal = a.id_jadwal
                                  AND a.nim_mahasiswa = mhs_k.nim_mahasiswa
-                                 AND a.tanggal_absensi = CURDATE()
+                                 AND a.tanggal_absensi = :tanggal
                 WHERE
                     mhs_k.nim_mahasiswa = :nim_mahasiswa AND jk.hari = :nama_hari
                 ORDER BY
@@ -142,6 +142,7 @@ class JadwalModel
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':nim_mahasiswa', $nim_mahasiswa, PDO::PARAM_STR);
             $stmt->bindParam(':nama_hari', $nama_hari_indonesia, PDO::PARAM_STR);
+            $stmt->bindParam(':tanggal', $tanggal, PDO::PARAM_STR);
             $stmt->execute();
             error_log("[" . date("Y-m-d H:i:s") . "] DEBUG: Fetched jadwal for NIM: " . $nim_mahasiswa . " on day: " . $nama_hari_indonesia . PHP_EOL, 3, $custom_log_file);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -165,7 +166,14 @@ class JadwalModel
                     jk.jam_selesai,
                     k.nama_kelas,
                     jk.ruangan,
-                    p_dosen.nama_lengkap AS nama_dosen
+                    p_dosen.nama_lengkap AS nama_dosen,
+                    -- AWAL BLOK TAMBAHAN: Subquery untuk menghitung kehadiran
+                    (SELECT COUNT(*)
+                     FROM absensi a
+                     WHERE a.id_jadwal = jk.id_jadwal
+                       AND a.nim_mahasiswa = :nim_mahasiswa
+                       AND a.status_kehadiran = 'Hadir') AS jumlah_hadir
+                    -- AKHIR BLOK TAMBAHAN
                 FROM
                     mahasiswa_kelas mhs_k
                 JOIN

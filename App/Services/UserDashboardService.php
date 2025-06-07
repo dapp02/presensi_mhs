@@ -84,7 +84,8 @@
          $this->custom_service_log("Data Kalender Mingguan: " . json_encode($data_untuk_view['kalender_mingguan'])); 
  
          // 3. Jadwal Mahasiswa Hari Ini 
-         $data_untuk_view['jadwal_mahasiswa_hari_ini'] = $this->jadwalModel->getJadwalMahasiswaHariIni($nim_mahasiswa, $nama_hari_untuk_query); 
+         $tanggal_hari_ini_iso = $today->format('Y-m-d'); // Dapatkan tanggal ISO
+         $data_untuk_view['jadwal_mahasiswa_hari_ini'] = $this->jadwalModel->getJadwalMahasiswaHariIni($nim_mahasiswa, $nama_hari_untuk_query, $tanggal_hari_ini_iso); 
          $this->custom_service_log("Jadwal Mahasiswa Hari Ini (Jumlah: " . count($data_untuk_view['jadwal_mahasiswa_hari_ini']) . "): " . json_encode($data_untuk_view['jadwal_mahasiswa_hari_ini'])); 
  
          // 4. Semua Jadwal/Mata Kuliah Mahasiswa (untuk panel kanan) 

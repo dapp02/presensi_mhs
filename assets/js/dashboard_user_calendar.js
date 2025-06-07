@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- FUNGSI INTI: FETCH & UPDATE JADWAL ---
-    async function fetchJadwalMahasiswaUntukHari(nim, namaHari) {
-        if (!nim || !namaHari) {
+    async function fetchJadwalMahasiswaUntukHari(nim, namaHari, tanggalIso) {
+        if (!nim || !namaHari || !tanggalIso) {
             console.warn(`JS WARN: Panggilan fetchJadwal dibatalkan, data tidak valid.`);
             return;
         }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setAbsenButtonsState(true);
 
         try {
-            const apiUrl = `../App/Api/get_jadwal_mahasiswa_by_hari.php?nim=${encodeURIComponent(nim)}&nama_hari=${encodeURIComponent(namaHari)}`;
+            const apiUrl = `../App/Api/get_jadwal_mahasiswa_by_hari.php?nim=${encodeURIComponent(nim)}&nama_hari=${encodeURIComponent(namaHari)}&tanggal=${encodeURIComponent(tanggalIso)}`;
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const result = await response.json();
@@ -202,7 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 setAbsenButtonsState(true); // Disable buttons immediately
                 updateUserVisualAktifHari(clickedItem);
                 const namaHariDipilih = clickedItem.dataset.hari;
-                fetchJadwalMahasiswaUntukHari(NIM_MAHASISWA_LOGIN, namaHariDipilih);
+                const tanggalIsoDipilih = clickedItem.dataset.tanggalIso; // Ambil tanggal dari atribut
+                fetchJadwalMahasiswaUntukHari(NIM_MAHASISWA_LOGIN, namaHariDipilih, tanggalIsoDipilih); // Teruskan ke fungsi
             });
         }
 
@@ -250,7 +251,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (initialDayItem) {
             updateUserVisualAktifHari(initialDayItem);
-            fetchJadwalMahasiswaUntukHari(NIM_MAHASISWA_LOGIN, initialDayItem.dataset.hari);
+            const initialHariAktif = initialDayItem.dataset.hari;
+            const initialTanggalIso = initialDayItem.dataset.tanggalIso; // Ambil juga tanggal ISO awal
+            fetchJadwalMahasiswaUntukHari(NIM_MAHASISWA_LOGIN, initialHariAktif, initialTanggalIso); // Teruskan ke fungsi
         } else {
             console.error('JS ERROR: Tidak ada item hari di kalender untuk dimuat.');
             absenSubtitle.textContent = 'Tidak ada data kalender';

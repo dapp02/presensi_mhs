@@ -21,12 +21,13 @@ $response = ['success' => false, 'data' => [], 'message' => ''];
 // 1. Ambil dan Validasi Parameter GET
 $nim_mahasiswa = $_GET['nim'] ?? null;
 $nama_hari = $_GET['nama_hari'] ?? null; // Ini seharusnya sudah dalam Bahasa Indonesia (misal "Jumat")
+$tanggal = $_GET['tanggal'] ?? null; // Tambahkan ini
 
 api_mhs_error_log("Request diterima. NIM: " . ($nim_mahasiswa ?? 'NULL') . ", Hari: " . ($nama_hari ?? 'NULL'), $custom_log_file_api_mhs);
 
-if (empty($nim_mahasiswa) || empty($nama_hari)) {
-    $response['message'] = 'Parameter NIM dan nama_hari dibutuhkan.';
-    api_mhs_error_log("Error: Parameter NIM atau nama_hari kosong. " . json_encode($_GET), $custom_log_file_api_mhs);
+if (empty($nim_mahasiswa) || empty($nama_hari) || empty($tanggal)) {
+    $response['message'] = 'Parameter NIM, nama_hari, dan tanggal dibutuhkan.';
+    api_mhs_error_log("Error: Parameter NIM, nama_hari, atau tanggal kosong. " . json_encode($_GET), $custom_log_file_api_mhs);
     echo json_encode($response);
     exit;
 }
@@ -40,6 +41,14 @@ $hari_valid = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 if (!in_array($nama_hari, $hari_valid)) {
     $response['message'] = 'Parameter nama_hari tidak valid: ' . htmlspecialchars($nama_hari);
     api_mhs_error_log("Error: Parameter nama_hari tidak valid: " . $nama_hari, $custom_log_file_api_mhs);
+    echo json_encode($response);
+    exit;
+}
+
+// Validasi tambahan untuk tanggal
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
+    $response['message'] = 'Parameter tanggal dengan format YYYY-MM-DD dibutuhkan.';
+    api_mhs_error_log("Error: Parameter tanggal tidak valid atau kosong: " . ($tanggal ?? 'NULL'), $custom_log_file_api_mhs);
     echo json_encode($response);
     exit;
 }
@@ -58,8 +67,8 @@ try {
     $jadwalModel = new \App\Models\JadwalModel($pdo_connection);
 
     // 3. Panggil Metode Model
-    // getJadwalMahasiswaHariIni menerima NIM dan nama hari (sudah Bahasa Indonesia)
-    $jadwal_data = $jadwalModel->getJadwalMahasiswaHariIni($nim_mahasiswa, $nama_hari);
+    // getJadwalMahasiswaHariIni menerima NIM, nama hari (sudah Bahasa Indonesia), dan tanggal
+    $jadwal_data = $jadwalModel->getJadwalMahasiswaHariIni($nim_mahasiswa, $nama_hari, $tanggal);
 
     $response['success'] = true;
     $response['data'] = $jadwal_data;
