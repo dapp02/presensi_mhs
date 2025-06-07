@@ -1,0 +1,122 @@
+.container-isi {
+    padding: 10px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h3 {
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 850px;
+    width: 100%;
+    margin: 10px auto 20px auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+}
+
+.search-bar {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.kelas-container {
+    margin-top: 50px;
+    margin-left: 43px;
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: 40px;
+    justify-content: center;
+    max-width: 850px;
+}
+
+.kelas-card {
+    background: white;
+    border: 2px solid #000000;
+    border-radius: 25px;
+    padding: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.kelas-card:hover {
+    transform: scale(1.02);
+}
+
+.kelas-header {
+    font-weight: bold;
+    padding: 5px;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.kelas-subheader {
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.kelas-divider {
+    width: 100%;
+    border-bottom: 2px solid black;
+    margin-bottom: 25px;
+}
+
+.kelas-info {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 50px 90px;
+    font-size: 14px;
+}
+
+.kelas-waktu,
+.kelas-dosen,
+.kelas-ruang {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.kelas-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.kelas-container {
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 40px;
+    justify-content: center;
+    max-width: 850px;
+}
+
+.divider {
+    border-bottom: 1px solid black;
+    margin-bottom: 5%;
+}
+
+.nama{
+    margin-left: 20px;
+    font-size: 12;
+    font-weight: 500;
+}
