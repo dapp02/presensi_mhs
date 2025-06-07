@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.style.opacity = disabled ? '0.5' : '1';
             }
         });
-        if (beforeAttendanceDiv) beforeAttendanceDiv.style.opacity = disabled ? '0.5' : '1';
+        if (beforeAttendanceDiv) {
+            beforeAttendanceDiv.style.display = disabled ? 'none' : 'block';
+        }
     }
 
     function updateUserVisualAktifHari(clickedItemElement) {
@@ -45,6 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
         clickedItemElement.classList.add('active-day');
         let activeLine = clickedItemElement.querySelector('.hari-text-line');
         if (activeLine) activeLine.style.display = 'block';
+    }
+
+    // PERBAIKAN: Definisi fungsi dipindahkan ke scope atas
+    function updateAbsensiPanel(jadwal) {
+        if (jadwal && jadwal.status_kehadiran) {
+            if (beforeAttendanceDiv) beforeAttendanceDiv.style.display = 'none';
+            if (afterAttendanceDiv) afterAttendanceDiv.style.display = 'block';
+            statusTextElement.textContent = 'Status kamu: ' + jadwal.status_kehadiran;
+            setAbsenButtonsState(true); // Removed second argument
+            
+            // Update rekap
+            document.getElementById('absenCount').textContent = (jadwal.status_kehadiran === 'Hadir') ? '1' : '0';
+            document.getElementById('izinCount').textContent = (jadwal.status_kehadiran === 'Izin') ? '1' : '0';
+            document.getElementById('sakitCount').textContent = (jadwal.status_kehadiran === 'Sakit') ? '1' : '0';
+            document.getElementById('alphaCount').textContent = (jadwal.status_kehadiran === 'Alpha') ? '1' : '0';
+        } else {
+            if (beforeAttendanceDiv) beforeAttendanceDiv.style.display = 'block';
+            if (afterAttendanceDiv) afterAttendanceDiv.style.display = 'none';
+            // Status teks dan tombol akan diatur oleh logika di fetchJadwal...
+        }
     }
 
     // --- FUNGSI INTI: FETCH & UPDATE JADWAL ---
@@ -66,9 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             infoKelasContainer.innerHTML = '<p class="info-title">Informasi Kelas Hari Ini :</p>';
 
-            // Reset UI Absensi ke kondisi awal setiap kali fetch baru
-            if (beforeAttendanceDiv) beforeAttendanceDiv.style.display = 'block';
-            if (afterAttendanceDiv) afterAttendanceDiv.style.display = 'none';
+
 
             if (result.success && result.data && result.data.length > 0) {
                 result.data.forEach((jadwal, index) => {
@@ -76,6 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     jadwalWrapperDiv.className = 'info-grid';
                     jadwalWrapperDiv.dataset.idJadwal = jadwal.id_jadwal;
                     jadwalWrapperDiv.dataset.namaMatkul = jadwal.nama_matkul;
+                    // Simpan seluruh objek jadwal sebagai string JSON untuk diambil nanti saat klik
+                    jadwalWrapperDiv.dataset.jadwalJson = JSON.stringify(jadwal);
+                    
                     jadwalWrapperDiv.innerHTML = `
                         <div class="info-item"><img src="../assets/images/teachings.png" alt="Mata Kuliah" class="info-icon"><span>${jadwal.nama_matkul || 'N/A'}</span></div>
                         <div class="info-item"><img src="../assets/images/clock.png" alt="Jam" class="info-icon"><span>${(jadwal.jam_mulai || 'N/A').substring(0, 5)} - ${(jadwal.jam_selesai || 'N/A').substring(0, 5)}</span></div>
@@ -85,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     infoKelasContainer.appendChild(jadwalWrapperDiv);
 
-                    // Tambahkan <hr> jika ini bukan item jadwal terakhir
+                    // Add a horizontal rule if it's not the last item
                     if (index < result.data.length - 1) {
                         const hr = document.createElement('hr');
                         infoKelasContainer.appendChild(hr);
@@ -94,23 +117,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (result.data.length === 1) {
                     const jadwal = result.data[0];
+                    updateAbsensiPanel(jadwal); // Gunakan helper untuk update panel absen
                     absenSubtitle.textContent = jadwal.nama_matkul;
                     ID_JADWAL_AKTIF_UNTUK_ABSENSI = jadwal.id_jadwal;
-                    statusTextElement.textContent = 'Kamu Belum Absen';
-                    setAbsenButtonsState(false);
+                    // Aktifkan atau nonaktifkan tombol berdasarkan status kehadiran
+                    setAbsenButtonsState(!!jadwal.status_kehadiran);
+                    if (!jadwal.status_kehadiran) statusTextElement.textContent = 'Kamu Belum Absen';
                     infoKelasContainer.querySelector('.info-grid').classList.add('jadwal-aktif');
                 } else {
                     absenSubtitle.textContent = 'Pilih Jadwal';
                     ID_JADWAL_AKTIF_UNTUK_ABSENSI = null;
                     statusTextElement.textContent = 'Silakan pilih jadwal untuk absen';
                     setAbsenButtonsState(true);
+                    updateAbsensiPanel(null); // Reset ke tampilan tombol
                 }
             } else {
                 ID_JADWAL_AKTIF_UNTUK_ABSENSI = null;
                 absenSubtitle.textContent = 'Tidak ada jadwal';
                 statusTextElement.textContent = 'Tidak ada jadwal untuk diabsen';
                 setAbsenButtonsState(true);
-                infoKelasContainer.innerHTML += `<p style="text-align:center; margin-top:20px;">${result.message || 'Tidak ada jadwal kuliah untuk hari ini.'}</p>`;
+                infoKelasContainer.innerHTML += `
+                    <img src="../assets/images/browser.png" alt="Tidak ada kelas" style="width:100px; margin:20px auto; display:block;">
+                    <p style="text-align:center; font-size:1.2em; margin-top:10px;">${result.message || 'Tidak ada kelas hari ini.'}</p>
+                `;
             }
         } catch (error) {
             console.error('JS ERROR: Gagal fetch atau proses jadwal:', error);
@@ -145,23 +174,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (result.success) {
                 alert('Absensi berhasil: ' + result.message);
-                if (beforeAttendanceDiv) beforeAttendanceDiv.style.display = 'none';
-                if (afterAttendanceDiv) afterAttendanceDiv.style.display = 'block';
-                statusTextElement.textContent = 'Kamu Sudah ' + statusKehadiran;
-
-                // Update rekap counts (assuming these elements exist)
-                document.getElementById('absenCount').textContent = '0';
-                document.getElementById('izinCount').textContent = '0';
-                document.getElementById('sakitCount').textContent = '0';
-
-                if (statusKehadiran === 'Hadir') {
-                    document.getElementById('absenCount').textContent = '1';
-                } else if (statusKehadiran === 'Izin') {
-                    document.getElementById('izinCount').textContent = '1';
-                } else if (statusKehadiran === 'Sakit') {
-                    document.getElementById('sakitCount').textContent = '1';
-                }
-
+                // Use the new helper function to update the UI
+                // After successful submission, we need to re-fetch the schedule to get the updated status
+                // Or, we can manually update the UI based on the submitted status
+                // For now, let's assume we update the UI manually for the single active schedule
+                const currentJadwal = { status_kehadiran: statusKehadiran }; // Create a dummy object for updateAbsensiPanel
+                updateAbsensiPanel(currentJadwal);
+                setAbsenButtonsState(true); // Disable buttons after successful submission
             } else {
                 alert('Gagal mengajukan absensi: ' + result.message);
             }
@@ -197,12 +216,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const namaMatkulDipilih = clickedJadwalElement.dataset.namaMatkul;
                 const idJadwalDipilih = clickedJadwalElement.dataset.idJadwal;
+                const jadwalData = JSON.parse(clickedJadwalElement.dataset.jadwalJson); // Parse the stored JSON
 
                 if (namaMatkulDipilih && idJadwalDipilih) {
                     absenSubtitle.textContent = namaMatkulDipilih;
                     ID_JADWAL_AKTIF_UNTUK_ABSENSI = idJadwalDipilih;
-                    statusTextElement.textContent = 'Kamu Belum Absen';
-                    setAbsenButtonsState(false);
+                    updateAbsensiPanel(jadwalData); // Update panel based on clicked jadwal's data
+                    setAbsenButtonsState(!!jadwalData.status_kehadiran, "Jadwal dipilih, status: " + (jadwalData.status_kehadiran || 'Belum Absen'));
+                    if (!jadwalData.status_kehadiran) statusTextElement.textContent = 'Kamu Belum Absen';
                 }
             });
         }

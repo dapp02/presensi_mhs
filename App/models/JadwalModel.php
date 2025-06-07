@@ -114,7 +114,8 @@ class JadwalModel
                     jk.jam_selesai,
                     jk.ruangan,
                     k.nama_kelas,
-                    p_dosen.nama_lengkap AS nama_dosen
+                    p_dosen.nama_lengkap AS nama_dosen,
+                    a.status_kehadiran
                 FROM
                     mahasiswa_kelas mhs_k
                 JOIN
@@ -129,6 +130,10 @@ class JadwalModel
                     dosen d ON dm.nidn_dosen = d.nidn
                 JOIN
                     pengguna p_dosen ON d.id_pengguna = p_dosen.id_pengguna
+                LEFT JOIN
+                    absensi a ON jk.id_jadwal = a.id_jadwal
+                                 AND a.nim_mahasiswa = mhs_k.nim_mahasiswa
+                                 AND a.tanggal_absensi = CURDATE()
                 WHERE
                     mhs_k.nim_mahasiswa = :nim_mahasiswa AND jk.hari = :nama_hari
                 ORDER BY
