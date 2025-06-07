@@ -152,6 +152,48 @@ class JadwalModel
         }
     }
 
+    public function getJadwalDetailById(int $idJadwal): ?array
+    {
+        try {
+            $query = "
+                SELECT
+                    jk.id_jadwal,
+                    mk.nama_matkul,
+                    jk.jam_mulai,
+                    jk.jam_selesai,
+                    jk.ruangan,
+                    k.nama_kelas,
+                    k.id_kelas,
+                    ps.nama_prodi,
+                    p_dosen.nama_lengkap AS nama_dosen,
+                    k.tahun_ajaran
+                FROM
+                    jadwal_kuliah jk
+                JOIN
+                    dosen_mengajar dm ON jk.id_dosen_mengajar = dm.id_dosen_mengajar
+                JOIN
+                    mata_kuliah mk ON dm.id_matkul = mk.id_matkul
+                JOIN
+                    kelas k ON dm.id_kelas = k.id_kelas
+                JOIN
+                    program_studi ps ON k.id_prodi = ps.id_prodi
+                JOIN
+                    dosen d ON dm.nidn_dosen = d.nidn
+                JOIN
+                    pengguna p_dosen ON d.id_pengguna = p_dosen.id_pengguna
+                WHERE
+                    jk.id_jadwal = :id_jadwal
+            ";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':id_jadwal', $idJadwal, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error in getJadwalDetailById: " . $e->getMessage());
+            return null;
+        }
+    }
+
     public function getAllJadwalMahasiswa(string $nim_mahasiswa): array
     {
         $custom_log_file = __DIR__ . '/../../logs/app_debug.log';

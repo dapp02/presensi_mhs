@@ -37,15 +37,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const saveButton = document.querySelector('.submit-btn');
-    if (saveButton) {
-        saveButton.addEventListener('click', () => {
-            if (confirm('Apakah Anda yakin ingin menyimpan perubahan?')) {
-                // Logika untuk menyimpan data bisa ditambahkan di sini
-                // Untuk saat ini, kita hanya menampilkan pesan
-                alert('Perubahan telah disimpan.');
-                // Anda mungkin ingin mereset pilihan setelah menyimpan, atau menavigasi ke halaman lain
-                // resetAttendanceSelection();
+    const formAbsensi = document.getElementById('form-absensi');
+    if (formAbsensi) {
+        formAbsensi.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Mencegah pengiriman form secara default
+
+            if (!confirm('Apakah Anda yakin ingin menyimpan perubahan absensi ini?')) {
+                return; // Batalkan jika pengguna tidak yakin
+            }
+
+            const formData = new FormData(formAbsensi);
+
+            try {
+                const response = await fetch(formAbsensi.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    // Opsional: refresh halaman atau update UI setelah sukses
+                    window.location.reload(); 
+                } else {
+                    alert('Gagal menyimpan absensi: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim data. Silakan coba lagi.');
             }
         });
     }

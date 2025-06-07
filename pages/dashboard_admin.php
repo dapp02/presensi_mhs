@@ -157,8 +157,14 @@ $hari_map_indo = [
                 <div class="absen-text-line"></div>
                 <div class="absen-status">
                     <div class="absen-icon">
-                        <a href="absensi_admin.php">
-                        <img src="../assets/images/lesson.png" alt="Status Icon">
+                        <?php
+                            // Ambil ID jadwal pertama dari jadwal hari ini, jika ada
+                            $id_jadwal_hari_ini = !empty($jadwal_dosen_hari_ini) ? $jadwal_dosen_hari_ini[0]['id_jadwal'] : null;
+                            // Buat link hanya jika ada id_jadwal
+                            $link_absensi = $id_jadwal_hari_ini ? "absensi_admin.php?id_jadwal=" . htmlspecialchars($id_jadwal_hari_ini) : "#";
+                        ?>
+                        <a href="<?php echo $link_absensi; ?>"
+                        class="<?php echo !$id_jadwal_hari_ini ? 'disabled-link' : ''; ?>"> <img src="../assets/images/lesson.png" alt="Status Icon">
                         </a>
                     </div>
                 </div>

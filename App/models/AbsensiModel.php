@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Models;
+
+use PDO;
+use PDOException;
+
 class AbsensiModel {
     private $conn;
     private $table_name = "absensi";
@@ -95,6 +100,46 @@ class AbsensiModel {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $row ? $row['status_kehadiran'] : null;
+    }
+
+    public function getAbsensiByJadwalAndTanggal($idJadwal, $tanggal)
+    {
+        // PERBAIKAN: Ubah 'status_absensi' menjadi 'status_kehadiran'
+        $query = "SELECT nim_mahasiswa, status_kehadiran FROM " . $this->table_name . " WHERE id_jadwal = :id_jadwal AND tanggal_absensi = :tanggal";
+        $stmt = $this->conn->prepare($query);
+
+        $idJadwal = htmlspecialchars(strip_tags($idJadwal));
+        $tanggal = htmlspecialchars(strip_tags($tanggal));
+
+        $stmt->bindParam(':id_jadwal', $idJadwal);
+        $stmt->bindParam(':tanggal', $tanggal);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function saveOrUpdateAbsensi(int $id_jadwal, string $nim, string $tanggal, string $status): bool
+    {
+        $log_file = __DIR__ . '/../../logs/app_debug.log';
+        try {
+            // Gunakan ON DUPLICATE KEY UPDATE untuk efisiensi
+            $sql = "INSERT INTO absensi (id_jadwal, nim_mahasiswa, tanggal_absensi, status_kehadiran)
+                    VALUES (:id_jadwal, :nim_mahasiswa, :tanggal_absensi, :status_kehadiran)
+                    ON DUPLICATE KEY UPDATE
+                    status_kehadiran = VALUES(status_kehadiran),
+                    updated_at = CURRENT_TIMESTAMP";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_INT);
+            $stmt->bindParam(':nim_mahasiswa', $nim, PDO::PARAM_STR);
+            $stmt->bindParam(':tanggal_absensi', $tanggal, PDO::PARAM_STR);
+            $stmt->bindParam(':status_kehadiran', $status, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("[" . date("Y-m-d H:i:s") . "] ABSENSI_MODEL_ERROR: di saveOrUpdateAbsensi: " . $e->getMessage() . "\n", 3, $log_file);
+            return false;
+        }
     }
 }
 ?>
