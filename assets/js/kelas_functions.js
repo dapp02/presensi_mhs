@@ -185,11 +185,17 @@ function fillFormWithDataKelas(id) {
 }
 
 // Inisialisasi event listener
-function initKelasListeners() {
-    // Event listener untuk tombol Tambah Kelas
-    document.getElementById('add-kelas').addEventListener('click', () => showModalKelas('add'));
-    
-    // Event delegation untuk tombol Edit
+function initializeKelasEventListeners() {
+    const addKelasButton = document.getElementById('add-kelas');
+    const kelasForm = document.getElementById('kelas-form');
+    const closeModalButtons = document.querySelectorAll('#kelas-modal .close-button, #cancel-kelas');
+    const kelasModal = document.getElementById('kelas-modal');
+
+    if (addKelasButton) {
+        addKelasButton.addEventListener('click', () => showModalKelas('add'));
+    }
+
+    // Event delegation for Edit and Delete buttons
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('edit') && e.target.closest('#kelas-crud')) {
             const row = e.target.closest('tr');
@@ -197,7 +203,6 @@ function initKelasListeners() {
             showModalKelas('edit', kode);
         }
         
-        // Event delegation untuk tombol Hapus
         if (e.target.classList.contains('delete') && e.target.closest('#kelas-crud')) {
             const row = e.target.closest('tr');
             const kode = row.cells[0].textContent;
@@ -205,41 +210,41 @@ function initKelasListeners() {
         }
     });
     
-    // Event listener untuk tombol Batal
-    document.getElementById('cancel-kelas').addEventListener('click', hideModalKelas);
+    if (kelasForm) {
+        kelasForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const kode = document.getElementById('kode-kelas').value;
+            const nama = document.getElementById('nama-kelas').value;
+            const prodi = document.getElementById('prodi-kelas').value;
+            const jumlah = document.getElementById('jumlah-mahasiswa').value;
+            
+            if (currentModeKelas === 'add') {
+                addKelas(kode, nama, prodi, jumlah);
+            } else if (currentModeKelas === 'edit') {
+                editKelas(kode, nama, prodi, jumlah);
+            }
+            hideModalKelas();
+        });
+    }
     
-    // Event listener untuk tombol Close (X)
-    document.getElementById('close-modal-kelas').addEventListener('click', hideModalKelas);
-    
-    // Event listener untuk klik di luar modal
-    document.getElementById('kelas-modal').addEventListener('click', function(e) {
-        if (e.target === this) hideModalKelas();
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', hideModalKelas);
     });
     
-    // Event listener untuk tombol simpan
-    document.getElementById('save-kelas').addEventListener('click', function() {
-        const kode = document.getElementById('kode-kelas').value;
-        const nama = document.getElementById('nama-kelas').value;
-        const prodi = document.getElementById('prodi-kelas').value;
-        const jumlah = document.getElementById('jumlah-mahasiswa').value;
-        
-        if (!kode || !nama || !prodi || !jumlah) {
-            alert('Semua field harus diisi!');
-            return;
-        }
-        
-        if (currentModeKelas === 'add') {
-            addKelas(kode, nama, prodi, jumlah);
-        } else if (currentModeKelas === 'edit') {
-            editKelas(kode, nama, prodi, jumlah);
-        }
-        
-        hideModalKelas();
-    });
+    if (kelasModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === kelasModal) {
+                hideModalKelas();
+            }
+        });
+    }
 }
 
-// Inisialisasi saat halaman dimuat
+// Panggil fungsi inisialisasi saat DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function() {
-    initKelasListeners();
-    loadKelasData(); // Load data saat halaman dimuat
+    const kelasCrudSection = document.getElementById('kelas-crud');
+    if (kelasCrudSection) {
+        loadKelasData();
+        initializeKelasEventListeners();
+    }
 });

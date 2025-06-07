@@ -45,6 +45,10 @@
                 <h2>Kelola Data</h2>
                 <div class="crud-header"></div>
                 <div class="crud-menu">
+                    <div class="crud-menu-item" data-target="prodi">
+                        <img src="../assets/images/academic.png" alt="Program Studi" class="crud-menu-icon">
+                        <span>Data Program Studi</span>
+                    </div>
                     <div class="crud-menu-item active" data-target="mahasiswa">
                         <img src="../assets/images/student.png" alt="Mahasiswa" class="crud-menu-icon">
                         <span>Data Mahasiswa</span>
@@ -67,8 +71,59 @@
         
         <!-- Bagian Kanan - Konten CRUD -->
         <div class="kelas-container-main">
+            <!-- CRUD Program Studi -->
+            <div class="crud-content active" id="prodi-crud">
+                <div class="crud-header">
+                    <div class="crud-title">Data Program Studi</div>
+                    <div class="crud-actions">
+                        <button class="crud-button add" id="add-prodi">Tambah Program Studi</button>
+                    </div>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="Cari program studi berdasarkan nama">
+                    <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                </div>
+                
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>ID Prodi</th>
+                            <th>Nama Program Studi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal untuk Program Studi -->
+            <div class="modal-overlay" id="prodi-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title" id="prodi-modal-title">Tambah Program Studi Baru</div>
+                        <button class="modal-close" id="close-prodi-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="prodi-form">
+                            <input type="hidden" id="prodi-id">
+                            <div class="form-group">
+                                <label for="prodi-nama">Nama Program Studi</label>
+                                <input type="text" id="prodi-nama" class="form-control" placeholder="Masukkan nama prodi" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="crud-button" id="cancel-prodi">Batal</button>
+                        <button class="crud-button add" id="save-prodi">Simpan</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- CRUD Mahasiswa -->
-            <div class="crud-content active" id="mahasiswa-crud">
+            <div class="crud-content" id="mahasiswa-crud">
                 <div class="crud-header">
                     <div class="crud-title">Data Mahasiswa</div>
                     <div class="crud-actions">
@@ -344,6 +399,56 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="hari">Hari</label>
+
+                                    <!-- CRUD Program Studi -->
+                                    <div class="crud-content active" id="prodi-crud">
+                                        <div class="crud-header">
+                                            <div class="crud-title">Data Program Studi</div>
+                                            <div class="crud-actions">
+                                                <button class="crud-button add" id="add-prodi">Tambah Program Studi</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="search-container">
+                                            <input type="text" class="search-bar" placeholder="Cari program studi berdasarkan nama">
+                                            <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                                        </div>
+                                        
+                                        <table class="crud-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID Program Studi</th>
+                                                    <th>Nama Program Studi</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Data akan diisi oleh JavaScript -->
+                                            </tbody>
+                                        </table>
+                                        
+                                        <!-- Modal untuk Program Studi -->
+                                        <div class="modal-overlay" id="prodi-modal">
+                                            <div class="modal">
+                                                <div class="modal-header">
+                                                    <div class="modal-title" id="modal-title-prodi">Tambah Program Studi Baru</div>
+                                                    <button class="modal-close" id="close-modal-prodi">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="prodi-form">
+                                                        <div class="form-group">
+                                                            <label for="nama-prodi">Nama Program Studi</label>
+                                                            <input type="text" id="nama-prodi" class="form-control" placeholder="Masukkan nama program studi">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="crud-button" id="cancel-prodi">Batal</button>
+                                                    <button class="crud-button add" id="save-prodi">Simpan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <select id="hari" class="form-control">
                                         <option value="">Pilih Hari</option>
                                         <option value="Senin">Senin</option>
@@ -375,9 +480,6 @@
 
     <!-- Pindahkan semua script ke bagian paling bawah -->
     <script src="../assets/js/crud_functions.js"></script>
-    <script src="../assets/js/mahasiswa_functions.js"></script>
-    <script src="../assets/js/kelas_functions.js"></script>
-    <script src="../assets/js/matkul_functions.js"></script>
-    <script src="../assets/js/jadwal_functions.js"></script>
+    <script src="../assets/js/prodi_functions.js"></script>
 </body>
 </html>

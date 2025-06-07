@@ -2,8 +2,9 @@
 let currentModeMatkul = 'add';
 let currentIdMatkul = null;
 
-// Fungsi untuk memuat data mata kuliah dari database
+// DEFINISIKAN FUNGSI LOAD DI SCOPE GLOBAL
 function loadMatkulData() {
+    console.log("Memuat data mata kuliah..."); // Tambahkan log untuk debugging
     fetch('../assets/js/matkul_api.php')
         .then(response => response.json())
         .then(data => {
@@ -221,76 +222,66 @@ function fillFormWithDataMatkul(id) {
 }
 
 // Inisialisasi event listener
-function initMatkulListeners() {
-    // Event listener untuk tombol tambah
-    document.getElementById('add-matakuliah').addEventListener('click', () => showModalMatkul('add'));
-    
-    // Event delegation untuk tombol edit dan hapus
+function initializeMatkulEventListeners() {
+    const addMatkulButton = document.getElementById('add-matkul');
+    const matkulForm = document.getElementById('matkul-form');
+    const closeModalButtons = document.querySelectorAll('#matkul-modal .close-button, #cancel-matkul');
+    const matkulModal = document.getElementById('matkul-modal');
+
+    if (addMatkulButton) {
+        addMatkulButton.addEventListener('click', () => showModalMatkul('add'));
+    }
+
+    // Event delegation for Edit and Delete buttons
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('edit') && e.target.closest('#matakuliah-crud')) { // Ubah selector ke #matakuliah-crud
+        if (e.target.classList.contains('edit') && e.target.closest('#matakuliah-crud')) {
             const row = e.target.closest('tr');
             const kode = row.cells[0].textContent;
             showModalMatkul('edit', kode);
         }
         
-        if (e.target.classList.contains('delete') && e.target.closest('#matakuliah-crud')) { // Ubah selector ke #matakuliah-crud
+        if (e.target.classList.contains('delete') && e.target.closest('#matakuliah-crud')) {
             const row = e.target.closest('tr');
             const kode = row.cells[0].textContent;
             deleteMatkul(kode);
         }
     });
     
-    // Event listener untuk tombol simpan
-    document.getElementById('save-matkul').addEventListener('click', function() {
-        const kode = document.getElementById('kode-matkul').value;
-        const nama = document.getElementById('nama-matkul').value;
-        const sks = document.getElementById('sks').value;
-        const semester = document.getElementById('semester').value;
-        
-        if (!kode || !nama || !sks || !semester) {
-            alert('Semua field harus diisi!');
-            return;
-        }
-        
-        if (currentModeMatkul === 'add') {
-            addMatkul(kode, nama, sks, semester);
-        } else if (currentModeMatkul === 'edit') {
-            editMatkul(kode, nama, sks, semester);
-        }
-        
-        hideModalMatkul();
+    if (matkulForm) {
+        matkulForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const kode = document.getElementById('kode-matkul').value;
+            const nama = document.getElementById('nama-matkul').value;
+            const sks = document.getElementById('sks-matkul').value;
+            const semester = document.getElementById('semester-matkul').value;
+            
+            if (currentModeMatkul === 'add') {
+                addMatkul(kode, nama, sks, semester);
+            } else if (currentModeMatkul === 'edit') {
+                editMatkul(kode, nama, sks, semester);
+            }
+            hideModalMatkul();
+        });
+    }
+    
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', hideModalMatkul);
     });
     
-    // Event listener untuk tombol close
-    document.getElementById('close-modal-matkul').addEventListener('click', hideModalMatkul);
-    
-    // Event listener untuk tombol batal
-    document.getElementById('cancel-matkul').addEventListener('click', hideModalMatkul);
-    
-    // Event listener untuk klik di luar modal
-    document.getElementById('matkul-modal').addEventListener('click', function(e) {
-        if (e.target === this) hideModalMatkul();
-    });
+    if (matkulModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === matkulModal) {
+                hideModalMatkul();
+            }
+        });
+    }
 }
 
-document.querySelector('[data-target="matakuliah"]').addEventListener('click', function() {
-    // Sembunyikan semua konten CRUD
-    document.querySelectorAll('.crud-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    
-    // Tampilkan konten mata kuliah
-    document.getElementById('matakuliah-crud').classList.add('active');
-    
-    // Update menu aktif
-    document.querySelectorAll('.crud-menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    this.classList.add('active');
-});
-
-// Inisialisasi saat halaman dimuat
+// Panggil fungsi inisialisasi saat DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function() {
-    initMatkulListeners();
-    loadMatkulData(); // Load data saat halaman dimuat
+    const matkulCrudSection = document.getElementById('matakuliah-crud');
+    if (matkulCrudSection) {
+        loadMatkulData();
+        initializeMatkulEventListeners();
+    }
 });

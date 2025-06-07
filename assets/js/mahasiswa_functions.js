@@ -205,71 +205,93 @@ function deleteMahasiswa(nim) {
     }
 }
 
-// Inisialisasi event listener
-function initMahasiswaListeners() {
-    // Event listener untuk tombol Tambah Mahasiswa
-    const addButton = document.getElementById('add-mahasiswa');
-    if (addButton) {
-        addButton.addEventListener('click', () => showModalMahasiswa('add'));
+// New function to initialize all event listeners for Mahasiswa module
+function initializeMahasiswaEventListeners() {
+    const mahasiswaCrudSection = document.getElementById('mahasiswa-crud');
+    if (!mahasiswaCrudSection) {
+        console.warn('Mahasiswa CRUD section not found, cannot initialize event listeners.');
+        return;
     }
-    
-    // Event listener untuk tombol Edit dan Delete
-    document.querySelector('#mahasiswa-crud .crud-table tbody').addEventListener('click', function(e) {
-        if (e.target.classList.contains('edit')) {
-            const row = e.target.closest('tr');
-            const nim = row.cells[0].textContent;
-            showModalMahasiswa('edit', nim);
-        } else if (e.target.classList.contains('delete')) {
-            const row = e.target.closest('tr');
-            const nim = row.cells[0].textContent;
-            deleteMahasiswa(nim);
-        }
-    });
-    
-    // Event listener untuk tombol Batal dan Close
-    const cancelButton = document.getElementById('cancel-mahasiswa');
-    const closeButton = document.getElementById('close-modal');
-    if (cancelButton) cancelButton.addEventListener('click', hideModalMahasiswa);
-    if (closeButton) closeButton.addEventListener('click', hideModalMahasiswa);
-    
-    // Event listener untuk klik di luar modal
-    const modal = document.getElementById('mahasiswa-modal');
-    if (modal) {
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) hideModalMahasiswa();
+
+    // Event listener for Add Mahasiswa button
+    const addMahasiswaButton = document.getElementById('add-mahasiswa');
+    if (addMahasiswaButton) {
+        addMahasiswaButton.addEventListener('click', function() {
+            showModalMahasiswa('add');
         });
     }
-    
-    // Event listener untuk tombol simpan
-    const saveButton = document.getElementById('save-mahasiswa');
-    if (saveButton) {
-        saveButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            
+
+    // Event listener for Save Mahasiswa button
+    const saveMahasiswaButton = document.getElementById('save-mahasiswa');
+    if (saveMahasiswaButton) {
+        saveMahasiswaButton.addEventListener('click', function() {
             const nim = document.getElementById('nim').value;
             const nama = document.getElementById('nama').value;
             const prodi = document.getElementById('prodi').value;
             const kelas = document.getElementById('kelas').value;
             const email = document.getElementById('email').value;
-            
+
             if (!nim || !nama || !prodi || !kelas || !email) {
                 alert('Semua field harus diisi!');
                 return;
             }
-            
+
             if (currentModeMhs === 'add') {
                 addMahasiswa(nim, nama, prodi, kelas, email);
             } else if (currentModeMhs === 'edit') {
                 editMahasiswa(nim, nama, prodi, kelas, email);
             }
-            
+
             hideModalMahasiswa();
+        });
+    }
+
+    // Event listener for Cancel Mahasiswa button
+    const cancelMahasiswaButton = document.getElementById('cancel-mahasiswa');
+    if (cancelMahasiswaButton) {
+        cancelMahasiswaButton.addEventListener('click', hideModalMahasiswa);
+    }
+
+    // Event listener for Close Modal button
+    const closeModalButton = document.getElementById('close-mahasiswa-modal');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', hideModalMahasiswa);
+    }
+
+    // Event listener for clicking outside the modal
+    const mahasiswaModal = document.getElementById('mahasiswa-modal');
+    if (mahasiswaModal) {
+        mahasiswaModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModalMahasiswa();
+            }
+        });
+    }
+
+    // Event delegation for Edit and Delete buttons
+    const mahasiswaTbody = document.querySelector('#mahasiswa-crud .crud-table tbody');
+    if (mahasiswaTbody) {
+        mahasiswaTbody.addEventListener('click', function(e) {
+            const target = e.target;
+            if (target.classList.contains('edit')) {
+                const nim = target.closest('tr').cells[0].textContent;
+                showModalMahasiswa('edit', nim);
+            } else if (target.classList.contains('delete')) {
+                const nim = target.closest('tr').cells[0].textContent;
+                deleteMahasiswa(nim);
+            }
         });
     }
 }
 
-// Load data saat halaman dimuat
+// Expose functions to the global scope for crud_functions.js to call
+window.loadMahasiswaData = loadMahasiswaData;
+window.initializeMahasiswaEventListeners = initializeMahasiswaEventListeners;
+
 document.addEventListener('DOMContentLoaded', function() {
-    loadMahasiswaData();
-    initMahasiswaListeners();
+    const mahasiswaCrudSection = document.getElementById('mahasiswa-crud');
+    if (mahasiswaCrudSection && mahasiswaCrudSection.classList.contains('active')) {
+        loadMahasiswaData();
+        initializeMahasiswaEventListeners();
+    }
 });

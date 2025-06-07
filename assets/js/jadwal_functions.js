@@ -290,58 +290,68 @@ function fillFormWithDataJadwal(id) {
     }
 }
 
-function initJadwalListeners() {
-    // Event listener untuk tombol tambah
-    document.getElementById('add-jadwal').addEventListener('click', () => showModalJadwal('add'));
-    
-    // Event delegation untuk tombol edit dan hapus
+// Inisialisasi event listener
+function initializeJadwalEventListeners() {
+    const addJadwalButton = document.getElementById('add-jadwal');
+    const jadwalForm = document.getElementById('jadwal-form');
+    const closeModalButtons = document.querySelectorAll('#jadwal-modal .close-button, #cancel-jadwal');
+    const jadwalModal = document.getElementById('jadwal-modal');
+
+    if (addJadwalButton) {
+        addJadwalButton.addEventListener('click', () => showModalJadwal('add'));
+    }
+
+    // Event delegation for Edit and Delete buttons
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('edit') && e.target.closest('#jadwal-crud')) {
             const row = e.target.closest('tr');
-            const id = row.cells[0].textContent;
+            const id = row.dataset.id;
             showModalJadwal('edit', id);
-        } else if (e.target.classList.contains('delete') && e.target.closest('#jadwal-crud')) {
+        }
+        
+        if (e.target.classList.contains('delete') && e.target.closest('#jadwal-crud')) {
             const row = e.target.closest('tr');
-            const id = row.cells[0].textContent;
+            const id = row.dataset.id;
             deleteJadwal(id);
         }
     });
     
-    // Event listener untuk tombol close
-    document.getElementById('close-modal-jadwal').addEventListener('click', hideModalJadwal);
+    if (jadwalForm) {
+        jadwalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const matkul = document.getElementById('matkul-jadwal').value;
+            const kelas = document.getElementById('kelas-jadwal').value;
+            const hari = document.getElementById('hari-jadwal').value;
+            const jam = document.getElementById('jam-jadwal').value;
+            const ruang = document.getElementById('ruangan-jadwal').value;
+            
+            if (currentModeJadwal === 'add') {
+                addJadwal(matkul, kelas, hari, jam, ruang);
+            } else if (currentModeJadwal === 'edit') {
+                editJadwal(currentIdJadwal, matkul, kelas, hari, jam, ruang);
+            }
+            hideModalJadwal();
+        });
+    }
     
-    // Event listener untuk tombol batal
-    document.getElementById('cancel-jadwal').addEventListener('click', hideModalJadwal);
-    
-    // Event listener untuk klik di luar modal
-    document.getElementById('jadwal-modal').addEventListener('click', function(e) {
-        if (e.target === this) hideModalJadwal();
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', hideModalJadwal);
     });
     
-    // Event listener untuk tombol simpan
-    document.getElementById('save-jadwal').addEventListener('click', function() {
-        const matkul = document.getElementById('matkul-jadwal').value;
-        const kelas = document.getElementById('kelas-jadwal').value;
-        const hari = document.getElementById('hari').value;
-        const jam = document.getElementById('jam').value;
-        const ruangan = document.getElementById('ruangan').value;
-        
-        if (!matkul || !kelas || !hari || !jam || !ruangan) {
-            alert('Semua field harus diisi!');
-            return;
-        }
-        
-        if (currentModeJadwal === 'add') {
-            addJadwal(matkul, kelas, hari, jam, ruangan);
-        } else if (currentModeJadwal === 'edit') {
-            editJadwal(currentIdJadwal, matkul, kelas, hari, jam, ruangan);
-        }
-        
-        hideModalJadwal();
-    });
+    if (jadwalModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === jadwalModal) {
+                hideModalJadwal();
+            }
+        });
+    }
 }
 
+// Panggil fungsi inisialisasi saat DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function() {
-    initJadwalListeners();
-    loadJadwalData(); // Load data saat halaman dimuat
+    const jadwalCrudSection = document.getElementById('jadwal-crud');
+    if (jadwalCrudSection) {
+        loadJadwalData();
+        initializeJadwalEventListeners();
+    }
 });
