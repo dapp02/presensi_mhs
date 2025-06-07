@@ -141,12 +141,18 @@ body {
     align-items: center;
     justify-content: center;
     background: none;
-    border: none;
+    border: 1px solid #ddd; /* Add a border to make it look like a button */
+    border-radius: 4px; /* Slightly rounded corners */
     cursor: pointer;
     width: 100%;
     padding: 5px 0;
     font-size: 12px;
     color: #666;
+    transition: all 0.2s ease; /* Smooth transition for hover/selection */
+}
+
+.action-button input[type="radio"] {
+    display: none; /* Hide the actual radio button */
 }
 
 .action-button i {
@@ -187,6 +193,18 @@ body {
 .action-button.selected {
     background-color: #4CAF50;
     color: white; 
+    border-color: #4CAF50; /* Change border color on selection */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.action-button:hover {
+    background-color: #e0e0e0; /* Light background on hover */
+    border-color: #c0c0c0; /* Darker border on hover */
+}
+
+.action-button.selected:hover {
+    background-color: #45a049; /* Slightly darker green on hover when selected */
+    border-color: #45a049;
 }
 .action-button.selected img {
     filter: brightness(0) invert(1);

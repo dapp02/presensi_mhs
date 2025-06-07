@@ -22,9 +22,16 @@ function resetAttendanceSelection() {
 document.addEventListener('DOMContentLoaded', () => {
     const attendanceButtons = document.querySelectorAll('.action-button');
     attendanceButtons.forEach(button => {
+        // Add click listener for dynamic selection
         button.addEventListener('click', () => {
             selectAttendanceButton(button);
         });
+
+        // Check if the radio button inside is checked on load
+        const radio = button.querySelector('input[type="radio"]');
+        if (radio && radio.checked) {
+            button.classList.add('selected');
+        }
     });
 
     const cancelButton = document.querySelector('.cancel-btn');
