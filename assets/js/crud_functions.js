@@ -19,6 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.classList.remove('active');
             }
         });
+
+        // Tambahkan inisialisasi spesifik untuk setiap tab
+        if (targetId === 'prodi' && typeof window.initProdi === 'function') {
+            window.initProdi();
+        } else if (targetId === 'kelas' && typeof window.initKelas === 'function') {
+            window.initKelas();
+        }
     }
 
     // Handle initial tab activation based on URL hash or default to 'prodi'
