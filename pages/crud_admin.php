@@ -70,6 +70,14 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <img src="../assets/images/student.png" alt="Mahasiswa" class="crud-menu-icon">
                         <span>Data Mahasiswa</span>
                     </div>
+                    <div class="crud-menu-item" data-target="jadwal">
+                        <img src="../assets/images/clock.png" alt="Jadwal" class="crud-menu-icon">
+                        <span>Data Jadwal</span>
+                    </div>
+                    <div class="crud-menu-item" data-target="matakuliah">
+                        <img src="../assets/images/presentation.png" alt="Mata Kuliah" class="crud-menu-icon">
+                        <span>Data Mata Kuliah</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +103,31 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </tbody>
                 </table>
             </div> 
+            <div class="crud-content" id="jadwal-crud">
+                <div class="crud-header">
+                    <div class="crud-title">Data Jadwal</div>
+                    <button class="crud-button add" id="add-jadwal-btn">Tambah Jadwal</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="jadwal-search-input" class="search-bar" placeholder="Cari jadwal...">
+                    <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                </div>
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>Mata Kuliah</th>
+                            <th>Dosen</th>
+                            <th>Kelas</th>
+                            <th>Hari</th>
+                            <th>Waktu</th>
+                            <th>Ruangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jadwal-table-body">
+                    </tbody>
+                </table>
+            </div>
             <div class="modal-overlay" id="prodi-modal">
                 <div class="modal">
                     <div class="modal-header">
@@ -202,6 +235,57 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </div>
                 </div>
             </div>
+            <div class="modal-overlay" id="jadwal-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title" id="jadwal-modal-title">Tambah Jadwal Baru</div>
+                        <button class="modal-close" id="close-jadwal-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="jadwal-form">
+                            <input type="hidden" id="jadwal-id">
+                            <div class="form-group">
+                                <label for="jdwl-dosen">Dosen</label>
+                                <select id="jdwl-dosen" class="form-control" required>
+                                    <option value="">Pilih Dosen</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jdwl-matkul">Mata Kuliah</label>
+                                <select id="jdwl-matkul" class="form-control" required>
+                                    <option value="">Pilih Mata Kuliah</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jdwl-kelas">Kelas</label>
+                                <select id="jdwl-kelas" class="form-control" required>
+                                    <option value="">Pilih Kelas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jadwal-hari">Hari</label>
+                                <input type="text" id="jadwal-hari" class="form-control" placeholder="Contoh: Senin" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jadwal-jam-mulai">Jam Mulai</label>
+                                <input type="time" id="jadwal-jam-mulai" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jadwal-jam-selesai">Jam Selesai</label>
+                                <input type="time" id="jadwal-jam-selesai" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jadwal-ruangan">Ruangan</label>
+                                <input type="text" id="jadwal-ruangan" class="form-control" placeholder="Contoh: R.301" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="crud-button" id="cancel-jadwal">Batal</button>
+                        <button class="crud-button add" id="save-jadwal">Simpan</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
             <div class="modal-overlay" id="mahasiswa-modal">
@@ -246,11 +330,40 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </div>
                 </div>
             </div>
+            <div class="modal-overlay" id="matakuliah-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title" id="matakuliah-modal-title">Tambah Mata Kuliah Baru</div>
+                        <button class="modal-close" id="close-matakuliah-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-matkul">
+                            <input type="hidden" id="matkul-id">
+                            <div class="form-group">
+                                <label for="matkul-nama">Nama Mata Kuliah</label>
+                                <input type="text" id="matkul-nama" class="form-control" placeholder="Masukkan nama mata kuliah" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="matkul-prodi">Program Studi</label>
+                                <select id="matkul-prodi" name="id_prodi" class="form-control" required>
+                                    <option value="">Pilih Program Studi</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="crud-button" id="cancel-matakuliah">Batal</button>
+                        <button class="crud-button add" id="save-matakuliah">Simpan</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="../assets/js/crud_functions.js"></script>
     <script src="../assets/js/prodi_functions.js"></script>
     <script src="../assets/js/kelas_functions.js"></script>
+    <script src="../assets/js/crud_jadwal_functions.js"></script>
     <script src="../assets/js/crud_mahasiswa_functions.js"></script>
+    <script src="../assets/js/matkul_functions.js"></script>
+    <script src="../assets/js/crud_functions.js"></script>
 </body>
 </html>

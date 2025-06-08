@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use PDO;
+use PDOException;
 
 class KelasModel {
     private PDO $pdo;
@@ -23,6 +24,18 @@ class KelasModel {
         $stmt->execute([$id_kelas]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
+    }
+
+    public function getAllForDropdown(): array {
+        try {
+            // Query yang jauh lebih sederhana dan cepat
+            $sql = "SELECT id_kelas, nama_kelas FROM kelas ORDER BY nama_kelas ASC";
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error di KelasModel::getAllForDropdown: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function create(string $nama_kelas, int $id_prodi, string $nidn_dosen_wali, string $tahun_ajaran): bool {

@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
             window.initKelas();
         } else if (targetId === 'mahasiswa' && typeof window.initMahasiswa === 'function') {
             window.initMahasiswa();
+        } else if (targetId === 'matakuliah' && typeof window.initMatkul === 'function') {
+            window.initMatkul();
+        } else if (targetId === 'jadwal' && typeof window.initJadwal === 'function') {
+            window.initJadwal();
         }
+
     }
 
     // Handle initial tab activation based on URL hash or default to 'prodi'
