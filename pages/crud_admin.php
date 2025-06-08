@@ -66,6 +66,10 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <img src="../assets/images/classroom.png" alt="Kelas" class="crud-menu-icon">
                         <span>Data Kelas</span>
                     </div>
+                    <div class="crud-menu-item" data-target="mahasiswa">
+                        <img src="../assets/images/student.png" alt="Mahasiswa" class="crud-menu-icon">
+                        <span>Data Mahasiswa</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,7 +102,7 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <button class="modal-close" id="close-prodi-modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form id="prodi-form">
+                        <form id="form-prd">
                             <input type="hidden" id="prodi-id">
                             <div class="form-group">
                                 <label for="prodi-nama">Nama Program Studi</label>
@@ -137,6 +141,30 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                 </table>
             </div>
 
+            <div class="crud-content" id="mahasiswa-crud">
+                <div class="crud-header">
+                    <div class="crud-title">Data Mahasiswa</div>
+                    <button class="crud-button add" id="add-mahasiswa">Tambah Mahasiswa</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="mahasiswa-search-input" class="search-bar" placeholder="Cari mahasiswa berdasarkan NIM atau Nama">
+                    <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                </div>
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>NIM</th>
+                            <th>Nama Lengkap</th>
+                            <th>Program Studi</th>
+                            <th>Kelas</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mahasiswa-table-body">
+                    </tbody>
+                </table>
+            </div>
+
             <div class="modal-overlay" id="kelas-modal">
                 <div class="modal">
                     <div class="modal-header">
@@ -144,11 +172,11 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <button class="modal-close" id="close-modal-kelas">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form id="kelas-form">
+                        <form id="form-kls">
                             <input type="hidden" id="kelas-id">
                             <div class="form-group">
                                 <label for="nama-kelas">Nama Kelas</label>
-                                <input type="text" id="nama-kelas" class="form-control" placeholder="Masukkan nama kelas" required>
+                                <input type="text" id="kls-nama" class="form-control" placeholder="Masukkan nama kelas" required>
                             </div>
                             <div class="form-group">
                                 <label for="prodi-kelas">Program Studi</label>
@@ -176,8 +204,53 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
             </div>
         </div>
     </div>
+            <div class="modal-overlay" id="mahasiswa-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title" id="mahasiswa-modal-title">Tambah Mahasiswa Baru</div>
+                        <button class="modal-close" id="close-mahasiswa-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-mhs">
+                            <div class="form-group">
+                                <label for="mhs-nim">NIM</label>
+                                <select id="mhs-nim" class="form-control" required>
+                                    <option value="">Pilh NIM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="mhs-nama-lengkap">Nama Lengkap</label>
+                                <input type="text" id="mhs-nama-lengkap" name="nama_lengkap" class="form-control" placeholder="Masukkan nama lengkap" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mhs-password">Password</label>
+                                <input type="password" id="mhs-password" class="form-control" placeholder="Masukkan Password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mhs-prodi">Program Studi</label>
+                                <select id="mhs-prodi" name="id_prodi" class="form-control" required>
+                                    <option value="">Pilih Program Studi</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="mhs-kelas">Kelas</label>
+                                <select id="mhs-kelas" name="id_kelas" class="form-control">
+                                    <option value="">Pilih Kelas (Opsional)</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="crud-button" id="cancel-mahasiswa">Batal</button>
+                        <button class="crud-button add" id="save-mahasiswa">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="../assets/js/crud_functions.js"></script>
     <script src="../assets/js/prodi_functions.js"></script>
     <script src="../assets/js/kelas_functions.js"></script>
+    <script src="../assets/js/crud_mahasiswa_functions.js"></script>
 </body>
 </html>

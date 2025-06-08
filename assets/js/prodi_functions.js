@@ -133,6 +133,12 @@ function openProdiModal(prodi = null) {
     const title = document.getElementById('prodi-modal-title');
     const prodiIdInput = document.getElementById('prodi-id');
     const namaProdiInput = document.getElementById('prodi-nama');
+    const prodiForm = document.getElementById('form-prd');
+
+    // Reset form before opening
+    if (prodiForm) {
+        prodiForm.reset();
+    }
 
     // Pastikan semua elemen ditemukan sebelum melanjutkan
     if (!modalOverlay || !modalContent || !title || !prodiIdInput || !namaProdiInput) {

@@ -7,7 +7,7 @@ class KelasModel {
     public function __construct(PDO $pdo) { $this->pdo = $pdo; }
 
     public function getAll(): array {
-        $sql = "SELECT k.id_kelas, k.nama_kelas, ps.nama_prodi, p_dosen.nama_lengkap as nama_dosen_wali, k.tahun_ajaran 
+        $sql = "SELECT k.id_kelas, k.nama_kelas, k.id_prodi, ps.nama_prodi, p_dosen.nama_lengkap as nama_dosen_wali, k.tahun_ajaran 
                  FROM kelas k 
                  LEFT JOIN program_studi ps ON k.id_prodi = ps.id_prodi 
                  LEFT JOIN dosen d ON k.id_dosen_wali = d.nidn 

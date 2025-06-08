@@ -17,9 +17,8 @@ window.initKelas = function() {
     const cancelKelasBtn = document.getElementById('cancel-kelas');
     const closeModalButton = document.getElementById('close-modal-kelas');
 
-    const kelasForm = document.getElementById('kelas-form');
     const kelasIdInput = document.getElementById('kelas-id');
-    const namaKelasInput = document.getElementById('nama-kelas'); // Changed from kelas-nama
+    const namaKelasInput = document.getElementById('kls-nama'); // Changed from kelas-nama
     const prodiSelect = document.getElementById('prodi-kelas'); // Changed from kelas-prodi
     const dosenWaliSelect = document.getElementById('dosen-wali-kelas'); // Changed from kelas-dosen
     const tahunAjaranInput = document.getElementById('tahun-ajaran-kelas');
@@ -28,8 +27,11 @@ window.initKelas = function() {
 
     // --- Definisi Fungsi ---
     function showKelasModal(title, kelasIdToEdit = null) {
+        const kelasForm = document.getElementById('form-kls'); // Get form element inside the function
         console.log(`EDIT_DEBUG: showKelasModal dipanggil. Mode: ${kelasIdToEdit ? 'edit' : 'add'}, ID: ${kelasIdToEdit}`);
-        kelasForm.reset();
+        if (kelasForm) {
+            kelasForm.reset();
+        }
         kelasIdInput.value = '';
         modalTitle.textContent = title;
 

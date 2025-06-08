@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
             window.initProdi();
         } else if (targetId === 'kelas' && typeof window.initKelas === 'function') {
             window.initKelas();
+        } else if (targetId === 'mahasiswa' && typeof window.initMahasiswa === 'function') {
+            window.initMahasiswa();
         }
     }
 
