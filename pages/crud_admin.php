@@ -78,6 +78,10 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <img src="../assets/images/presentation.png" alt="Mata Kuliah" class="crud-menu-icon">
                         <span>Data Mata Kuliah</span>
                     </div>
+                    <div class="crud-menu-item" data-target="pengguna">
+                        <img src="../assets/images/user.png" alt="Manajemen Akun" class="crud-menu-icon">
+                        <span>Manajemen Akun</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,6 +107,51 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </tbody>
                 </table>
             </div> 
+            <div class="crud-content" id="pengguna-crud">
+                <div class="crud-header">
+                    <div class="crud-title">Manajemen Akun Pengguna</div>
+                </div>
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Lengkap</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Peran</th>
+                            <th>NIM / NIDN</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-overlay" id="pengguna-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title" id="pengguna-modal-title">Lengkapi Data Pengguna</div>
+                        <button class="modal-close" id="close-pengguna-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="pengguna-form">
+                            <input type="hidden" id="pengguna-id">
+                            <input type="hidden" id="pengguna-role"> <div class="form-group">
+                                <label>Nama Lengkap</label>
+                                <input type="text" id="pengguna-nama" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label id="pengguna-id-label">NIM / NIDN</label>
+                                <input type="text" id="pengguna-id-number" class="form-control" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="crud-button" id="cancel-pengguna">Batal</button>
+                        <button class="crud-button add" id="save-pengguna">Simpan</button>
+                    </div>
+                </div>
+            </div>
             <div class="crud-content" id="jadwal-crud">
                 <div class="crud-header">
                     <div class="crud-title">Data Jadwal</div>
@@ -149,6 +198,7 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </div>
                 </div>
             </div>
+            
             <div class="crud-content" id="kelas-crud">
                 <div class="crud-header">
                     <div class="crud-title">Data Kelas</div>
@@ -396,5 +446,6 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
     <script src="../assets/js/crud_mahasiswa_functions.js"></script>
     <script src="../assets/js/matkul_functions.js"></script>
     <script src="../assets/js/crud_functions.js"></script>
+    <script src="../assets/js/crud_pengguna_functions.js"></script>
 </body>
 </html>

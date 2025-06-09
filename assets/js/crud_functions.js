@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
             window.initMatkul();
         } else if (targetId === 'jadwal' && typeof window.initJadwal === 'function') {
             window.initJadwal();
+        } else if (targetId === 'pengguna' && typeof window.initPengguna  === 'function') {
+            window.initPengguna();
         }
 
     }

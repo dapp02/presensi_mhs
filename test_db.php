@@ -1,1 +1,0 @@
-<?php try { `$db = new PDO("mysql:host=localhost;dbname=presensi_mhs", "root", ""); echo "Database connection successful\!"; } catch(PDOException `$e) { echo "Connection failed: " . `$e->getMessage(); } ?>
