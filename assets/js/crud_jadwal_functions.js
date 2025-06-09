@@ -16,33 +16,55 @@ window.initJadwal = function() {
      const API_URL = '../App/Api/crud_jadwal_api.php';
  
      // === FUNGSI-FUNGSI === 
-     
+     let allJadwalData = []; // Variabel untuk menyimpan semua data jadwal
+
      window.loadJadwalData = function() {
          fetch(API_URL)
              .then(res => res.json())
              .then(res => {
-                 jadwalTbody.innerHTML = '';
-                 if (res.success && res.data.length > 0) {
-                     res.data.forEach(jadwal => {
-                         jadwalTbody.innerHTML += ` 
-                             <tr> 
-                                 <td>${jadwal.nama_matkul}</td> 
-                                 <td>${jadwal.nama_dosen}</td> 
-                                 <td>${jadwal.nama_kelas}</td> 
-                                 <td>${jadwal.hari}</td> 
-                                 <td>${(jadwal.jam_mulai || '').substring(0, 5)} - ${(jadwal.jam_selesai || '').substring(0, 5)}</td> 
-                                 <td>${jadwal.ruangan}</td> 
-                                 <td> 
-                                     <button class="crud-button edit" data-id="${jadwal.id_jadwal}">Edit</button> 
-                                     <button class="crud-button delete" data-id="${jadwal.id_jadwal}">Hapus</button> 
-                                 </td> 
-                             </tr>`; 
-                     }); 
+                 if (res.success) {
+                     allJadwalData = res.data; // Simpan data lengkap
+                     filterJadwalTable(); // Tampilkan semua data awalnya
                  } else {
                      jadwalTbody.innerHTML = '<tr><td colspan="7">Tidak ada data jadwal.</td></tr>';
                  }
              }).catch(error => console.error('Error loading Jadwal data:', error));
      };
+
+     function filterJadwalTable() {
+         const searchInput = document.getElementById('jadwal-search-input');
+         const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+         jadwalTbody.innerHTML = '';
+
+         const filteredData = allJadwalData.filter(jadwal => {
+             return (jadwal.nama_matkul && jadwal.nama_matkul.toLowerCase().includes(searchTerm)) ||
+                    (jadwal.nama_dosen && jadwal.nama_dosen.toLowerCase().includes(searchTerm)) ||
+                    (jadwal.nama_kelas && jadwal.nama_kelas.toLowerCase().includes(searchTerm)) ||
+                    (jadwal.hari && jadwal.hari.toLowerCase().includes(searchTerm)) ||
+                    (jadwal.ruangan && jadwal.ruangan.toLowerCase().includes(searchTerm));
+         });
+
+         if (filteredData.length > 0) {
+             filteredData.forEach(jadwal => {
+                 jadwalTbody.innerHTML += ` 
+                     <tr> 
+                         <td>${jadwal.nama_matkul}</td> 
+                         <td>${jadwal.nama_dosen}</td> 
+                         <td>${jadwal.nama_kelas}</td> 
+                         <td>${jadwal.hari}</td> 
+                         <td>${(jadwal.jam_mulai || '').substring(0, 5)} - ${(jadwal.jam_selesai || '').substring(0, 5)}</td> 
+                         <td>${jadwal.ruangan}</td> 
+                         <td> 
+                             <button class="crud-button edit" data-id="${jadwal.id_jadwal}">Edit</button> 
+                             <button class="crud-button delete" data-id="${jadwal.id_jadwal}">Hapus</button> 
+                         </td> 
+                     </tr>`; 
+             }); 
+         } else {
+             jadwalTbody.innerHTML = '<tr><td colspan="7">Tidak ada data jadwal yang cocok.</td></tr>';
+         }
+     }
+
  
      function hideJadwalModal() {
          modal.classList.remove('active');
@@ -195,6 +217,12 @@ window.initJadwal = function() {
      }); 
  
      document.getElementById('save-jadwal').addEventListener('click', saveJadwal);
+
+     // Event listener untuk search input
+     const jadwalSearchInput = document.getElementById('jadwal-search-input');
+     if (jadwalSearchInput) {
+         jadwalSearchInput.addEventListener('keyup', filterJadwalTable);
+     }
 
      // Tambahkan event listener untuk modal overlay
      const modalOverlay = document.getElementById('jadwal-modal');

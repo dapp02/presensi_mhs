@@ -18,31 +18,51 @@ window.initMatkul = function() {
     const API_URL = '../App/Api/matakuliah_api.php';
 
     // === FUNGSI-FUNGSI ===
+    let allMatkulData = []; // Variabel untuk menyimpan semua data mata kuliah
 
     window.loadMatkulData = function() {
         fetch(API_URL)
             .then(res => res.json())
             .then(res => {
-                matkulTbody.innerHTML = '';
-                if (res.success && res.data.length > 0) {
-                    res.data.forEach(matkul => {
-                        matkulTbody.innerHTML += `
-                            <tr>
-                                <td>${matkul.kode_matkul}</td>
-                                <td>${matkul.nama_matkul}</td>
-                                <td>${matkul.sks}</td>
-                                <td>${matkul.nama_prodi}</td>
-                                <td>
-                                    <button class="crud-button edit" data-id="${matkul.id_matkul}">Edit</button>
-                                    <button class="crud-button delete" data-id="${matkul.id_matkul}">Hapus</button>
-                                </td>
-                            </tr>`;
-                    });
+                if (res.success) {
+                    allMatkulData = res.data; // Simpan data lengkap
+                    filterMatkulTable(); // Tampilkan semua data awalnya
                 } else {
                     matkulTbody.innerHTML = '<tr><td colspan="5">Tidak ada data mata kuliah.</td></tr>';
                 }
             }).catch(error => console.error('Error loading Mata Kuliah data:', error));
     };
+
+    function filterMatkulTable() {
+        const searchInput = document.getElementById('matakuliah-search-input');
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        matkulTbody.innerHTML = '';
+        const filteredData = allMatkulData.filter(matkul => {
+            return (matkul.kode_matkul && matkul.kode_matkul.toLowerCase().includes(searchTerm)) ||
+                   (matkul.nama_matkul && matkul.nama_matkul.toLowerCase().includes(searchTerm)) ||
+                   (matkul.sks && matkul.sks.toString().toLowerCase().includes(searchTerm)) ||
+                   (matkul.nama_prodi && matkul.nama_prodi.toLowerCase().includes(searchTerm));
+        });
+
+        if (filteredData.length > 0) {
+            filteredData.forEach(matkul => {
+                matkulTbody.innerHTML += `
+                    <tr>
+                        <td>${matkul.kode_matkul}</td>
+                        <td>${matkul.nama_matkul}</td>
+                        <td>${matkul.sks}</td>
+                        <td>${matkul.nama_prodi}</td>
+                        <td>
+                            <button class="crud-button edit" data-id="${matkul.id_matkul}">Edit</button>
+                            <button class="crud-button delete" data-id="${matkul.id_matkul}">Hapus</button>
+                        </td>
+                    </tr>`;
+            });
+        } else {
+            matkulTbody.innerHTML = '<tr><td colspan="5">Tidak ada data mata kuliah yang cocok.</td></tr>';
+        }
+    }
+
 
     function hideMatkulModal() {
         modal.classList.remove('active');
@@ -163,6 +183,12 @@ window.initMatkul = function() {
     document.getElementById('save-matakuliah').addEventListener('click', saveMatkul);
     document.getElementById('cancel-matakuliah').addEventListener('click', hideMatkulModal);
     document.getElementById('close-matakuliah-modal').addEventListener('click', hideMatkulModal);
+
+    // Event listener untuk search input
+    const matkulSearchInput = document.getElementById('matakuliah-search-input');
+    if (matkulSearchInput) {
+        matkulSearchInput.addEventListener('keyup', filterMatkulTable);
+    }
 
     // Gunakan Event Delegation untuk tombol Edit dan Hapus
     matkulTbody.addEventListener('click', function(e) {

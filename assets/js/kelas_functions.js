@@ -25,6 +25,8 @@ window.initKelas = function() {
 
     const API_URL = '../App/Api/kelas_api.php';
 
+    let allKelasData = []; // Variabel untuk menyimpan semua data kelas
+
     // --- Definisi Fungsi ---
     function showKelasModal(title, kelasIdToEdit = null) {
         const kelasForm = document.getElementById('form-kls'); // Get form element inside the function
@@ -203,41 +205,60 @@ window.initKelas = function() {
 
     window.loadKelasData = function() {
         fetch(API_URL)
-            .then(response => response.json())
-            .then(data => {
-                kelasTbody.innerHTML = '';
-                if (data.success && data.data.length > 0) {
-                    data.data.forEach(kelas => {
-                        const row = kelasTbody.insertRow();
-                        row.innerHTML = `
-                            <tr>
-                                <td>${kelas.id_kelas}</td>
-                                <td>${kelas.nama_kelas}</td>
-                                <td>${kelas.nama_prodi}</td>
-                                <td>${kelas.nama_dosen_wali}</td>
-                                <td>${kelas.tahun_ajaran}</td>
-                                <td>
-                                    <button class="crud-button edit" data-id="${kelas.id_kelas}">Edit</button>
-                                    <button class="crud-button delete" data-id="${kelas.id_kelas}">Hapus</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    allKelasData = res.data; // Simpan data lengkap
+                    filterKelasTable(); // Tampilkan semua data awalnya
                 } else {
-                    kelasTbody.innerHTML = `<tr><td colspan="6">Tidak ada data kelas.</td></tr>`;
+                    kelasTbody.innerHTML = '<tr><td colspan="6">Tidak ada data kelas.</td></tr>';
                 }
-            })
-            .catch(error => {
-                console.error('Error loading kelas data:', error);
-                kelasTbody.innerHTML = '<tr><td colspan="6">Gagal memuat data kelas.</td></tr>';
-            });
+            }).catch(error => console.error('Error loading Kelas data:', error));
     };
+
+    function filterKelasTable() {
+        const searchInput = document.getElementById('kelas-search-input');
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        kelasTbody.innerHTML = '';
+
+        const filteredData = allKelasData.filter(kelas => {
+            return (kelas.nama_kelas && kelas.nama_kelas.toLowerCase().includes(searchTerm)) ||
+                   (kelas.nama_prodi && kelas.nama_prodi.toLowerCase().includes(searchTerm)) ||
+                   (kelas.nama_dosen_wali && kelas.nama_dosen_wali.toLowerCase().includes(searchTerm)) ||
+                   (kelas.tahun_ajaran && kelas.tahun_ajaran.toString().toLowerCase().includes(searchTerm));
+        });
+
+        if (filteredData.length > 0) {
+            filteredData.forEach(kelas => {
+                kelasTbody.innerHTML += `
+                    <tr>
+                        <td>${kelas.id_kelas}</td>
+                        <td>${kelas.nama_kelas}</td>
+                        <td>${kelas.nama_prodi}</td>
+                        <td>${kelas.nama_dosen_wali}</td>
+                        <td>${kelas.tahun_ajaran}</td>
+                        <td>
+                            <button class="crud-button edit" data-id="${kelas.id_kelas}">Edit</button>
+                            <button class="crud-button delete" data-id="${kelas.id_kelas}">Hapus</button>
+                        </td>
+                    </tr>`;
+            });
+        } else {
+            kelasTbody.innerHTML = '<tr><td colspan="6">Tidak ada data kelas yang cocok.</td></tr>';
+        }
+    }
 
     // --- Event Listeners ---
     addKelasButton.addEventListener('click', () => showKelasModal('Tambah Kelas'));
     cancelKelasBtn.addEventListener('click', hideKelasModal);
     closeModalButton.addEventListener('click', hideKelasModal);
     saveKelasBtn.addEventListener('click', saveKelas);
+
+    // Event listener untuk search input
+    const kelasSearchInput = document.getElementById('kelas-search-input');
+    if (kelasSearchInput) {
+        kelasSearchInput.addEventListener('keyup', filterKelasTable);
+    }
 
     kelasTbody.addEventListener('click', (e) => {
         if (e.target.classList.contains('edit')) {

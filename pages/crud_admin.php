@@ -212,9 +212,9 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     <thead>
                         <tr>
                             <th>ID Kelas</th>
-                            <th>Nama Kelas</th>
-                            <th>Dosen Wali</th>
+                            <th>Kode Kelas</th>
                             <th>Program Studi</th>
+                            <th>Nama Dosen</th>
                             <th>Tahun Ajaran</th>
                             <th>Aksi</th>
                         </tr>
