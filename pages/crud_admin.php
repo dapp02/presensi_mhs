@@ -33,7 +33,7 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
           <div class="header-center">
             <div class="menu-item">
               <img style="filter: invert();" src="../assets/images/home.png" alt="Beranda" class="menu-icon">
-              <a style="color: white; text-decoration: none;" href="dashboard_admin.php">
+              <a style="color: white; text-decoration: none;" href="crud_admin.php">
                 <span>Beranda</span>
               </a>
             </div>
@@ -173,7 +173,29 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                     </tbody>
                 </table>
             </div>
-
+            <div class="crud-content" id="matakuliah-crud">
+                <div class="crud-header">
+                    <div class="crud-title">Data Mata Kuliah</div>
+                    <button class="crud-button add" id="add-matakuliah">Tambah Mata Kuliah</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="matakuliah-search-input" class="search-bar" placeholder="Cari mata kuliah berdasarkan kode atau nama">
+                    <img src="../assets/images/search-interface-symbol.png" alt="Search Icon" class="search-icon">
+                </div>
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>Kode Mata Kuliah</th>
+                            <th>Nama Mata Kuliah</th>
+                            <th>SKS</th>
+                            <th>Program Studi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matakuliah-table-body">
+                    </tbody>
+                </table>
+            </div>
             <div class="crud-content" id="mahasiswa-crud">
                 <div class="crud-header">
                     <div class="crud-title">Data Mahasiswa</div>
@@ -288,6 +310,7 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
             </div>
         </div>
     </div>
+            
             <div class="modal-overlay" id="mahasiswa-modal">
                 <div class="modal">
                     <div class="modal-header">
@@ -340,8 +363,16 @@ $nama_pengguna = Session::get('nama_lengkap'); // Untuk me  nampilkan nama di he
                         <form id="form-matkul">
                             <input type="hidden" id="matkul-id">
                             <div class="form-group">
+                                <label for="matkul-kode">Kode Mata Kuliah</label>
+                                <input type="text" id="matkul-kode" class="form-control" placeholder="Masukkan kode mata kuliah" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="matkul-nama">Nama Mata Kuliah</label>
                                 <input type="text" id="matkul-nama" class="form-control" placeholder="Masukkan nama mata kuliah" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="matkul-sks">SKS</label>
+                                <input type="number" id="matkul-sks" class="form-control" placeholder="Masukkan jumlah SKS" required>
                             </div>
                             <div class="form-group">
                                 <label for="matkul-prodi">Program Studi</label>

@@ -197,11 +197,17 @@ window.initJadwal = function() {
      document.getElementById('save-jadwal').addEventListener('click', saveJadwal);
 
      // Tambahkan event listener untuk modal overlay
-     const modalOverlay = document.getElementById('jadwal-modal-overlay');
+     const modalOverlay = document.getElementById('jadwal-modal');
      if (modalOverlay) {
-         modalOverlay.addEventListener('click', hideJadwalModal);
+         modalOverlay.addEventListener('click', function(event) {
+             // Jika yang diklik adalah overlay itu sendiri (bukan modal-content di dalamnya)
+             if (event.target === modalOverlay) {
+                 hideJadwalModal();
+             }
+         });
      }
- 
-     jadwalContent.dataset.listenersAttached = 'true'; 
+
+     // Tandai bahwa event listener telah terpasang
+     jadwalContent.dataset.listenersAttached = 'true';
      window.loadJadwalData(); 
  };
